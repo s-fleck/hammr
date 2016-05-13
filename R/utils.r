@@ -56,6 +56,17 @@ tock = function() {
 }
 
 
+#' Title
+#'
+#' @param dat
+#' @param from
+#' @param to
+#'
+#' @return
+#' @export
+#' @import assertthat
+#'
+#' @examples
 typecast_all <- function(dat, from = 'factor', to = 'character'){
 
   from = tolower(from)
@@ -65,15 +76,15 @@ typecast_all <- function(dat, from = 'factor', to = 'character'){
   tofun <- switch(to,
          #'logical'   = as.logical(),
          'factor'    = factor(),
-          #'numeric'   = function(x) as.character(x) %>% as.numeric(),
-          #'integer'   = function(x) as.character(x) %>% as.integer(),
+         'numeric'   = function(x) as.numeric(as.character(x)),
+         'integer'   = function(x) as.integer(as.character(x)),
          'character' = function(x) as.character(x),
          stop('Only factor to character conversion supported yet')
          )
 
 
   vars <- lapply(dat, class) == from
-  dat[, vars] <- lapply(dat[, vars], as.character)
+  dat[, vars] <- lapply(dat[, vars], tofun)
 
   return(dat)
 }
@@ -188,14 +199,17 @@ ggplotify_spdf = function(sp, region){
 #'
 #' @seealso \code{\link{load_cache}}.
 #' @export
-save_cache <- function(..., pkg = '.'){
+save_cache <- function(..., pkg = '.', subdir){
 
   pkg <- devtools::as.package(pkg)
 
-  cache_dir   <- system.file("cache", package = pkg$package)
-  to_save <- eval(substitute(alist(...)))
-  obj <- vapply(to_save, as.character, character(1))
-  save_file = paste0(file.path(cache_dir, obj), '.rda')
+                        cache_dir   <- system.file("cache", package = pkg$package)
+  if(!missing(subdir))  cache_dir   <- system.file(cache_dir, subdir)
+
+  to_save     <- eval(substitute(alist(...)))
+  obj         <- vapply(to_save, as.character, character(1))
+  save_file   <-  paste0(file.path(cache_dir, obj), '.rda')
+
   message('Saving to ', save_file)
 
   save(..., file = save_file)
@@ -213,15 +227,18 @@ save_cache <- function(..., pkg = '.'){
 #'
 #' @seealso \code{\link{save_cache}}.
 #' @export
-load_cache <- function(..., pkg = '.', envir = globalenv()){
+load_cache <- function(..., pkg = '.', subdir, envir = globalenv()){
 
-  pkg <- devtools::as.package(pkg)
+  pkg        <- devtools::as.package(pkg)
+  cache_dir  <- system.file("cache", package = pkg$package)
+  to_load    <- eval(substitute(alist(...)))
+  obj        <- vapply(to_load, as.character, character(1))
 
-  cache_dir   <- system.file("cache", package = pkg$package)
-  to_load <- eval(substitute(alist(...)))
-  obj <- vapply(to_load, as.character, character(1))
+  paths      <- paste0(file.path(cache_dir, obj), '.rda')
 
-  paths = paste0(file.path(cache_dir, obj), '.rda')
+  if(!missing(subdir)){
+    paths     <-  paste0(file.path(cache_dir, subdir, obj), '.rda')
+  }
 
   for(i in paths){
     load(i, envir = envir)
