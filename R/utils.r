@@ -294,4 +294,9 @@ str_chop <- function(x, breaks){
 }
 
 
+prioritize_char <- function(x, high, low){
+  mid      <- x[!x %in% c(high, low)]
+  ordered <- c(high, low, mid)
 
+  return(ordered)
+}
