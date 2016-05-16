@@ -294,6 +294,12 @@ str_chop <- function(x, breaks){
 }
 
 
+#' Reorder factor levels or character vector based on priorities
+#'
+#' @param x
+#' @param ...
+#'
+#' @export
 
 prioritize <- function (x, ...) {
   UseMethod("prioritize", x)
@@ -302,7 +308,7 @@ prioritize <- function (x, ...) {
 prioritise <- prioritize
 
 
-#' Prioritize character vector
+#' Prioritice character vector
 #'
 #' @param x
 #' @param high
@@ -312,12 +318,10 @@ prioritise <- prioritize
 #' @import assertthat
 #' @aliases prioritise_char
 
+
 prioritize.character <- function(x, high = character(), low = character()){
-  if(class(x) != 'character') warning('coercing x to character')
   if(!all(low  %in% x)) warning('Not all "low" are present in "x"')
   if(!all(high %in% x)) warning('Not all "high" are present in "x"')
-
-  x        <- as.character(x)
 
   low      <- low[low %in% x]
   high     <- high[high %in% x]
@@ -328,6 +332,7 @@ prioritize.character <- function(x, high = character(), low = character()){
 }
 
 
+
 #' Prioritze factor
 #'
 #' @param x
@@ -336,10 +341,8 @@ prioritize.character <- function(x, high = character(), low = character()){
 #'
 #' @export
 #' @import assertthat
-prioritize.factor <- function(x, high, low){
-  assert_that(is_class(x, 'factor'))
-
-  ordered <- prioritise_char(levels(x), high, low)
+prioritize.factor <- function(x, high = character(), low = character()){
+  ordered <- prioritise(levels(x), high, low)
   res     <- factor(x, levels = ordered)
 
   return(res)
