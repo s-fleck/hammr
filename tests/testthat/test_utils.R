@@ -41,7 +41,6 @@ test_that("all_identical works.", {
   expect_false(all_identical(testdat$d))
   expect_true(all_identical(testdat$e))
   expect_true(all_identical(testdat$f))
-
 })
 
 
@@ -59,3 +58,32 @@ test_that("string chopping works.", {
   expect_identical(res[4], '  999 end')
 })
 
+
+test_that("string prioritizing works.", {
+
+  res <- list()
+
+  res$a  <- prioritize_char(testdat$a, 'blubb')
+  res$a2 <- prioritise_char(testdat$a, 'blubb')
+  res$b  <- prioritize_char(testdat$b, high = c('four', 'three'), low = c('one', 'two'))
+
+  expect_identical(res$a, as.character(testdat$a))
+  expect_identical(res$a, res$a2)
+  expect_identical(res$b, c("four", "three", " apple ", "one", "two"))
+})
+
+
+test_that("factor prioritizing works.", {
+  res <- list()
+
+  res$b   <- prioritize_factor(testdat$b, high = c('four', 'three'), low = c('one', 'two'))
+  res$b2  <- prioritize_factor(testdat$b, high = c('peach', 'car'), low = c('house', ' apple '))
+
+  expect_identical(res$b, structure(c(4L, 5L, 2L, 1L, 3L),
+                                    .Label = c("four", "three", " apple ", "one", "two"),
+                                    class = "factor"))
+
+  expect_identical(res$b2, structure(c(2L, 4L, 3L, 1L, 5L),
+                                    .Label = c("four", "one", "three", "two", " apple "),
+                                    class = "factor"))
+})

@@ -294,9 +294,49 @@ str_chop <- function(x, breaks){
 }
 
 
-prioritize_char <- function(x, high, low){
+
+
+#' Prioritice character vector
+#'
+#' @param x
+#' @param high
+#' @param low
+#'
+#' @export
+#' @import assertthat
+#' @aliases prioritise_char
+
+prioritize_char <- function(x, high = character(), low = character()){
+  if(class(x) != 'character') warning('coercing x to character')
+  if(!all(low  %in% x)) warning('Not all "low" are present in "x"')
+  if(!all(high %in% x)) warning('Not all "high" are present in "x"')
+
+  x        <- as.character(x)
+
+  low      <- low[low %in% x]
+  high     <- high[high %in% x]
   mid      <- x[!x %in% c(high, low)]
-  ordered <- c(high, low, mid)
+  ordered  <- c(high, mid, low)
 
   return(ordered)
+}
+
+prioritise_char <- prioritize_char
+
+
+#' Prioritze factor
+#'
+#' @param x
+#' @param high
+#' @param low
+#'
+#' @export
+#' @import assertthat
+prioritize_factor <- function(x, high, low){
+  assert_that(is_class(x, 'factor'))
+
+  ordered <- prioritise_char(levels(x), high, low)
+  res     <- factor(x, levels = ordered)
+
+  return(res)
 }
