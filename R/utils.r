@@ -294,7 +294,6 @@ str_chop <- function(x, breaks){
 }
 
 
-
 prioritize <- function (x, ...) {
   UseMethod("prioritize", x)
 }
@@ -302,7 +301,7 @@ prioritize <- function (x, ...) {
 prioritise <- prioritize
 
 
-#' Prioritize character vector
+#' Prioritice character vector
 #'
 #' @param x
 #' @param high
@@ -311,6 +310,7 @@ prioritise <- prioritize
 #' @export
 #' @import assertthat
 #' @aliases prioritise_char
+
 
 prioritize.character <- function(x, high = character(), low = character()){
   if(class(x) != 'character') warning('coercing x to character')
@@ -326,6 +326,7 @@ prioritize.character <- function(x, high = character(), low = character()){
 
   return(ordered)
 }
+
 
 
 #' Prioritze factor
