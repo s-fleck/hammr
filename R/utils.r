@@ -107,7 +107,6 @@ typecast_all <- function(dat, from = 'factor', to = 'character'){
 }
 
 
-
 remove_whitespace = function(dat){
 
   for(i in 1:length(dat)){
