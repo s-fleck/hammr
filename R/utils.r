@@ -379,8 +379,12 @@ prioritise <- prioritize
 #' @export
 #'
 prioritize.character <- function(x, high = character(), low = character()){
-  if(!all(low  %in% x)) warning('Not all "low" are present in "x"')
-  if(!all(high %in% x)) warning('Not all "high" are present in "x"')
+
+  low_not_x  <- low[!low %in% x]
+  high_not_x <- high[!high %in% x]
+
+  if(!all(low  %in% x)) warning('Not all "low" are present in "x": ', paste(low_not_x, collapse = ' '))
+  if(!all(high %in% x)) warning('Not all "high" are present in "x": ', paste(high_not_x, collapse = ' '))
 
   low      <- low[low %in% x]
   high     <- high[high %in% x]
