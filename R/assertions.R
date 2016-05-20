@@ -20,6 +20,51 @@ assertthat::on_failure(is_class) <- function(call, env){
 }
 
 
+is_col_classes <- function(dat, classes = list()){
+
+  res <- vector()
+
+  for(i in names(classes)){
+    res[i] <- i %in% names(dat) && classes[[i]] == class(dat[[i]])
+  }
+
+  return(all(res))
+}
+
+assertthat::on_failure(is_col_classes) <- function(call, env){
+  dat     <- eval(call$dat)
+  classes <- eval(call$classes)
+
+  present <- names(classes)[names(classes) %in% names(dat)]
+  missing <- names(classes)[!names(classes) %in% names(dat)]
+  wrong   <- character()
+
+  for(i in present){
+      col    = i
+      is     = class(dat[[i]])
+      should = classes[[i]]
+
+    if (is != should){
+      wrong <- paste0(wrong, col, ' (', is, '->', should, '), ')
+    }
+  }
+
+  missing <- paste(missing, collapse = ', ')
+
+  msg = character()
+
+  if(nchar(missing) > 0){
+    msg = paste0('Missing from dat: ', missing, '.\n')
+  }
+
+  if(nchar(wrong) > 0){
+    wrong <- substr(wrong, 1, nchar(wrong) - 2)
+    msg = paste0(msg, 'Wrong classes: ', wrong)
+  }
+
+  return(msg)
+}
+
 
 has_field <- function(dat, field, type){
   field_exists           <- field %in% names(dat)
