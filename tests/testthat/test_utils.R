@@ -87,3 +87,18 @@ test_that("factor prioritizing works.", {
                                     .Label = c("four", "one", "three", "two", " apple "),
                                     class = "factor"))
 })
+
+
+test_that('Redfined + operator does not break stuff'){
+
+expect_identical('would' + 'could', 'wouldcould')
+expect_identical((c('a', 'b') + c('b', 'c')), c("ab", "bc"))
+expect_identical(1+1, 2)
+expect_error(1 + '2')
+
+if(require(ggplot2) == TRUE){
+p <- ggplot(testdat,
+       aes(x = a,
+           y = b)) + geom_bar(stat = 'identity')
+}
+}

@@ -1,3 +1,13 @@
+
+`+.default` <- function (e1, e2) .Primitive("+")(e1, e2)
+
+`+.character` <- function(e1, e2) {
+  if(length(e1) == length(e2)) {
+    paste(e1, e2, sep = '')
+  } else stop('String Verctors of Different Lengths')
+}
+
+
 #' Title
 #'
 #' http://stackoverflow.com/questions/4752275/test-for-equality-among-all-elements-of-a-single-vector
