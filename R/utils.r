@@ -1,4 +1,3 @@
-
 `+.default` <- function (e1, e2) .Primitive("+")(e1, e2)
 
 `+.character` <- function(e1, e2) {
@@ -8,16 +7,21 @@
 }
 
 
-#' Title
+
+#' Test for equality among all elements of a vector
 #'
 #' http://stackoverflow.com/questions/4752275/test-for-equality-among-all-elements-of-a-single-vector
 #'
-#' @param x
+#' @param x vector to be tested
 #'
-#' @return
+#' @return TRUE/FALSE
 #' @export
 #'
 #' @examples
+#'
+#' all_identical(c(1,2,3))
+#' all_identical(c(1,1,1))
+#'
 all_identical <- function(x) {
   if (length(x) == 1L) {
     warning("'x' has a length of only 1")
@@ -66,38 +70,7 @@ tock = function() {
 }
 
 
-#' Title
-#'
-#' @param dat
-#' @param from
-#' @param to
-#'
-#' @return
-#' @export
-#' @import assertthat
-#'
-#' @examples
-typecast_all <- function(dat, from = 'factor', to = 'character'){
 
-  from = tolower(from)
-
-  assert_that(from %in% c('character', 'factor')) #logical', 'numeric', 'integer',
-
-  tofun <- switch(to,
-         #'logical'   = as.logical(),
-         'factor'    = factor(),
-         'numeric'   = function(x) as.numeric(as.character(x)),
-         'integer'   = function(x) as.integer(as.character(x)),
-         'character' = function(x) as.character(x),
-         stop('Only factor to character conversion supported yet')
-         )
-
-
-  vars <- lapply(dat, class) == from
-  dat[, vars] <- lapply(dat[, vars], tofun)
-
-  return(dat)
-}
 
 
 remove_whitespace = function(dat){
@@ -110,13 +83,11 @@ remove_whitespace = function(dat){
 }
 
 
-# ---------------------------------------------------------------------------------------------
-# Formatting functions for ggplot  graph axis
-# ---------------------------------------------------------------------------------------------
-#
-# Copied from: https://github.com/1R151-1/R/blob/master/ggplot2_formatter.r
-
-#' Human Numbers: Format numbers so they're legible for humans
+#' Human Numbers
+#'
+#' Source: https://github.com/1R151-1/R/blob/master/ggplot2_formatter.r
+#'
+#' Format numbers so they're legible for humans
 #' Use this in ggplot for labels where you might use the comma or percent functions from the
 #' Scales package.
 #'
@@ -126,7 +97,11 @@ remove_whitespace = function(dat){
 #' numbers where billions, millions or thousands are appropriate.
 #'
 #' @return a character vector the same length as the input vector
-#' @param x a numeric vector to format, smbl a symbol you'd like to prefix your numbers by
+#' @param x a numeric vector to format,
+#' @param smbl a symbol you'd like to prefix your numbers by
+#' @rdname human_numbers
+#' @aliases human_gbp, human_usd, human_euro, human_num
+#'
 #' @examples
 #' human_numbers(c(1000000 , 1500000, 10000000000))
 #' human_numbers(c(1.200000e+05, -2.154660e+05, 2.387790e+05, 4.343500e+04 ,5.648675e+12), "$")
@@ -162,17 +137,32 @@ human_numbers <- function(x = NULL, smbl =""){
   sapply(x,humanity)
 }
 
-#' Human versions of large currency numbers - extensible via smbl
-
+#' @rdname human_numbers
+#' @export
 human_gbp   <- function(x){human_numbers(x, smbl = "\u00A3")}
+
+#' @rdname human_numbers
+#' @export
 human_usd   <- function(x){human_numbers(x, smbl = "$")}
+
+#' @rdname human_numbers
+#' @export
 human_euro  <- function(x){human_numbers(x, smbl = "\u20AC")}
+
+#' @rdname human_numbers
+#' @export
 human_num   <- function(x){human_numbers(x, smbl = "")}
 
 
-
-# from http://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
-
+#' Extract legend from a ggplot 2 object
+#'
+#' source: http://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
+#'
+#' @param a.gplot a ggplot2 object
+#'
+#' @return a legend or an empty grob
+#' @export
+#'
 g_legend<-function(a.gplot){
   tmp <- ggplot_gtable(ggplot_build(a.gplot))
   leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
@@ -184,13 +174,12 @@ g_legend<-function(a.gplot){
 
 #' Prepare SPDF for ggplot2
 #'
-#' @param sp
-#' @param region
+#' @param sp a sp object
+#' @param region a region identifier
 #'
-#' @return
+#' @return a data.frame
 #' @export
 #'
-#' @examples
 ggplotify_spdf = function(sp, region){
   sp.f =  fortify(sp, region = region)
   res = merge(sp.f, sp@data, by.x = 'id', by.y = region)
@@ -203,6 +192,7 @@ ggplotify_spdf = function(sp, region){
 #'
 #' @param ... R objects to save to chache dir, usually /inst/chache
 #' @param package the current package
+#' @param subdir subdirectory of the chache dir to save data to
 #'
 #' @section Side effects:
 #' Saves an R object to a cache dir in the current package
@@ -256,16 +246,14 @@ load_cache <- function(..., pkg = '.', subdir, envir = globalenv()){
 }
 
 
-
 #' Drop a column from a data.frame if it exists
 #'
-#' @param dat
-#' @param drop
+#' @param dat data.frame
+#' @param drop character vector of the columns that are to be dropped
 #'
-#' @return
+#' @return a data.frame without the columns specified in drop
 #' @export
-#'
-#' @examples
+
 drop_if_exists <- function(dat, drop){
   rex <- paste(drop, collapse = '|')
   sel <- !grepl(rex, names(dat))
@@ -275,23 +263,40 @@ drop_if_exists <- function(dat, drop){
 }
 
 
-
-
 #' Get the n most frequent values of a vector
 #'
 #' @param x A vector
 #' @param x
 #'
-#' @return
+#' @return a character vector of the n most frequent elements
 #' @export
-#'
-#' @examples
 most_frequent <- function(x, n = 1){
-  names(sort(table(x),decreasing=TRUE)[n])
+  if(n > length(unique(x))){
+    n <- length(unique(x))
+    warning('n is more than the count of unique values of x.')
+  }
+  res <- names(sort(table(x),decreasing=TRUE)[1:n])
+  if(class(x) == 'numeric') res <- as.numeric(res)
+  if(class(x) == 'integer') res <- as.integer(res)
+  if(class(x) == 'logical') res <- as.logical(res)
+
+  return(res)
 }
 
 
 
+#' Chop up a string
+#'
+#' @param x string to chop into character vector
+#' @param breaks positions at which to chop the string
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+#'
+#' str_chop('123456789a', c(1,4,6,9,100))
+#'
 str_chop <- function(x, breaks){
   res <- vector()
 
@@ -306,32 +311,46 @@ str_chop <- function(x, breaks){
 
 #' Reorder factor levels or character vector based on priorities
 #'
-#' @param x
-#' @param ...
+#' Shoves elements of a character or factor vector to the front.
+#' Usefull for reordering factor levels for plotting. Issues
+#' a warning if any elements of high or low are not present in x
 #'
+#' @param x a character of factor vector
+#' @param high elements to be put to the front
+#' @param low elements to be put to the back
+#'
+#' @rdname prioritize
+#'
+#' @return a reordered vector
 #' @export
-
+#' @import assertthat
+#'
+#' @examples
+#'
+#' x <- c('d', 'e', 'z', 'y', 'n', 'b', 'c', 'a', 'x')
+#' prioritize(x, c('a', 'b', 'c', 'applepie'), c('x', 'y', 'z'))
+#'
 prioritize <- function (x, ...) {
   UseMethod("prioritize", x)
 }
 
+
+#' @rdname prioritize
+#' @export
+#'
 prioritise <- prioritize
 
 
-#' Prioritice character vector
-#'
-#' @param x
-#' @param high
-#' @param low
-#'
+#' @rdname prioritize
 #' @export
-#' @import assertthat
-#' @aliases prioritise_char
-
-
+#'
 prioritize.character <- function(x, high = character(), low = character()){
-  if(!all(low  %in% x)) warning('Not all "low" are present in "x"')
-  if(!all(high %in% x)) warning('Not all "high" are present in "x"')
+
+  low_not_x  <- low[!low %in% x]
+  high_not_x <- high[!high %in% x]
+
+  if(!all(low  %in% x)) warning('Not all "low" are present in "x": ', paste(low_not_x, collapse = ' '))
+  if(!all(high %in% x)) warning('Not all "high" are present in "x": ', paste(high_not_x, collapse = ' '))
 
   low      <- low[low %in% x]
   high     <- high[high %in% x]
@@ -342,18 +361,101 @@ prioritize.character <- function(x, high = character(), low = character()){
 }
 
 
-
-#' Prioritze factor
-#'
-#' @param x
-#' @param high
-#' @param low
-#'
+#' @rdname prioritize
 #' @export
-#' @import assertthat
+#'
 prioritize.factor <- function(x, high = character(), low = character()){
   ordered <- prioritise(levels(x), high, low)
   res     <- factor(x, levels = ordered)
 
   return(res)
 }
+
+
+#' Typecast columns of a data.frame by name
+#'
+#' Use with care, will introduce NAs for some conversion attempts
+#'
+#' @param dat a data.frame
+#' @param conv a list of the form list(COLNAME = 'coltype')
+#'
+#' @return a data.frame with typecasted columns
+#' @export
+#'
+#' @examples
+#' dat <- data.frame(foo = c('5', '6', '5'),
+#'                   bar = factor(c('a', 'b', 'c')),
+#'                   stringsAsFactors = FALSE)
+#' str(dat)
+#'
+#' res <- typecast_cols(dat, list(foo = 'numeric',
+#'                               bar = 'character'))
+#'
+#' str(dat)
+
+typecast_cols <-  function(dat, conv = list()){
+
+  conv2 <- conv[names(conv) %in% names(dat)]
+  if(length(conv2) < length(conv)) warning('Not all conv present in names(x): ',paste(names(conv[!conv %in% conv2]), collapse = ', '))
+
+
+  for(i in names(conv2)){
+    f <- cfun(conv2[[i]])
+    dat[[i]] <- f(dat[[i]])
+  }
+
+  return(dat)
+}
+
+
+#' Typecast all columns of a data.frame of a specific type
+#'
+#' Use with care, will introduce NAs for some conversion attempts
+#'
+#' @param dat a data.frame
+#' @param from column type to cast
+#' @param to target column type
+#'
+#' @return a data frame with all columns of class from converted to class to
+#' @export
+#' @import assertthat
+#'
+#' @examples
+#'
+#' df <- data.frame(a = factor(c('b', 'a', 'd')),
+#'                  b = factor(c(1,2,3)))
+#'
+#' str(df)
+#'
+#' x <- typecast_all(df, 'factor', 'character')
+#' y <- typecast_all(df, 'factor', 'numeric')
+#'
+#' str(x)
+#' str(y)
+
+typecast_all <- function(dat, from = 'factor', to = 'character'){
+
+  from  <- tolower(from)
+  tofun <- cfun(to)
+
+  vars <- lapply(dat, class) == from
+  dat[, vars] <- lapply(dat[, vars], tofun)
+  return(dat)
+}
+
+
+cfun <- function(x){
+  res <- switch(x,
+                'logical'  = as.logical2,
+                'integer'   = as.integer2,
+                'factor'    = as.factor,
+                'numeric'   = as.numeric2,
+                'character' = as.character,
+                stop('Input must be any of "numeric", integer", "factor", "character"')
+  )
+  return(res)
+}
+
+as.numeric2 <- function(x) as.numeric(as.character(x))
+as.integer2 <- function(x) as.integer(as.character(x))
+as.logical2 <- function(x) as.logical(as.character(x))
