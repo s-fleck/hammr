@@ -9,6 +9,8 @@ testdat <- data.frame(
   f = c('moon', 'moon', 'moon', 'moon', 'moon'),
   g = c('TRUE', 'TRUE', 'TRUE', 'FALSE', 'FALSE'),
   h = c('3', '4', '5', '5', '5'),
+  i = as.POSIXct(c('2015-01-01', '2015-01-05', '2015-05-04', '2015-12-01', '2015-04-13')),
+  j = c('2015-01-01', '2015-01-05', '2015-05-04', '2015-12-01', '2015-04-13'),
   stringsAsFactors = FALSE
 )
 
@@ -32,7 +34,9 @@ test_that("typecasting by name works.", {
     e = 'integer',
     f = 'factor',
     g = 'logical',
-    h = 'integer'
+    h = 'integer',
+    i = 'character',
+    j = c("POSIXct", "POSIXt")
   ))
 
   expect_identical(res$a, c(6, 5, 3, 4, 5))
@@ -43,17 +47,24 @@ test_that("typecasting by name works.", {
   expect_identical(res$f, factor(testdat$f))
   expect_identical(res$g, c(TRUE, TRUE, TRUE, FALSE, FALSE))
   expect_identical(res$h, c(3L, 4L, 5L, 5L, 5L))
+  expect_identical(res$i, c("2015-01-01", "2015-01-05", "2015-05-04", "2015-12-01", "2015-04-13"))
+
+
 
 })
 
 
 test_that("removing whitespaces from character columns of data frame works.", {
   res <- remove_whitespace(testdat)
+  res2 <- remove_whitespace(testdat, process_factors = TRUE)
 
   expect_identical(res$a, testdat$a)
   expect_identical(res$b, testdat$b)
   expect_identical(res$c, c('one', 'two', 'three', 'four', 'apple'))
   expect_identical(res$d, testdat$d)
+
+  expect_identical(levels(res2$b), c("apple", "four", "one", "three", "two"))
+
 })
 
 

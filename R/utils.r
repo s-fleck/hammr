@@ -73,14 +73,22 @@ tock = function() {
 
 
 
-remove_whitespace = function(dat){
+remove_whitespace = function(dat, process_factors = FALSE){
 
   for(i in 1:length(dat)){
-     if('character' %in% class(dat[[i]])) dat[[i]] = trimws(dat[[i]])
+     if('character' %in% class(dat[[i]])){
+       dat[[i]] = trimws(dat[[i]])
+     }
+     if(process_factors && 'factor'    %in% class(dat[[i]])){
+       levels(dat[[i]]) = trimws(levels(dat[[i]]))
+     }
   }
 
   return(dat)
 }
+
+
+
 
 
 #' Human Numbers
@@ -398,10 +406,21 @@ typecast_cols <-  function(dat, conv = list()){
   conv2 <- conv[names(conv) %in% names(dat)]
   if(length(conv2) < length(conv)) warning('Not all conv present in names(x): ',paste(names(conv[!conv %in% conv2]), collapse = ', '))
 
-
   for(i in names(conv2)){
-    f <- cfun(conv2[[i]])
-    dat[[i]] <- f(dat[[i]])
+    toclass <- conv2[[i]]
+
+    if('POSIXct' %in% toclass){
+      toclass <- 'POSIXct'
+    }
+
+    f <- cfun(toclass)
+
+    if(any(class(dat[[i]]) != toclass)) {
+
+      tryCatch(dat[[i]] <- f(dat[[i]]),
+               warning = function(w) warning(i, '(', class(dat[[i]]), '->', toclass, '): ', w))
+
+    }
   }
 
   return(dat)
@@ -445,12 +464,14 @@ typecast_all <- function(dat, from = 'factor', to = 'character'){
 
 
 cfun <- function(x){
+
   res <- switch(x,
                 'logical'  = as.logical2,
                 'integer'   = as.integer2,
                 'factor'    = as.factor,
                 'numeric'   = as.numeric2,
                 'character' = as.character,
+                'POSIXct'   = as.POSIXct,
                 stop('Input must be any of "numeric", integer", "factor", "character"')
   )
   return(res)

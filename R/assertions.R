@@ -44,8 +44,11 @@ assertthat::on_failure(is_col_classes) <- function(call, env){
       is     = class(dat[[i]])
       should = classes[[i]]
 
-    if (is != should){
-      wrong <- paste0(wrong, col, ' (', is, '->', should, '), ')
+    if (any(is != should)){
+      is_str     <- paste(is, collapse = ', ')
+      should_str <- paste(should, collapse = ', ')
+
+      wrong <- paste0(wrong, col, ' (', is_str, '->', should_str, '), ')
     }
   }
 
@@ -53,11 +56,11 @@ assertthat::on_failure(is_col_classes) <- function(call, env){
 
   msg = character()
 
-  if(nchar(missing) > 0){
+  if(length(missing) > 0){
     msg = paste0('Missing from dat: ', missing, '.\n')
   }
 
-  if(nchar(wrong) > 0){
+  if(length(wrong) > 0){
     wrong <- substr(wrong, 1, nchar(wrong) - 2)
     msg = paste0(msg, 'Wrong classes: ', wrong)
   }
