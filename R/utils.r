@@ -404,7 +404,11 @@ prioritize.factor <- function(x, high = character(), low = character()){
 typecast_cols <-  function(dat, conv = list()){
 
   conv2 <- conv[names(conv) %in% names(dat)]
-  if(length(conv2) < length(conv)) warning('Not all conv present in names(x): ',paste(names(conv[!conv %in% conv2]), collapse = ', '))
+  if(length(conv2) < length(conv)) {
+    missing_cols <- paste(names(conv)[!names(conv) %in% names(conv2)], collapse = ', ')
+
+    warning('Not all conv present in names(x): ', missing_cols)
+  }
 
   for(i in names(conv2)){
     toclass <- conv2[[i]]
