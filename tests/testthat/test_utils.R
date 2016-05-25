@@ -100,8 +100,12 @@ test_that("string prioritizing works.", {
 
   res <- list()
 
-  res$a  <- prioritize(as.character(testdat$a), 'blubb')
-  res$a2 <- prioritize(as.character(testdat$a), 'blubb')
+  expect_warning(prioritize(as.character(testdat$a), 'blubb'))
+
+
+
+  expect_warning(res$a  <- prioritize(as.character(testdat$a), 'blubb'))
+  expect_warning(res$a2 <- prioritize(as.character(testdat$a), 'blubb'))
   res$b  <- prioritise(as.character(testdat$b), high = c('four', 'three'), low = c('one', 'two'))
 
   expect_identical(res$a, as.character(testdat$a))
@@ -113,8 +117,10 @@ test_that("string prioritizing works.", {
 test_that("factor prioritizing works.", {
   res <- list()
 
-  res$b   <- prioritize(testdat$b, high = c('four', 'three'), low = c('one', 'two'))
-  res$b2  <- prioritise(testdat$b, high = c('peach', 'car'), low = c('house', ' apple '))
+    res$b   <- prioritize(testdat$b, high = c('four', 'three'), low = c('one', 'two'))
+  expect_warning(
+    res$b2  <- prioritise(testdat$b, high = c('peach', 'car'), low = c('house', ' apple '))
+  )
 
   expect_identical(res$b, structure(c(4L, 5L, 2L, 1L, 3L),
                                     .Label = c("four", "three", " apple ", "one", "two"),
@@ -126,17 +132,17 @@ test_that("factor prioritizing works.", {
 })
 
 
-test_that('Redfined + operator does not break stuff', {
-
-  expect_identical('would' + 'could', 'wouldcould')
-  expect_identical((c('a', 'b') + c('b', 'c')), c("ab", "bc"))
-  expect_identical(1+1, 2)
-  expect_error(1 + '2')
-
-  if(require(ggplot2) == TRUE){
-  p <- ggplot(testdat,
-         aes(x = a,
-             y = b)) + geom_bar(stat = 'identity')
-  }
-})
+# test_that('Redfined + operator does not break stuff', {
+#
+#   expect_identical('would' + 'could', 'wouldcould')
+#   expect_identical((c('a', 'b') + c('b', 'c')), c("ab", "bc"))
+#   expect_identical(1+1, 2)
+#   expect_error(1 + '2')
+#
+#   if(require(ggplot2) == TRUE){
+#   p <- ggplot(testdat,
+#          aes(x = a,
+#              y = b)) + geom_bar(stat = 'identity')
+#   }
+# })
 
