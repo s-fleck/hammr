@@ -522,3 +522,15 @@ cfun <- function(x){
 as.numeric2 <- function(x) as.numeric(as.character(x))
 as.integer2 <- function(x) as.integer(as.character(x))
 as.logical2 <- function(x) as.logical(as.character(x))
+
+
+#' Display info about an R object with attributes
+#'
+#' @param dat an R object
+#' @export
+info <- function(dat){
+
+  msg <- attr(dat, 'info')
+  if(!is.null(msg)) cat(msg)
+
+}
