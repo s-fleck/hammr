@@ -20,6 +20,11 @@ assertthat::on_failure(is_class) <- function(call, env){
 }
 
 
+#' Title
+#'
+#' @param dat
+#' @param classes
+#' @export
 is_col_classes <- function(dat, classes = list()){
 
   res <- vector()
