@@ -537,29 +537,6 @@ info <- function(dat){
 
 
 
-#' Quarter as date
-#'
-#' @param y
-#' @param q
-#' @export
-quarter_as_date <- function(y, q){
-
-  dat <- data.frame(
-    y = y,
-    q = q
-  )
-
-  dat$m = 1
-  dat$m[dat$q == 2] = 4
-  dat$m[dat$q == 3] = 7
-  dat$m[dat$q == 4] = 10
-
-
-  paste(dat$y, dat$m, 01, sep = '-') %>%
-    as.Date()
-
-}
-
 
 
 #' Return a list of usefull regex patterns

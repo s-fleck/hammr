@@ -1,23 +1,26 @@
-#' A custom data type for Year-Quarter date format
+#' A custom data type for Year-Quarter
 #'
-#' @param y
-#' @param q
+#' @param y year or a character string of a format like this: 2013-Q1
+#' @param q quarter (optional)
 #'
 #' @return An object of type Quarter, character
 #' @export
+#'
+#' @examples
+#'
+#' quarter(2013, 3)
+#' quarter('2013-Q3')
 
-Quarter <- function(y, q){
+quarter <- function(y, q) {
 
   y <- as.character(y)
 
-  if(missing(q)){
-    if(grep('\\d{4}-Q[1-4]', y)){
-      res <- y
-    } else {
-      stop('Please enter y, q or jjjj-Qq')
-    }
+  if(missing(q)) {
+    assert_that(all(grepl('\\d{4}-Q[1-4]', y)))
+    res <- y
   } else {
-    q <- as.character(q)
+    assert_that(length(y) == length(q))
+    q   <- as.character(q)
     res <- paste0(y, '-Q', q )
   }
 
@@ -25,6 +28,8 @@ Quarter <- function(y, q){
   return(res)
 }
 
+
+# S3 Methods
 
 `<.Quarter` <- function(x, y){
   as.integer(x) < as.integer(y)
@@ -46,8 +51,31 @@ Quarter <- function(y, q){
 }
 
 
+as.data.frame.Quarter <- function(x){
+  dat <- data.frame(x = as.vector(x)) %>%
+    tidyr::separate(col = x, into = c('y', 'q'), sep = '-Q')
+}
+
+
 as.integer.Quarter <- function(x){
-  strsplit(x, '-Q')[[1]] %>%
-    paste0(collapse = '') %>%
+  as.data.frame(x) %>%
+    tidyr::unite('col', y, q, sep = '') %>%
+    extract2(1) %>%
     as.integer()
 }
+
+
+as.Date.Quarter <- function(x){
+  dat <- as.data.frame(x)
+
+  dat$m = 1
+  dat$m[dat$q == 2] = 4
+  dat$m[dat$q == 3] = 7
+  dat$m[dat$q == 4] = 10
+
+  paste(dat$y, dat$m, 01, sep = '-') %>%
+    as.Date()
+}
+
+
+

@@ -20,10 +20,10 @@ assertthat::on_failure(is_class) <- function(call, env){
 }
 
 
-#' Title
+#' Check for column classes
 #'
-#' @param dat
-#' @param classes
+#' @param dat a data.frame
+#' @param classes a list of column classes, like list(colname = 'character', colname2 = 'numeric')
 #' @export
 is_col_classes <- function(dat, classes = list()){
 
