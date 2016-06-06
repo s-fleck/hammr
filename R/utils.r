@@ -6,8 +6,6 @@
 #' %_% pastes two strings together (with ' ' as sepparator)
 #' %-% pastes two strings together (without sepparator)
 #'
-#'
-#'
 #' @return a and b pasted together
 #' @export
 #' @rdname paste_infix

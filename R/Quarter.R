@@ -25,6 +25,7 @@ quarter <- function(y, q) {
   }
 
   class(res) <- c('Quarter', 'character')
+
   return(res)
 }
 
@@ -65,6 +66,11 @@ as.integer.Quarter <- function(x){
 }
 
 
+
+#' as.Date method for Quarter
+#'
+#' @export
+
 as.Date.Quarter <- function(x){
   dat <- as.data.frame(x)
 
@@ -78,4 +84,14 @@ as.Date.Quarter <- function(x){
 }
 
 
+#' Convert quarter to date
+#'
+#' @param y dgssd
+#' @param q sdgsd
+#' @export
+quarter_as_date <- function(y, q){
+  res <- quarter(y, q) %>%
+    as.Date()
 
+  return(res)
+}
