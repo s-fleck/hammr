@@ -299,11 +299,20 @@ load_cache <- function(..., pkg = '.', subdir, envir = globalenv()){
 #' @export
 
 drop_if_exists <- function(dat, drop){
+
+  warning('regex matches to many colnames')
+
   rex <- paste(drop, collapse = '|')
   sel <- !grepl(rex, names(dat))
-  message('dropped: ', paste0(names(dat)[!sel], collapse = ', '))
 
-  return(dat)
+  dropped_names <- names(dat)[!sel]
+
+  if(length(dropped_names) > 0){
+    message('dropped: ', dropped_names, collapse = ', ')
+  }
+
+  res <- dat[sel]
+  return(res)
 }
 
 

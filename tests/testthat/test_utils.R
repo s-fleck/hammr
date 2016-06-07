@@ -132,6 +132,17 @@ test_that("factor prioritizing works.", {
 })
 
 
+test_that("Dropping columns by name works.", {
+  res <- list()
+
+  res$a <- drop_if_exists(testdat, 'j')
+  res$b <- drop_if_exists(testdat, c("a", "b", "c", 'dog', 'j'))
+
+  expect_equal(names(res$a), c("a", "b", "c", "d", "e", "f", "g", "h", "i"))
+  expect_equal(names(res$b), c("d", "e", "f", "g", "h", "i"))
+
+})
+
 # test_that('Redfined + operator does not break stuff', {
 #
 #   expect_identical('would' + 'could', 'wouldcould')
