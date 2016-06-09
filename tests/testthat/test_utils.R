@@ -11,6 +11,8 @@ testdat <- data.frame(
   h = c('3', '4', '5', '5', '5'),
   i = as.POSIXct(c('2015-01-01', '2015-01-05', '2015-05-04', '2015-12-01', '2015-04-13')),
   j = c('2015-01-01', '2015-01-05', '2015-05-04', '2015-12-01', '2015-04-13'),
+  k = c('1', '1.5', '0.000000001', '100000000000', '99.1'),
+  l = factor(c('1', '1.5', '0.000000001', '100000000000', '99.1')),
   stringsAsFactors = FALSE
 )
 
@@ -156,4 +158,16 @@ test_that("Dropping columns by name works.", {
 #              y = b)) + geom_bar(stat = 'identity')
 #   }
 # })
+
+
+test_that("Looks like integer works.", {
+  a <- looks_like_integer(testdat$k)
+  b <- looks_like_integer(testdat$l)
+  c <- looks_like_integer(as.numeric(testdat$k))
+
+  expect_identical(a, c(TRUE, FALSE, FALSE, TRUE, FALSE))
+  expect_identical(a, b)
+  expect_identical(a, c)
+})
+
 
