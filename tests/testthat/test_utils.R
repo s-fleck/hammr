@@ -11,6 +11,8 @@ testdat <- data.frame(
   h = c('3', '4', '5', '5', '5'),
   i = as.POSIXct(c('2015-01-01', '2015-01-05', '2015-05-04', '2015-12-01', '2015-04-13')),
   j = c('2015-01-01', '2015-01-05', '2015-05-04', '2015-12-01', '2015-04-13'),
+  k = c('1', '1.5', '0.000000001', '100000000000', '99.1'),
+  l = factor(c('1', '1.5', '0.000000001', '100000000000', '99.1')),
   stringsAsFactors = FALSE
 )
 
@@ -67,6 +69,16 @@ test_that("removing whitespaces from character columns of data frame works.", {
 
 })
 
+
+test_that('Custom type conversion functions work', {
+  w <- 0.1
+  x <- factor('0,123')
+  y <- factor('99')
+
+  expect_error(as.integer2(0.1))
+  expect_error(as.integer2(x))
+  expect_identical(as.integer2(y), 99L)
+})
 
 
 test_that("all_identical works.", {
@@ -138,8 +150,8 @@ test_that("Dropping columns by name works.", {
   res$a <- drop_if_exists(testdat, 'j')
   res$b <- drop_if_exists(testdat, c("a", "b", "c", 'dog', 'j'))
 
-  expect_equal(names(res$a), c("a", "b", "c", "d", "e", "f", "g", "h", "i"))
-  expect_equal(names(res$b), c("d", "e", "f", "g", "h", "i"))
+  expect_equal(names(res$a)[1:9], c("a", "b", "c", "d", "e", "f", "g", "h", "i"))
+  expect_equal(names(res$b)[1:6], c("d", "e", "f", "g", "h", "i"))
 
 })
 
@@ -156,4 +168,16 @@ test_that("Dropping columns by name works.", {
 #              y = b)) + geom_bar(stat = 'identity')
 #   }
 # })
+
+
+test_that("Looks like integer works.", {
+  a <- looks_like_integer(testdat$k)
+  b <- looks_like_integer(testdat$l)
+  c <- looks_like_integer(as.numeric(testdat$k))
+
+  expect_identical(a, c(TRUE, FALSE, FALSE, TRUE, FALSE))
+  expect_identical(a, b)
+  expect_identical(a, c)
+})
+
 

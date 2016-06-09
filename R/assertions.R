@@ -105,4 +105,23 @@ assertthat::on_failure(is_any_class) <- function(call, env){
 }
 
 
+#' Check if a value looks like integer
+#'
+#' @param x ...
+#'
+#' @return TRUE / FALSE
+#' @export
+
+looks_like_integer <- function(x, allowNA = FALSE){
+
+  suppressWarnings(
+    res <- as.numeric(as.character(x)) %% 1 == 0
+  )
+
+  res[x == '']    <- allowNA
+  res[is.na(x)]   <- allowNA
+  res[is.na(res)] <- FALSE
+
+  return(res)
+}
 

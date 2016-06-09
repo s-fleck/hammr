@@ -527,7 +527,9 @@ cfun <- function(x){
 }
 
 as.numeric2 <- function(x) as.numeric(as.character(x))
+
 as.integer2 <- function(x) as.integer(as.character(x))
+
 as.logical2 <- function(x) as.logical(as.character(x))
 
 
