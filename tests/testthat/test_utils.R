@@ -71,12 +71,8 @@ test_that("removing whitespaces from character columns of data frame works.", {
 
 
 test_that('Custom type conversion functions work', {
-  w <- 0.1
-  x <- factor('0,123')
   y <- factor('99')
 
-  expect_error(as.integer2(0.1))
-  expect_error(as.integer2(x))
   expect_identical(as.integer2(y), 99L)
 })
 
