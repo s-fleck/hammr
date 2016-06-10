@@ -13,6 +13,9 @@ testdat <- data.frame(
   j = c('2015-01-01', '2015-01-05', '2015-05-04', '2015-12-01', '2015-04-13'),
   k = c('1', '1.5', '0.000000001', '100000000000', '99.1'),
   l = factor(c('1', '1.5', '0.000000001', '100000000000', '99.1')),
+  m = factor(c('a', NA, NA, NA, NA)),
+  n = factor(c(NA, NA, NA , NA, NA)),
+  n2 = c('apple', 'applepie', 'moon', 'nomoon', 'moo'),
   stringsAsFactors = FALSE
 )
 
@@ -51,13 +54,11 @@ test_that("typecasting by name works.", {
   expect_identical(res$h, c(3L, 4L, 5L, 5L, 5L))
   expect_identical(res$i, c("2015-01-01", "2015-01-05", "2015-05-04", "2015-12-01", "2015-04-13"))
 
-
-
 })
 
 
 test_that("removing whitespaces from character columns of data frame works.", {
-  res <- remove_whitespace(testdat)
+  res  <- remove_whitespace(testdat)
   res2 <- remove_whitespace(testdat, process_factors = TRUE)
 
   expect_identical(res$a, testdat$a)
@@ -66,6 +67,7 @@ test_that("removing whitespaces from character columns of data frame works.", {
   expect_identical(res$d, testdat$d)
 
   expect_identical(levels(res2$b), c("apple", "four", "one", "three", "two"))
+  expect_identical(res2$m, factor(c("a", NA, NA, NA, NA)))
 
 })
 
@@ -146,8 +148,11 @@ test_that("Dropping columns by name works.", {
   res$a <- drop_if_exists(testdat, 'j')
   res$b <- drop_if_exists(testdat, c("a", "b", "c", 'dog', 'j'))
 
+  res$c <- drop_if_exists(testdat, c("n"))
+
   expect_equal(names(res$a)[1:9], c("a", "b", "c", "d", "e", "f", "g", "h", "i"))
   expect_equal(names(res$b)[1:6], c("d", "e", "f", "g", "h", "i"))
+  expect_equal(names(res$c)[1:14], c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n2"))
 
 })
 
@@ -174,6 +179,21 @@ test_that("Looks like integer works.", {
   expect_identical(a, c(TRUE, FALSE, FALSE, TRUE, FALSE))
   expect_identical(a, b)
   expect_identical(a, c)
+})
+
+
+test_that("Calculation of urs / ukz checksum works", {
+  x <- c("Z008W3509", "Z004L4056", "Z000A9205", "Z002E173Y", "Z005I796U", "Z005I796U", "Z001U954W", "Z000A212W", "Z001Z960U", "Z006C660J", "Z007U042V",
+         "Z005M317G", "Z090V175H", "Z008M7137", "Z009L496E", "Z011V721N", "Z011A739M", "Z020S621A", "Z018M5022", "Z010J6414", "Z005M316I", "Z021I865W",
+         "Z002B329Z", "Z002E005R", "Z012Y470N", "Z093B129A", "Z093U465S", "Z093Z9216", "Z093Z9224", "Z091Q4213", "Z020A2423", "Z019E997K")
+
+  test_cases <- substring(x, 1, 8)
+  should     <- substring(x, 9, 9)
+
+  is <- calc_urs_check_digit(test_cases)
+
+  expect_identical(should, is)
+
 })
 
 

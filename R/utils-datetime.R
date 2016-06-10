@@ -1,6 +1,8 @@
-#' Get Year of a date object
+#' Get Year, Quarter or Month of a POSIXt object
 #'
 #' @param x A POSIXt object
+#'
+#' @rdname getdate
 #'
 #' @return A character repressentation of the year of x
 #' @export
@@ -17,16 +19,26 @@ get_year <- function(x) {
 }
 
 
-# get_quarter <- function(x) {
-#   x %>%
-#     timeFirstDayInQuarter() %>%
-#     as.Date() %>%
-#     format(format="%Y-%m") %>%
-#     as.character() %>%
-#     `attr<-`('class', c('Quarter', 'character'))
-# }
+#' @rdname getdate
+#' @export
+get_quarter <- function(x) {
+  res <- x %>%
+    get_month %>%
+    as.data.frame %>%
+    tidyr::separate('.', '-', into = c('y', 'm')) %>%
+    dplyr::mutate(m = as.integer(m))
+
+  res$q <- 1
+  res$q[res$m >= 4] <- 2
+  res$q[res$m >= 7] <- 3
+  res$q[res$m >= 10] <- 4
+
+  return(quarter(res$y, res$q))
+}
 
 
+#' @rdname getdate
+#' @export
 get_month <- function(x) {
   x %>%
     format(format="%Y-%m") %>%
@@ -34,7 +46,8 @@ get_month <- function(x) {
     `attr<-`('class', c('Month', 'character'))
 }
 
-
+#' @rdname getdate
+#' @export
 get_month_first <- function(x) {
   x %>%
     timeFirstDayInMonth() %>%

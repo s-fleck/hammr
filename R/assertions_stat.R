@@ -5,9 +5,17 @@
 #'
 #' @return True if object is of the desired class
 is_urs <- function(x){
-  warning('überprüft prüfziffer nicht')
-  all(grepl(rexpat()$valid_urs, x))
+  looks_like  <- grepl(rexpat()$valid_urs, x)
+
+  test_cases <- substring(x, 1, 8)
+  should     <- substring(x, 9, 9)
+  is         <- calc_urs_check_digit(test_cases)
+
+  checksum_ok <- should == is
+
+  return(looks_like & checksum_ok)
 }
+
 
 assertthat::on_failure(is_class) <- function(call, env){
   class = eval(call$class)

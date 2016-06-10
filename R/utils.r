@@ -44,7 +44,7 @@
 #
 
 
-#' Test for equality among all elements of a vector
+#' Test if all elements of a vector are identical
 #'
 #' http://stackoverflow.com/questions/4752275/test-for-equality-among-all-elements-of-a-single-vector
 #'
@@ -98,6 +98,7 @@ tick = function() {
 }
 
 #' @rdname ticktock
+#' @aliases tick
 #' @return tock displays current time and time difference to .tick as set by tick()
 #' @export
 
@@ -307,9 +308,10 @@ load_cache <- function(..., pkg = '.', subdir, envir = globalenv()){
 
 drop_if_exists <- function(dat, drop){
 
-  warning('regex matches to many colnames')
+  drop <- paste0('^', drop, '$')
 
-  rex <- paste(drop, collapse = '|')
+  rex <- paste0(drop, collapse = '|')
+  #rex <- paste0('[', rex, ']')
   sel <- !grepl(rex, names(dat))
 
   dropped_names <- names(dat)[!sel]
@@ -345,7 +347,7 @@ most_frequent <- function(x, n = 1){
 
 
 
-#' Chop up a string
+#' Chop up a string by position
 #'
 #' @param x string to chop into character vector
 #' @param breaks positions at which to chop the string
@@ -369,7 +371,7 @@ str_chop <- function(x, breaks){
 }
 
 
-#' Reorder factor levels or character vector based on priorities
+#' Reorder character vector or levels of a factor based on priorities
 #'
 #' Shoves elements of a character or factor vector to the front.
 #' Usefull for reordering factor levels for plotting. Issues
