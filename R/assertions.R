@@ -111,7 +111,6 @@ assertthat::on_failure(is_any_class) <- function(call, env){
 #'
 #' @return TRUE / FALSE
 #' @export
-
 looks_like_integer <- function(x, allowNA = FALSE){
 
   suppressWarnings(
@@ -124,4 +123,3 @@ looks_like_integer <- function(x, allowNA = FALSE){
 
   return(res)
 }
-
