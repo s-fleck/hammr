@@ -109,6 +109,13 @@ tock = function() {
 
 
 
+#' Remove whitespace from all character (and factor) columns of a data.frame
+#'
+#' @param dat a data.frame
+#' @param process_factors wheter or not factor labels should also be processed
+#'
+#' @return a data.frame
+#' @export
 remove_whitespace = function(dat, process_factors = FALSE){
 
   for(i in 1:length(dat)){
