@@ -27,6 +27,17 @@ test_that("mass typecasting data.frame columns works.", {
   expect_identical(res$b, c('one', 'two', 'three', 'four', ' apple '))
   expect_identical(res$c, testdat$c)
   expect_identical(res$d, testdat$d)
+
+
+  tdat <- data.frame(
+    a = c(NA, NA, "-1", "9999", "one", "6", NA, NA, "3", "1", "2", "1", "0", NA, NA, NA, NA, NA, NA, NA)
+  )
+
+  conv = list(a = 'integer')
+
+  expect_warning(res <- typecast_cols(tdat, conv = conv))
+  expect_identical(res, data.frame(a = as.integer(c(NA, NA, -1L, 9999L, NA, 6L, NA, NA, 3L, 1L, 2L, 1L, 0L, NA, NA, NA, NA, NA, NA, NA)) )
+  )
 })
 
 test_that("typecasting by name works.", {

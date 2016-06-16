@@ -475,8 +475,12 @@ typecast_cols <-  function(dat, conv = list()){
 
     if(any(class(dat[[i]]) != toclass)) {
 
-      tryCatch(dat[[i]] <- f(dat[[i]]),
-               warning = function(w) warning(i, '(', class(dat[[i]]), '->', toclass, '): ', w))
+    dat[[i]] <- tryCatch(f(dat[[i]]),
+               warning = function(w) {
+                 warning(i, '(', class(dat[[i]]), '->', toclass, '): ', w)
+                 f(dat[[i]])
+               }
+            )
 
     }
   }

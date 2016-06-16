@@ -108,6 +108,7 @@ assertthat::on_failure(is_any_class) <- function(call, env){
 #' Check if a value looks like integer
 #'
 #' @param x ...
+#' @param na_value What should NAs be treated es (should be TRUE, FALSE or NA)
 #'
 #' @return TRUE / FALSE
 #' @export
