@@ -87,3 +87,28 @@ fetch_host_db2 <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn']
 
   return(res)
 }
+
+
+host_db2_table_info <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn'],
+                                                          uid=gvk_secrets['uid'],
+                                                          pwd=gvk_secrets['pwd'])){
+  q = paste('select * from', table)
+  res <- RODBC::sqlQuery(con, q, errors=FALSE)
+
+
+  q <- "select NAME,TBNAME,COLTYPE,LENGTH,REMARKS,SCALE from sysibm.syscolumns
+            where tbcreator = 'SGVP' and tbname='TURPRIV' ;'"
+  res <- RODBC::sqlQuery(con, q, errors=FALSE)
+
+
+  RODBC::odbcCloseAll()
+
+  attr(res, 'date')       <- Sys.time()
+  attr(res, 'fetch_date') <- attr(res, 'date')
+  attr(res, 'source')     <- c(dsn = 'ATSTZDB2', table = table)
+  class(res)              <- c('host_db2_fetch', class(res))
+
+  RODBC::odbcCloseAll()
+
+  return(res)
+}
