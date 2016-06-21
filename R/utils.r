@@ -58,8 +58,8 @@
 #' all_identical(c(1,2,3))
 #' all_identical(c(1,1,1))
 #'
-all_identical <- function(x) {
-  if (length(x) == 1L) {
+all_identical <- function(x, warn_single_value = FALSE) {
+  if (length(x) == 1L & warn_single_value) {
     warning("'x' has a length of only 1")
     return(TRUE)
   } else if (length(x) == 0L) {
