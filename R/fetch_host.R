@@ -65,6 +65,10 @@ ui_credentials <- function(){
 
 #' Fetch db2 tables from host
 #'
+#' @section Tips
+#'
+#' Fetch 'sysibm.systables' to get infos about all tables on db2 server (warning: big query)
+#'
 #' @param table name of the table to be retrieved
 #' @param con an ROBC connection object
 #'
