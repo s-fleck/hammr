@@ -62,6 +62,30 @@ ui_credentials <- function(){
 }
 
 
+#' Send Querry to Host
+#'
+#' @param q
+#' @param con
+#' @export
+
+query_host_db2 <- function(q, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn'],
+                                                uid=gvk_secrets['uid'],
+                                                pwd=gvk_secrets['pwd'])
+               ){
+
+  res        <- RODBC::sqlQuery(con, q, errors=FALSE)
+  con_string <- strsplit(attr(con, "connection.string"), ";", fixed = TRUE)[[1L]]
+
+  attr(res, 'date')       <- Sys.time()
+  attr(res, 'fetch_date') <- attr(res, 'date')
+  attr(res, 'source')     <- c(con_string, table = table)
+  class(res)              <- c('host_db2_fetch', class(res))
+
+  RODBC::odbcCloseAll()
+
+  return(res)
+}
+
 
 #' Fetch db2 tables from host
 #'
@@ -80,14 +104,7 @@ fetch_host_db2 <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn']
                                                           uid=gvk_secrets['uid'],
                                                           pwd=gvk_secrets['pwd'])){
   q = paste('select * from', table)
-  res <- RODBC::sqlQuery(con, q, errors=FALSE)
-
-  attr(res, 'date')       <- Sys.time()
-  attr(res, 'fetch_date') <- attr(res, 'date')
-  attr(res, 'source')     <- c(dsn = 'ATSTZDB2', table = table)
-  class(res)              <- c('host_db2_fetch', class(res))
-
-  RODBC::odbcCloseAll()
+  res <- query_host_db2(q, con)
 
   return(res)
 }
@@ -96,23 +113,11 @@ fetch_host_db2 <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn']
 host_db2_table_info <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn'],
                                                           uid=gvk_secrets['uid'],
                                                           pwd=gvk_secrets['pwd'])){
-  q = paste('select * from', table)
-  res <- RODBC::sqlQuery(con, q, errors=FALSE)
-
 
   q <- "select NAME,TBNAME,COLTYPE,LENGTH,REMARKS,SCALE from sysibm.syscolumns
             where tbcreator = 'SGVP' and tbname='TURPRIV' ;'"
-  res <- RODBC::sqlQuery(con, q, errors=FALSE)
 
-
-  RODBC::odbcCloseAll()
-
-  attr(res, 'date')       <- Sys.time()
-  attr(res, 'fetch_date') <- attr(res, 'date')
-  attr(res, 'source')     <- c(dsn = 'ATSTZDB2', table = table)
-  class(res)              <- c('host_db2_fetch', class(res))
-
-  RODBC::odbcCloseAll()
+  res <- query_host_db2(q, con)
 
   return(res)
 }
