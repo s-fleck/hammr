@@ -52,7 +52,7 @@ quarter <- function(y, q) {
 }
 
 
-as.data.frame.Quarter <- function(x){
+as.data.frame.Quarter <- function(x, ...){
   dat <- data.frame(x = as.vector(x)) %>%
     tidyr::separate(col = x, into = c('y', 'q'), sep = '-Q')
 }
