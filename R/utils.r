@@ -253,12 +253,25 @@ ggplotify_spdf = function(sp, region){
 #' @export
 save_cache <- function(..., pkg = '.', subdir){
 
-  pkg <- devtools::as.package(pkg)
+  pkg       <- devtools::as.package(pkg)
+  pkg_dir   <- system.file(package = pkg$package)
+  cache_dir <- file.path(pkg_dir, 'extdata', 'cache')
 
-                        cache_dir   <- system.file("cache", package = pkg$package)
-  if(!missing(subdir))  cache_dir   <- system.file(cache_dir, subdir)
+  if(!missing(subdir)){
+    cache_dir <- file.path(cache_dir, subdir)
+  }
+
+  assert_that(file.exists(pkg_dir))
+
+  if(!file.exists(cache_dir)){
+    dir.create(cache_dir, recursive = TRUE)
+  }
+
+  assert_that(file.exists(cache_dir))
 
   to_save     <- eval(substitute(alist(...)))
+
+
   obj         <- vapply(to_save, as.character, character(1))
   save_file   <- paste0(file.path(cache_dir, obj), '.rda')
 
@@ -280,16 +293,23 @@ save_cache <- function(..., pkg = '.', subdir){
 #' @seealso \code{\link{save_cache}}.
 #' @export
 load_cache <- function(..., pkg = '.', subdir, envir = globalenv()){
+  pkg       <- devtools::as.package(pkg)
+  pkg_dir   <- system.file(package = pkg$package)
+  cache_dir <- file.path(pkg_dir, 'extdata', 'cache')
 
-  pkg        <- devtools::as.package(pkg)
-  cache_dir  <- system.file("cache", package = pkg$package)
+  if(!missing(subdir)){
+    cache_dir <- file.path(cache_dir, subdir)
+  }
+
+  assert_that(file.exists(pkg_dir))
+
   to_load    <- eval(substitute(alist(...)))
   obj        <- vapply(to_load, as.character, character(1))
 
-  paths      <- paste0(file.path(cache_dir, obj), '.rda')
-
   if(!missing(subdir)){
     paths     <-  paste0(file.path(cache_dir, subdir, obj), '.rda')
+  } else {
+    paths      <- paste0(file.path(cache_dir, obj), '.rda')
   }
 
   for(i in paths){
@@ -574,3 +594,33 @@ rexpat <- function(){
 }
 
 
+
+#' Extracts the filename from a path
+#'
+#' @param x  a character vector containing a path to a file
+#' @param ext Wheter or not the result should include the file extension or not
+#'
+#' @return The filename
+#' @export
+#'
+#' @examples
+#'
+#'  x <- c("C:/path/to/test.file.ext")
+#'
+#'  extract_filename_from_path(x)
+#'  extract_filename_from_path(x, ext = FALSE)
+extract_filename_from_path <- function(x, ext = TRUE){
+    res <- strsplit(x, '/') %>%
+    unlist() %>%
+    tail(1)
+
+    if(!ext){
+      res <- res %>%
+        strsplit(., '.', fixed = TRUE) %>%
+        unlist() %>%
+        extract(1:(length(.)-1)) %>%
+        paste(collapse = '.')
+    }
+
+    return(res)
+}
