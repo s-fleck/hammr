@@ -14,7 +14,7 @@ is_class <- function(dat, class){
   class %in% class(dat)
 }
 
-assertthat::on_failure(is_class) <- function(call, env){
+on_failure(is_class) <- function(call, env){
   class = eval(call$class)
   paste("Requires an object of class", class, "as input")
 }
@@ -99,7 +99,7 @@ is_any_class <- function(dat, choices){
   any(choices %in% class(dat))
 }
 
-assertthat::on_failure(is_any_class) <- function(call, env){
+on_failure(is_any_class) <- function(call, env){
   choices = paste(eval(call$choices), collapse=", ")
   paste("Input must be an object of any of the following classes:", choices)
 }
@@ -124,3 +124,23 @@ looks_like_integer <- function(x, na_value = FALSE){
 
   return(res)
 }
+
+
+#' Check if an object is valid
+#'
+#' requires that is_valid.class is defined somewhere
+#'
+#' @param x an R object
+#'
+#' @return logical; whether this object meets pre-defined validity conditions.
+#' @export
+is_valid <- function(x) {
+  UseMethod("is_valid")
+}
+
+#' @export
+on_failure(is_valid) <- function(call, env){
+  class <-  class(eval(call$x))[[1]]
+  paste("Does not pass validity check for objects of class", class)
+}
+
