@@ -78,7 +78,7 @@ query_host_db2 <- function(q, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn'],
 
   attr(res, 'date')       <- Sys.time()
   attr(res, 'fetch_date') <- attr(res, 'date')
-  attr(res, 'source')     <- c(con_string, table = table)
+  attr(res, 'con')        <- c(con_string, table = table)
   class(res)              <- c('host_db2_fetch', class(res))
 
   RODBC::odbcCloseAll()
@@ -89,7 +89,7 @@ query_host_db2 <- function(q, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn'],
 
 #' Fetch db2 tables from host
 #'
-#' @section Tips
+#' @section Tips:
 #'
 #' Fetch 'sysibm.systables' to get infos about all tables on db2 server (warning: big query)
 #'
@@ -105,6 +105,7 @@ fetch_host_db2 <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn']
                                                           pwd=gvk_secrets['pwd'])){
   q = paste('select * from', table)
   res <- query_host_db2(q, con)
+  attr(res, 'source') <- table
 
   return(res)
 }

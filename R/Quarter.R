@@ -67,6 +67,8 @@ as.integer.Quarter <- function(x){
 
 
 
+
+#' @export
 increment.Quarter <- function(x, inc){
   res <- x %>%
     as.data.frame() %>%
