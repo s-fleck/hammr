@@ -14,8 +14,4 @@
 #' quarter(2013, 2) %+% 2
 increment <- function(x, inc = 1) UseMethod("increment")
 
-#' @rdname increment
-#' @export
-`%+%`     <- function(x, inc) UseMethod("increment")
-
 
