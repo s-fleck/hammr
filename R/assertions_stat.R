@@ -17,9 +17,8 @@ is_urs <- function(x){
 }
 
 
-assertthat::on_failure(is_class) <- function(call, env){
-  class = eval(call$class)
-  paste("Requires an object of class", class, "as input")
+on_failure(is_urs) <- function(call, env){
+  paste("x is not a valid URS")
 }
 
 

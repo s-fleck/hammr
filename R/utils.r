@@ -255,7 +255,7 @@ save_cache <- function(..., pkg = '.', subdir){
 
   pkg       <- devtools::as.package(pkg)
   pkg_dir   <- system.file(package = pkg$package)
-  cache_dir <- file.path(pkg_dir, 'inst', 'cache')
+  cache_dir <- file.path(pkg_dir, 'cache')
 
   if(!missing(subdir)){
     cache_dir <- file.path(cache_dir, subdir)
@@ -295,7 +295,7 @@ save_cache <- function(..., pkg = '.', subdir){
 load_cache <- function(..., pkg = '.', subdir, envir = globalenv()){
   pkg       <- devtools::as.package(pkg)
   pkg_dir   <- system.file(package = pkg$package)
-  cache_dir <- file.path(pkg_dir, 'inst', 'cache')
+  cache_dir <- file.path(pkg_dir, 'cache')
 
   if(!missing(subdir)){
     cache_dir <- file.path(cache_dir, subdir)

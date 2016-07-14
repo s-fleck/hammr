@@ -5,6 +5,7 @@
 #'
 #' @return True if object is of the desired class
 #' @export
+#' @rdname is_class
 #'
 #' @examples
 #'
@@ -15,10 +16,18 @@ is_class <- function(dat, class){
 }
 
 on_failure(is_class) <- function(call, env){
-  class = eval(call$class)
+  #print(call)
+  #class = eval(env$class)
+  class = env$class
   paste("Requires an object of class", class, "as input")
 }
 
+
+#' @export
+#' @rdname is_class
+`%is_class%` <- function(dat, class){
+  assert_that(is_class(dat = dat, class = class))
+}
 
 #' Check for column classes
 #'
@@ -140,7 +149,6 @@ is_valid <- function(x) {
 
 #' @export
 on_failure(is_valid) <- function(call, env){
-  class <-  class(eval(call$x))[[1]]
-  paste("Does not pass validity check for objects of class", class)
+  paste("A validity check failed")
 }
 
