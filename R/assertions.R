@@ -149,6 +149,8 @@ is_valid <- function(x) {
 
 #' @export
 on_failure(is_valid) <- function(call, env){
-  paste("A validity check failed")
+  cls <- class(deparse(call$x))
+  cls <- paste(cls, collapse = ', ')
+  paste("A validity check failed for object of class", cls)
 }
 

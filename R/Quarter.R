@@ -62,6 +62,9 @@ as.integer.Quarter <- function(x){
 }
 
 
+is_valid.Quarter <- function(x)(
+  FALSE
+)
 
 
 #' as.Date method for Quarter
