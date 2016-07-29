@@ -3,7 +3,7 @@
 #' @section Foo functions:
 #' The foo functions ...
 #'
-#' @import data.table assertthat magrittr dplyr
+#' @import assertthat magrittr dplyr
 #' @docType package
 #' @name hammr
 NULL

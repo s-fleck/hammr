@@ -37,5 +37,18 @@ test_that("Greater / Less than operations work for quarters.", {
 test_that("Incrementing / Decrementing quarters works.", {
   x  <- with(testdat, quarter(c(a, b ,c ,d)))
 
-  expect_identical(increment(x, 3), quarter(c("2014-Q3", "2014-Q4", "2015-Q1", "2015-Q2")))
+  #"2013-Q4" "2014-Q1" "2014-Q2" "2014-Q3"
+
+  expect_identical(increment(x, 3),  quarter(c("2014-Q3", "2014-Q4", "2015-Q1", "2015-Q2")))
+  expect_identical(increment(x, 7),  quarter(c("2015-Q3", "2015-Q4", "2016-Q1", "2016-Q2")))
+  expect_identical(increment(x, -4), quarter(c("2012-Q4", "2013-Q1", "2013-Q2", "2013-Q3")))
+  expect_identical(increment(x, -7), quarter(c("2012-Q1", "2012-Q2", "2012-Q3", "2012-Q4")))
+
+  expect_identical(increment(x, 3), x %+% 3)
+  expect_identical(increment(x, -3), x %+% -3)
+
 })
+
+
+
+

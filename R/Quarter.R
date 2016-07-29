@@ -12,7 +12,6 @@
 #' quarter('2013-Q3')
 
 quarter <- function(y, q) {
-
   y <- as.character(y)
 
   if(missing(q)) {
@@ -25,70 +24,43 @@ quarter <- function(y, q) {
   }
 
   class(res) <- c('Quarter', 'character')
-
   return(res)
 }
 
 
 # S3 Methods
-
-`<.Quarter` <- function(x, y){
-  as.integer(x) < as.integer(y)
-}
-
-
-`<=.Quarter` <- function(x, y){
-  as.integer(x) <= as.integer(y)
-}
+  `<.Quarter` <- function(x, y){
+    as.integer(x) < as.integer(y)
+  }
 
 
-`>.Quarter` <- function(x, y){
-  as.integer(x) > as.integer(y)
-}
+  `<=.Quarter` <- function(x, y){
+    as.integer(x) <= as.integer(y)
+  }
 
 
-`>=.Quarter` <- function(x, y){
-  as.integer(x) >= as.integer(y)
-}
+  `>.Quarter` <- function(x, y){
+    as.integer(x) > as.integer(y)
+  }
 
 
-as.data.frame.Quarter <- function(x, ...){
-  dat <- data.frame(x = as.vector(x)) %>%
-    tidyr::separate(col = x, into = c('y', 'q'), sep = '-Q')
-}
+  `>=.Quarter` <- function(x, y){
+    as.integer(x) >= as.integer(y)
+  }
+
+
+  as.data.frame.Quarter <- function(x, ...){
+    dat <- data.frame(x = as.vector(x)) %>%
+      tidyr::separate(col = x, into = c('y', 'q'), sep = '-Q')
+  }
 
 
 as.integer.Quarter <- function(x){
-  as.data.frame(x) %>%
-    tidyr::unite('col', y, q, sep = '') %>%
-    extract2(1) %>%
-    as.integer()
+  x <- as.character(x)
+  x <- gsub('-Q', '', x)
+  as.integer(x)
 }
 
-
-
-increment.Quarter <- function(x, inc){
-  res <- x %>%
-    as.data.frame() %>%
-    dplyr::mutate(
-      y = as.integer(y),
-      q = as.integer(q)
-    )
-
-  res$q <- res$q + inc
-
-  while(any(res$q > 4)){
-    res$y[res$q > 4] <- res$y[res$q > 4] + 1
-    res$q[res$q > 4] <- res$q[res$q > 4] - 4
-  }
-
-  while(any(res$q < 1)){
-    res$y[res$q < 1] <- res$y[res$q < 1] - 1
-    res$q[res$q < 1] <- res$q[res$q < 1] + 4
-  }
-
-  quarter(res$y, res$q)
-}
 
 
 
@@ -111,10 +83,13 @@ as.Date.Quarter <- function(x){
 
 #' Convert quarter to date
 #'
-#' @param y dgssd
-#' @param q sdgsd
+#' Shorthand function for converting year - qaurter date to
+#'
+#' @param y Year
+#' @param q Quarter
 #' @export
 quarter_as_date <- function(y, q){
+  warning('deprecated')
   res <- quarter(y, q) %>%
     as.Date()
 

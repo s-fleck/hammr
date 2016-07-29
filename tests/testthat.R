@@ -1,4 +1,4 @@
 library(testthat)
-library(PlzKm)
+library(hammr)
 
-test_check("PlzKm")
+test_check("hammr")
