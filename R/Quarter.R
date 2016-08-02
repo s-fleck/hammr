@@ -67,6 +67,7 @@ is_valid.Quarter <- function(x)(
 )
 
 
+
 #' as.Date method for Quarter
 #'
 #' @export

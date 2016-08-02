@@ -8,17 +8,20 @@
 #' @return An object of the same type increment by inc
 #' @export
 #' @rdname increment
-#'
-#' @examples
-#'
-#' quarter(2013, 2) %+% 2
-increment <- function(x, inc = 1) UseMethod("increment")
+
+increment <- function(x, inc = 1){
+  UseMethod("increment", x)
+}
+
 
 #' @rdname increment
 #' @export
 `%+%` <- increment
 
 
+
+#' @export
+#' @rdname increment
 increment.Quarter <- function(x, inc){
   res <- x %>%
     as.data.frame() %>%
