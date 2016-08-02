@@ -63,7 +63,7 @@ typecast_cols <-  function(dat, conv = list()){
 #'
 #' @return a data frame with all columns of class from converted to class to
 #' @export
-#' @import assertthat
+#' @import bit64
 #'
 #' @examples
 #'
@@ -94,6 +94,7 @@ cfun <- function(x){
   res <- switch(x,
                 'logical'  = as.logical2,
                 'integer'   = as.integer2,
+                'integer64' = as.integer642,
                 'factor'    = as.factor,
                 'numeric'   = as.numeric2,
                 'character' = as.character,
@@ -104,6 +105,7 @@ cfun <- function(x){
 }
 
 
-as.numeric2 <- function(x) as.numeric(as.character(x))
-as.integer2 <- function(x) as.integer(as.character(x))
-as.logical2 <- function(x) as.logical(as.character(x))
+as.numeric2   <- function(x) as.numeric(as.character(x))
+as.integer2   <- function(x) as.integer(as.character(x))
+as.integer642 <- function(x) bit64::as.integer64(as.character(x))
+as.logical2   <- function(x) as.logical(as.character(x))
