@@ -14,12 +14,6 @@ increment <- function(x, inc = 1){
 }
 
 
-#' @rdname increment
-#' @export
-`%+%` <- increment
-
-
-
 #' @export
 #' @rdname increment
 increment.Quarter <- function(x, inc){

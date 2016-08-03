@@ -44,9 +44,6 @@ test_that("Incrementing / Decrementing quarters works.", {
   expect_identical(increment(x, -4), quarter(c("2012-Q4", "2013-Q1", "2013-Q2", "2013-Q3")))
   expect_identical(increment(x, -7), quarter(c("2012-Q1", "2012-Q2", "2012-Q3", "2012-Q4")))
 
-  expect_identical(increment(x, 3), x %+% 3)
-  expect_identical(increment(x, -3), x %+% -3)
-
 })
 
 
