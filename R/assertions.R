@@ -25,8 +25,15 @@ on_failure(is_class) <- function(call, env){
 
 #' @export
 #' @rdname is_class
-`%is_class%` <- function(dat, class){
+`%assert_class%` <- function(dat, class){
   assert_that(is_class(dat = dat, class = class))
+}
+
+#' @export
+#' @rdname is_class
+`%is_class%` <- function(dat, class){
+  warning('Deprecated. Please user %assert_class% instead.')
+  dat %assert_class% class
 }
 
 #' Check for column classes
