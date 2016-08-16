@@ -1,0 +1,19 @@
+---
+title: "Recommended Packages and Addons"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
+library(devtools)
+library(httr)
+library(RCurl)
+
+set_config( config( ssl_verifypeer = 0L ) )
+
+devtools::install_github('sfr/RStudio-Addin-Snippets')
+```
