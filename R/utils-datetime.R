@@ -15,7 +15,6 @@ get_year <- function(x) {
     format(format="%Y") %>%
     as.character() %>%
     `attr<-`('class', c('Year', 'character'))
-
 }
 
 

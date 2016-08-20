@@ -266,3 +266,7 @@ extract_filename_from_path <- function(x, ext = TRUE){
 
     return(res)
 }
+
+
+#' @export
+`%identical%` <- identical
