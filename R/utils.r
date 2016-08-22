@@ -270,3 +270,25 @@ extract_filename_from_path <- function(x, ext = TRUE){
 
 #' @export
 `%identical%` <- identical
+
+
+
+#' @export
+as_readr_col <- function(dat){ UseMethod('as_readr_col')}
+
+
+#' @export
+as_readr_col.character <- function(dat){
+  switch(tolower(dat),
+         'character' = readr::col_character(),
+         'integer'   = readr::col_integer(),
+         'numeric'   = readr::col_number())
+}
+
+
+#' @export
+as_readr_col.list <- function(dat){
+  res <- lapply(dat, as_readr_col)
+}
+
+
