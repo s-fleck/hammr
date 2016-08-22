@@ -25,7 +25,7 @@
 #' ggplot2 + scale_x_continuous(labels = human_numbers)
 #' ggplot2 + scale_x_continuous(labels = human_gbp)
 
-human_numbers <- function(x = NULL, smbl =""){
+human_numbers <- function(x = NULL, smbl ="", shorts = c('k', 'm', 'b')){
   humanity <- function(y){
 
     if (!is.na(y)){
@@ -41,11 +41,11 @@ human_numbers <- function(x = NULL, smbl =""){
       }
 
       if  ( m < 1){
-        paste (y_is_positive, smbl,  k , "k", sep = "")
+        paste (y_is_positive, smbl,  k , shorts[1], sep = "")
       } else if (b < 1){
-        paste (y_is_positive, smbl, m ,"m", sep = "")
+        paste (y_is_positive, smbl, m , shorts[2], sep = "")
       } else {
-        paste (y_is_positive, smbl,  comma(b), "b", sep = "")
+        paste (y_is_positive, smbl,  comma(b), short[3], sep = "")
       }
     }
   }
@@ -68,3 +68,7 @@ human_euro  <- function(x){human_numbers(x, smbl = "\u20AC")}
 #' @rdname human_numbers
 #' @export
 human_num   <- function(x){human_numbers(x, smbl = "")}
+
+#' @rdname human_numbers
+#' @export
+human_num_de   <- function(x){human_numbers(x, smbl = "",  shorts = c(' Tsd', ' Mio', ' Mrd'))}
