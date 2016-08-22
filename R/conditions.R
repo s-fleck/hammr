@@ -1,3 +1,12 @@
+ftp_530_creds_error<- function(text) {
+  msg <- 'FTP login error:' %_% text
+
+  condition(c('ftp_530_creds_error', 'error'),
+            message = msg)
+}
+
+
+
 #' Condition constructor
 #'
 #' From http://adv-r.had.co.nz/beyond-exception-handling.html

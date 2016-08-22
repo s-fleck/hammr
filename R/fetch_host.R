@@ -8,38 +8,69 @@
 #' @export
 #'
 #' @return
-fetch_host_file <- function(file, outdir, overwrite = FALSE, creds = creds){
+fetch_host_file <- function(file, outdir = '.', creds = stefan_creds, overwrite = FALSE){
   cat("HOST-Download wird gestartet...\n")
 
-  # Setup paths and credentials
+  fetch_ftp(file, outdir, creds, overwrite)
 
-  outfile                     <- file.path(outdir, file)
+}
 
-  if (file.exists(outfile)) {
-    if(overwrite){
-      warning('Zieldatei existiert und wird ueberschrieben')
-    } else {
-      stop('Breche ab: Zieldatei existiert und overwrite = FALSE')
+
+# fetch_host_file('SGV.J2011.JCLS')
+
+
+fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE) {
+
+  # Setup paths and credentials ----
+    outfile                     <- file.path(.outdir, .file)
+
+    if (file.exists(outfile)) {
+      if(.overwrite){
+        warning('Zieldatei existiert und wird ueberschrieben')
+      } else {
+        stop('Breche ab: Zieldatei existiert und overwrite = FALSE')
+      }
     }
-  }
 
-  if(missing(creds))    creds <- ui_credentials()
-  ftp_commands                <- tempfile()
+    if(is.null(.creds)) {
+      .creds <- ui_credentials()
+    }
 
 
-  # Cleanup files before download
-  if (file.exists(ftp_commands))          file.remove(ftp_commands)
+    ftp_commands <- tempfile()
+    if (file.exists(ftp_commands)){
+      file.remove(ftp_commands)
+    }
 
 
   # Fetch file via ftp
-  writeLines(paste0("user ", creds$user, "\n", creds$pw, "\n","cd ..","\n","get ", file, "\n","quit"), ftp_commands)
-  cmd <- paste0("ftp -n -s:", ftp_commands," mfstat01")
-  shell(cmd)
+  writeLines(paste0("user ", .creds$user, "\n", .creds$pw, "\n","cd ..","\n","get ", .file, "\n","quit"), ftp_commands)
+  cmd    <- paste0("ftp -n -s:", ftp_commands," mfstat01")
+  ftplog <- shell(cmd, intern = TRUE)
+
+  message(paste(ftplog, collapse = '\n'))
   file.remove(ftp_commands)
 
 
+  res <- tryCatch(check_ftp_log(ftplog),
+    'ftp_530_creds_error' = function(x) {
+      retry <- tolower(readline('Retry? (y/n): ')) %in%  c('y', 'yes')
+
+      if (retry) {
+        fetch_ftp(
+          .file      = .file,
+          .outdir    = .outdir,
+          .creds     = NULL,
+          .overwrite = .overwrite
+        )
+      } else {
+        stop(x)
+      }
+    })
+
+
   # Move file to destination dir
-  copy_ok <- file.copy(file, file.path(outdir, file), overwrite = overwrite)
+  copy_ok <- file.copy(.file, .outfile, .overwrite = .overwrite)
 
 
   if(copy_ok) {
@@ -49,7 +80,23 @@ fetch_host_file <- function(file, outdir, overwrite = FALSE, creds = creds){
   } else {
     stop('Something went wrong')
   }
+
 }
+
+
+
+
+
+check_ftp_log <- function(dat){
+  msg530 <- grep('^530', dat, value = TRUE)
+
+  if(length(msg530) > 0){
+    msg <- paste(msg530, collapse = '\n')
+    msg <- gsub('\r', '', msg)
+    stop(ftp_530_creds_error(msg))
+  }
+}
+
 
 
 ui_credentials <- function(){
