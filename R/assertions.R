@@ -150,7 +150,7 @@ looks_like_integer <- function(x, na_value = FALSE){
 #'
 #' @return logical; whether this object meets pre-defined validity conditions.
 #' @export
-is_valid <- function(x) {
+is_valid <- function(x, ...) {
   UseMethod("is_valid")
 }
 
