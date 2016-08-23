@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @return
-fetch_host_file <- function(file, outdir = '.', creds = stefan_creds, overwrite = FALSE){
+fetch_host_file <- function(file, outdir = '.', creds = ftp_creds, overwrite = FALSE){
   cat("HOST-Download wird gestartet...\n")
 
   fetch_ftp(file, outdir, creds, overwrite)
@@ -70,7 +70,7 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE) {
 
 
   # Move file to destination dir
-  copy_ok <- file.copy(.file, .outfile, .overwrite = .overwrite)
+  copy_ok <- file.copy(from = .file, to = .outfile, overwrite = .overwrite)
 
 
   if(copy_ok) {
