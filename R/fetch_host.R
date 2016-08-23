@@ -70,7 +70,7 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE) {
 
 
   # Move file to destination dir
-  copy_ok <- file.copy(from = .file, to = .outfile, overwrite = .overwrite)
+  copy_ok <- file.copy(from = .file, to = outfile, overwrite = .overwrite)
 
 
   if(copy_ok) {
