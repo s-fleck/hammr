@@ -291,4 +291,11 @@ as_readr_col.list <- function(dat){
   res <- lapply(dat, as_readr_col)
 }
 
+#' @export
+string_pad <- function(x, width) {
+  fs <- paste0('%0', width, 'd')
 
+  res <- sprintf(fs, as.integer(x))
+  res[grep('NA', fixed = TRUE, res)] <- NA
+  return(res)
+}

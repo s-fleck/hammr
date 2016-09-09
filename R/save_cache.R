@@ -65,11 +65,8 @@ load_cache <- function(..., pkg = '.', subdir, envir = globalenv()){
   to_load    <- eval(substitute(alist(...)))
   obj        <- vapply(to_load, as.character, character(1))
 
-  if(!missing(subdir)){
-    paths     <-  paste0(file.path(cache_dir, subdir, obj), '.rda')
-  } else {
-    paths      <- paste0(file.path(cache_dir, obj), '.rda')
-  }
+  paths      <- paste0(file.path(cache_dir, obj), '.rda')
+
 
   for(i in paths){
     load(i, envir = envir)
