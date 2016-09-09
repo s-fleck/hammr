@@ -83,8 +83,8 @@ typecast_all <- function(dat, from = 'factor', to = 'character'){
   from  <- tolower(from)
   tofun <- cfun(to)
 
-  vars <- lapply(dat, class) == from
-  dat[, vars] <- lapply(dat[, vars], tofun)
+  vars <- unlist(lapply(dat, class) == from)
+  dat[, vars] <- unlist(lapply(dat[, vars], tofun))
   return(dat)
 }
 
