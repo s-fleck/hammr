@@ -18,8 +18,8 @@ fetch_host_file <- function(file, outdir = '.', creds = ftp_creds, overwrite = F
 
 # fetch_host_file('SGV.J2011.JCLS')
 
-
-fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE) {
+#' @export
+fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE, .mode = 'ascii') {
 
   # Setup paths and credentials ----
     outfile                     <- file.path(.outdir, .file)
@@ -44,9 +44,10 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE) {
 
   # Create ftp command file
     logon  <- paste0("user ", .creds$user, "\n", .creds$pw, "\n", "cd .. \n")
+    mode   <- paste(.mode, '\n')
     gets   <- paste('get', .file, collapse = '\n')
     logoff <- "\nquit"
-    coms <- paste0(logon, gets, logoff)
+    coms <- paste0(logon, mode, gets, logoff)
     writeLines(coms, ftp_commands)
 
 
