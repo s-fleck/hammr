@@ -15,15 +15,9 @@ test_that("Greater / Less than operations work for quarters.", {
 
 })
 
-
-test_that("Printing Rstack tables as latex works"){
-  dat <- rstack_table(line1, line2, format = 'latex', remove_ext = '_cv')
-  print(dat, format = 'latex')
-}
-
-
-
-test_that("Printing Rstack tables as latex works"){
-  dat <- rstack_table(line1, line2, format = 'xlsx', remove_ext = '_cv')
-  print(dat, format = 'latex')
-}
+#
+# test_that("Printing Rstack tables as latex works"), {
+#   dat <- rstack_table(line1, line2, format = 'latex', remove_ext = '_cv')
+#   print(dat, format = 'latex')
+# }
+#
