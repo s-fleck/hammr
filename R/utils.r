@@ -299,3 +299,16 @@ string_pad <- function(x, width) {
   res[grep('NA', fixed = TRUE, res)] <- NA
   return(res)
 }
+
+
+#' source = http://stackoverflow.com/questions/16244006/matching-a-sequence-in-a-larger-vector
+#' @export
+match_vector <- function(a, b){
+  which(
+    Reduce('+', lapply(seq_along(y <- lapply(b, '==', a)), function(x){
+      y[[x]][x:(length(a) - length(b) +x)]
+    }
+    )
+    ) == length(b)
+  )
+}
