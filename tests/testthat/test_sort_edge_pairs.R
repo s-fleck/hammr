@@ -2,6 +2,13 @@ context("Sort edge pairs")
 
 
 # Setup test data ----
+  small_sorted <- data.table::data.table(
+    p = c(NA_character_, '2181'),
+    c = c('2181', '2243'),
+    n = c("2243", '2155')
+  )
+
+
   best_sorted <- data.table::data.table(
     p = letters[1:20],
     c = letters[2:21],
@@ -53,16 +60,25 @@ test_that("sort edge pairs", {
 
 
   # Best case scenarion
+  expect_true(with(best_sorted, is_sortable_edge_pairs(p, c, n)))
   expect_true(testfun(best_sorted))
 
 
+  # Small data set (2 rows)
+  expect_true(with(small_sorted, is_sortable_edge_pairs(p, c, n)))
+  expect_true(testfun(small_sorted))
+
+
   # Best case scenario (but first elemen is NA)
+  expect_true(with(na_sorted, is_sortable_edge_pairs(p, c, n)))
   expect_true(testfun(na_sorted))
 
 
   # Missing links
+  expect_false(with(unconnected_sorted, is_sortable_edge_pairs(p, c, n)))
   expect_error(testfun(unconnected_sorted))
 
+  expect_false(with(unconnected_2, is_sortable_edge_pairs(p, c, n)))
   expect_error(testfun(unconnected_2, 10))
 })
 

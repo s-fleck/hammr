@@ -1,6 +1,12 @@
-
-
-
+#' Sort a data.frame where rows contain from-current-to relationships
+#'
+#' If the data frame row ids do not form a consecutive path, an error is thrown
+#'
+#' @param dat a data frame
+#' @param p_name name of variable containing id of previous row
+#' @param c_name name of variable containing id of current row
+#' @param n_name name of variable conttaining id of next row
+#' @export
 sort_edge_pair_df <- function(dat, p_name = 'p', c_name = 'c', n_name = 'n'){
   dat <- data.table::copy(as.data.table(dat))
 
@@ -14,6 +20,7 @@ sort_edge_pair_df <- function(dat, p_name = 'p', c_name = 'c', n_name = 'n'){
 
   dat <- dat[order]
 }
+
 
 #' Sort a edge pairs into a path
 #'
@@ -121,8 +128,29 @@ sort_edge_pairs <- function(p, c, n){
   }
 
   res <- sorted[[1]]
-  assert_that(identical(sum(is.na(res[2:(nrow(res)-1)])), 0L))  # Only first and last node can have no parent / child
+
+
+  # Check if everything went right, only first and last node can have no parent / child
+    ok <- sum(is.na(res[1]))         < 2
+    ok <- ok & sum(is.na(res[nrow(res)])) < 2
+
+    if(nrow(res) > 2){
+      sub <- res[2:(nrow(res)-1)]
+      ok  <- ok & sum(is.na(sub)) %identical% 0L
+    }
+
+    assert_that(ok == TRUE)
+
+
   assert_that(is_node_sorted(res))
+  return(res)
+}
+
+
+#' @export
+is_sortable_edge_pairs <- function(p, c, n){
+  tt  <- try(sort_edge_pairs(p=p, c=c, n=n), silent = TRUE)
+  res <- ifelse(is(tt,"try-error"), FALSE, TRUE)
 
   return(res)
 }
