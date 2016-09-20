@@ -1,13 +1,28 @@
-split_raw_records <- function(x, lsep = as.raw(c(0xc7, 0xe5, 0xd2))){
-  lbreaks <- c(match_vector(x, lsep))
+#' split raw records
+#'
+#'
+#'
+#' @param x
+#' @param lsep Record("Line") sepparator in the EBDIC file. This parameters has
+#' to be entered as raw bits. For example, if our records are sepparated by
+#' the string GVK, lsep must be as.raw(c(0xc7, 0xe5, 0xd2)). You can figure
+#' out the bits of the EBCDIC equivalent of an ASCII string like this:
+#'
+#' lsep <- iconv('GVK', from = 'UTF-8', to = 'IBM500') %>%
+#'   charToRaw()
+#'
+#' @return
+#' @export
 
-  fl <- list(x[1:lbreaks[1]-(length(lsep)-2)])
+split_raw_records <- function(x, lsep){
+  lbreaks   <- match_vector(x, lsep)
+  #lbreaksw  <- which(c(match_vector(x, lsep)))
 
-  ol <- foreach(i = 2:length(lbreaks)) %dopar% {
-    res <- x[(lbreaks[i-1]+3):(lbreaks[i]-(length(lsep)-2))]
-  }
+  splt    <- c(rep(FALSE, length(lsep)), lbreaks)   # Shift break boints my length of sep vector
+  splt    <- cumsum(splt)
+  splt    <- as.factor(splt)
 
-  res <- c(fl, ol)
+  res <- split(x, splt)
 
   return(res)
 }
@@ -19,10 +34,19 @@ parse_gvk_line <- function(x, fields){
 }
 
 
+#' @export
 parse_ebcdic_line <- function(x, fields){
   res <- foreach(fld = fields, .export = 'parse_ebcdic', .combine = data.table::data.table, .multicombine = TRUE) %do% {
     r <- x[fld$start:fld$end]
-    r <- parse_ebcdic(r, fld$parser)
+    r <- tryCatch(
+      parse_ebcdic(r, fld$parser),
+      error = function(e) {
+        text = paste0('"', fld$name, '"', ', Value: ', paste0(r, collapse = ' '), '. ', e)
+
+        stop(field_cannot_be_parsed_error(text))
+      }
+    )
+
   }
 
   names(res) <- foreach(fl = fields, .combine = c) %do% fl$name
@@ -73,7 +97,7 @@ parse_ebcdic <- function(x, parser){
   } else if(parser %in% c('double', 'd', 'num', 'n')){
       parser <- 'numeric'
   } else if(parser %in% c('x', 'binary', 'bin')){
-    parser <- parser_ebcdic_bin
+    parser <- parser_bin
   }
 
 
@@ -89,8 +113,9 @@ parser_ebcdic_char <- function(x){
   iconv(rawToChar(x), from = 'IBM500', to = 'UTF-8')
 }
 
-parser_ebcdic_bin <- function(x){
-  as.character(x)
+#' @export
+parser_bin <- function(x){
+  as.integer(paste0('0x', paste(x, collapse = '')))
 }
 
 
@@ -212,5 +237,7 @@ pfield <- function(.name, .start, .end = .start, .parser = 'character'){
 #   # lkw 1. §54 kfzk $8. fg 1. +8 nkg 6. +2 kmbeg 6. kmend 6. §91 strukt $1.
 #   # §93 fkminl 4. fkmaus 4. fkmges 4.
 #   # §105 fva 2. anz pib2. §;
+
+
 
 
