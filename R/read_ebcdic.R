@@ -36,6 +36,8 @@ parse_gvk_line <- function(x, fields){
 
 #' @export
 parse_ebcdic_line <- function(x, fields){
+
+
   res <- foreach(fld = fields, .export = 'parse_ebcdic', .combine = data.table::data.table, .multicombine = TRUE) %do% {
     r <- x[fld$start:fld$end]
     r <- tryCatch(
