@@ -16,7 +16,7 @@ sort_edge_pair_df <- function(dat, p_name = 'p', c_name = 'c', n_name = 'n'){
 
   sorted <- sort_edge_pairs(p, c, n)
 
-  order <- match(sorted$c, dat[[c_name]])
+  order <- match(paste(sorted$p, sorted$c, sorted$n), paste(dat[[p_name]], dat[[c_name]], dat[[n_name]]))
 
   dat <- dat[order]
 }

@@ -35,6 +35,13 @@ context("Sort edge pairs")
     col2 = LETTERS[1:20]
   )
 
+  tdat_rw <- data.table::data.table(
+    p    = c(NA, "3023", "2181"),
+    c    = c("3023", "2181", "3023"),
+    n    = c("2181", "3023", NA),
+    col1 = c('a', 'b', 'c')
+  )
+
 
 
 test_that("sort edge pairs", {
@@ -80,6 +87,7 @@ test_that("sort edge pairs", {
 
   expect_false(with(unconnected_2, is_sortable_edge_pairs(p, c, n)))
   expect_error(testfun(unconnected_2, 10))
+
 })
 
 
@@ -109,6 +117,10 @@ test_that("sort edge pair df works", {
 
   # Best case scenario (but first elemen is NA)
   expect_true(testfun(na_sorted))
+
+
+  # Duplicated nodes
+  expect_true(testfun(tdat_rw))
 
 
   # Missing links
