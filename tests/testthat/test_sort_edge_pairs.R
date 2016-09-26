@@ -1,7 +1,10 @@
 context("Sort edge pairs")
 
 
+# setwd(system.file('tests', 'testthat', package = 'hammr'))
+
 # Setup test data ----
+  # Must be sorted (will be scrambled for testing and compared with original data)
   small_sorted <- data.table::data.table(
     p = c(NA_character_, '2181'),
     c = c('2181', '2243'),
@@ -42,9 +45,14 @@ context("Sort edge pairs")
     col1 = c('a', 'b', 'c')
   )
 
+  tchain24 <- readRDS('test_data/sort_edge_pairs/tchain24.rds') %>%
+    dplyr::rename(p = befprev,
+                  c = bef,
+                  n = befnext)
+  tchain24 <- tchain24[c(3, 1, 2)]
 
 
-test_that("sort edge pairs", {
+  test_that("sort edge pairs", {
 
   testfun <- function(testdata, iterations = 10L){
     require(foreach)
@@ -97,6 +105,7 @@ test_that("sort edge pair df works", {
 
   testfun <- function(testdata, iterations = 10L){
     require(foreach)
+    require(magrittr)
     res <- foreach(i = 1:iterations, .combine = c) %do% {
 
       testdata_scrambled <- testdata %>%
@@ -122,6 +131,10 @@ test_that("sort edge pair df works", {
   # Duplicated nodes
   expect_true(testfun(tdat_rw))
 
+  expect_true(testfun(tchain24))
+
+
+
 
   # Missing links
   expect_error(testfun(unconnected_sorted))
@@ -133,10 +146,10 @@ test_that("sort edge pair df works", {
 
 
 test_that('node sort uitility functions work', {
-  expect_true(is_node_sorted(best_sorted$p, best_sorted$c, best_sorted$n))
-  expect_true(is_node_sorted(na_sorted$p, na_sorted$c, na_sorted$n))
-  expect_false(is_node_sorted(unconnected_sorted$p, unconnected_sorted$c, unconnected_sorted$n))
-  expect_false(is_node_sorted(unconnected_2$p, unconnected_2$c, unconnected_2$n))
+  expect_true(is_sorted_edge_pairs(best_sorted$p, best_sorted$c, best_sorted$n))
+  expect_true(is_sorted_edge_pairs(na_sorted$p, na_sorted$c, na_sorted$n))
+  expect_false(is_sorted_edge_pairs(unconnected_sorted$p, unconnected_sorted$c, unconnected_sorted$n))
+  expect_false(is_sorted_edge_pairs(unconnected_2$p, unconnected_2$c, unconnected_2$n))
 })
 
 

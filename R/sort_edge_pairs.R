@@ -78,14 +78,19 @@ sort_edge_pairs <- function(p, c, n){
     cur <- dat[ 1]
     dat <- dat[-1]
 
-    prv <- dat[ (c == cur$p & !is.na(cur$p))]
-    dat <- dat[!(c == cur$p & !is.na(cur$p))]
+    sel <- dat$c == cur$p   & dat$n == cur$c & !is.na(cur$p) & !is.na(dat$n)
+    prv <- dat[ sel]
+    dat <- dat[!sel]
 
-    nxt <- dat[ (c == cur$n & !is.na(cur$n))]
-    dat <- dat[!(c == cur$n & !is.na(cur$n))]
+    sel <- dat$c == cur$n   & dat$p == cur$c & !is.na(cur$n) & !is.na(dat$p)
+    nxt <- dat[ sel]
+    dat <- dat[!sel]
 
     sorted[[i]] <- rbind(prv, cur, nxt)
-    if(!is_node_sorted(sorted[[i]])){
+    if(!is_sorted_edge_pairs(sorted[[i]]) |
+       (!nrow(cur) %identical% 1L) |
+       nrow(prv) > 1  |
+       nrow(nxt) > 1) {
       stop(cannot_be_sorted_error())
     }
 
@@ -142,7 +147,7 @@ sort_edge_pairs <- function(p, c, n){
     assert_that(ok == TRUE)
 
 
-  assert_that(is_node_sorted(res))
+  assert_that(is_sorted_edge_pairs(res))
   return(res)
 }
 
@@ -157,7 +162,8 @@ is_sortable_edge_pairs <- function(p, c, n){
 
 
 # Utils ----
-is_node_sorted <- function(p, c = NULL, n = NULL){
+#' @export
+is_sorted_edge_pairs <- function(p, c = NULL, n = NULL){
   if(is.null(c) && is.null(n)){
 
     assert_that(is.data.table(p))
