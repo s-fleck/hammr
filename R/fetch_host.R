@@ -4,14 +4,15 @@
 #' @param outdir local destination directory
 #' @param overwrite should existing files be overwritten?
 #' @param creds login credentials for host
+#' @param ... params passed to fetch_ftp
 #'
 #' @export
 #'
 #' @return
-fetch_host_file <- function(file, outdir = '.', creds = ftp_creds, overwrite = FALSE){
+fetch_host_file <- function(file, outdir = '.', creds = ftp_creds, overwrite = FALSE, ...){
   cat("HOST-Download wird gestartet...\n")
 
-  fetch_ftp(file, outdir, creds, overwrite)
+  fetch_ftp(file, outdir, creds, overwrite, ...)
 
 }
 
