@@ -9,6 +9,8 @@ context("Read EBCDIC")
 # datAscii <- readLines(file(file_path, raw = TRUE, encoding = "IBM500"), n = 10, skipNul = TRUE)
 
 
+# Test Data ----
+
 testdat <- data.frame(
   a = as.raw(c(0x13, 0x48, 0x80, 0x5c)),
   b = as.raw(c(0x13, 0x48, 0x80, 0x5d)),
@@ -42,17 +44,14 @@ problem_line_1 <- as.raw(c(0xf1, 0xf5, 0xf0, 0xf1, 0xf0,
                                                   0x40, 0x40, 0x40, 0x40, 0x40, 0xf1, 0x40, 0xc7, 0xe5, 0xd2))
 
 
-
-trips_ebcdic_fields_0114 <- list(
+fields_strukt <- pline(
   pfield('jahr',     1,  2),
   pfield('monat',    3,  4),
   pfield('bermo',    5,  6),
-  pfield('infev',    7),
-  pfield('ausfall',  8),
-  pfield('fil',      9),
+  #...
   pfield('bearb',   10, 11),
-  pfield('hf_neu',  12, 16),
-  pfield('frei',    17),
+  #...
+  # pfield('frei',    17),
   pfield('kzs',     18, 26),
   pfield('berw',    27, 28),
 
@@ -60,15 +59,11 @@ trips_ebcdic_fields_0114 <- list(
   pfield('bdl',   29),
   pfield('nlkl',  30),
   pfield('zeit',  31, 32),
-  pfield('hochr', 33, 36, 'pd.4'),    # Zwischen 2014 und 2016 stand hier hochrechnungsgewicht als pd.4
-  pfield('fws',   37),
-  pfield('gru',   38),
-  pfield('geow',  39),
-
+  # ...
   pfield('web',     40),
   pfield('nace',    41, 44),
   pfield('lkwzug',  50),
-  pfield('natkfz',  51, 52),
+  pfield('natkfz',  51, 53),
   pfield('kfzkenn', 54, 61),
   pfield('fuhrwe',  62),
   pfield('erstzul', 63, 64),
@@ -83,7 +78,21 @@ trips_ebcdic_fields_0114 <- list(
   pfield('fkmaus',  97, 100),
   pfield('fkmges', 101, 104),
   pfield('fva',    105, 106),
-  pfield('anz',    107, 108, 'bin')
+
+  # Diff
+  pfield('fil',   7,   9),
+  pfield('frei',  12, 17),
+  pfield('hochr', 33, 36, 'pd.4'),
+  pfield('wf',    37),
+  pfield('fil',   38, 39)
+)
+
+test_fields <- pline(
+  pfield('fil',   7,   9),
+  pfield('frei',  12, 17),
+  pfield('hochr', 33, 36, 'pd.4'),
+  pfield('wf',    37),
+  pfield('fil',   38, 39)
 )
 
 
@@ -92,24 +101,31 @@ testdat2  <- readRDS(file.path('test_data', 'parse_ebcdic', 'testdata.rds'))
 tsplt     <- split_raw_records(testdat2, lsep = as.raw(c(0xc7, 0xe5, 0xd2)))
 
 
-fields_strukt <- list(
-  list(name = 'jahr',  start = 1L,  end = 2L,  parser = 'character'),
-  list(name = 'monat', start = 3L,  end = 4L,  parser = 'character'),
-  list(name = 'bermo', start = 5L,  end = 6L,  parser = 'character'),
-  list(name = 'bearb', start = 10L, end = 11L, parser = 'character'),
-  list(name = 'kzs'  , start = 18L, end = 27L, parser = 'character'),
-  list(name = 'berw' , start = 27L, end = 28L, parser = 'character'),
+# Run the tests----
 
-  # Schicht information
-  pfield('bdl',   29),
-  pfield('nlkl',  30),
-  pfield('zeit',  31, 32),
-  pfield('hochr', 33, 36, 'pd.4'),
-  pfield('wf',    37),
+test_that('creating a line parser object works as expected'{
+  tdat1 <- pline(
+    pfield('monat', 3L,  4L),
+    pfield('bermo', 6L,  6L),
+    pfield('berw' , 27L, 28L),
+    pfield('bearb', 10L, 11L)
+  )
 
-  pfield('anz', 107, 108, 'bin')
-)
+  expect_error(
+    pline(
+      pfield('monat', 3L,  5L),
+      pfield('bermo', 5L,  6L)
+    )
+  )
 
+  expect_error(
+    pline(
+      pfield('monat', 5L,  3L),
+      pfield('bermo', 6L,  7L)
+    )
+  )
+
+})
 
 
 test_that('splitting a raw vector into records works', {
@@ -124,13 +140,11 @@ test_that('splitting a raw vector into records works', {
 })
 
 
-test_that('parsing a raw line works', {
+test_that('parse_ebcdic_line works', {
   rline <- tsplt[[2]]
 
   x <- parse_ebcdic_line(rline, fields = fields_strukt)
-  x <- hammr:::parse_ebcdic_line(problem_line_1, fields = trips_ebcdic_fields_0114)
-
-
+  x <- hammr:::parse_ebcdic_line(problem_line_1, fields = fields_strukt)
   })
 
 test_that("EBCDIC field parser works", {

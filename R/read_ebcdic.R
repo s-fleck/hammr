@@ -28,30 +28,17 @@ split_raw_records <- function(x, lsep){
 }
 
 
-parse_gvk_line <- function(x, fields){
-
-
-}
-
 
 #' @export
 parse_ebcdic_line <- function(x, fields){
+  splt <-  attr(fields, 'split')
+  res  <- split(x[1:length(splt)], splt)
 
+  res[fields$parser == 'character'] <- iconv(res[fields$parser == 'character'], from = 'ibm500', to = 'ascii')
+  res[fields$parser == 'skip'] <- NULL
+  res[fields$parser == 'pd.4'] <- NULL
 
-  res <- foreach(fld = fields, .export = 'parse_ebcdic', .combine = data.table::data.table, .multicombine = TRUE) %do% {
-    r <- x[fld$start:fld$end]
-    r <- tryCatch(
-      parse_ebcdic(r, fld$parser),
-      error = function(e) {
-        text = paste0('"', fld$name, '"', ', Value: ', paste0(r, collapse = ' '), '. ', e)
-
-        stop(field_cannot_be_parsed_error(text))
-      }
-    )
-
-  }
-
-  names(res) <- foreach(fl = fields, .combine = c) %do% fl$name
+  res <- data.table::as.data.table(res)
 
   return(res)
 }
@@ -182,6 +169,78 @@ parse_packed_decimal <- function(x, d = 0, psign = 'c', nsign = 'd'){
 
 # Utilities ----
 
+#' Title
+#'
+#' @param ...
+#' @param line_length
+#'
+#' @return
+#' @export
+#'
+#' @examples
+pline <- function(..., line_length = NULL){
+  dat <- list(...)
+
+  list_valid <- all(unlist(lapply(dat, function(x) class(x) %identical% c('pfield', 'list'))))
+  assert_that(list_valid)
+
+  dd <- foreach(e = dat, .combine = rbind) %do%{
+    data.table::data.table(start = e$start, end = e$end, name = e$name, parser = e$parser)
+  }
+
+  dd <- dd[order(start)]
+
+  fl <- dd[1]
+
+  if(fl$start > 1){
+    nl <- data.table(start  = 1,
+                     end    = fl$start - 1,
+                     name   = '#fill',
+                     parser = 'skip')
+    dd <- rbind(nl, dd)
+    dd <- dd[order(start)]
+  }
+
+  assert_that(dd$end %identical% sort(dd$end))
+
+  res <- dd
+
+  for(i in 2:nrow(dd)){
+    prv <- dd[i-1]
+    cur <- dd[i]
+
+    assert_that(prv$end   < cur$start)
+    assert_that(prv$start <= prv$end)
+    assert_that(cur$start <= cur$end)
+
+    if(prv$end < cur$start - 1){
+      nl <- data.table(start = prv$end + 1,
+                       end   = cur$start - 1,
+                       name  = '#fill',
+                       parser = 'skip')
+      res <- rbind(res, nl)
+    }
+  }
+
+  res <- res[order(start)]
+
+  splitvec <- foreach(i = 1:nrow(res), .combine = c) %do% {
+    r <- res[i]
+    rep(r$name, (r$end - r$start + 1))
+  }
+
+  splitvec <- factor(splitvec, levels = unique(splitvec))
+  assert_that(length(splitvec) %identical% as.integer(max(res$end)))
+
+  levels(splitvec)
+
+  attr(res, 'split') <- splitvec
+
+  return(res)
+
+}
+
+
 #' @export
 pfield <- function(.name, .start, .end = .start, .parser = 'character'){
   assert_that(is.scalar(.name))
@@ -193,7 +252,9 @@ pfield <- function(.name, .start, .end = .start, .parser = 'character'){
   assert_that(looks_like_integer(.end))
   assert_that(.start <= .end)
 
-  list(name = .name, start = .start, end = .end, parser = .parser)
+  res <- list(name = .name, start = .start, end = .end, parser = .parser)
+  class(res) <- c('pfield', 'list')
+  return(res)
 }
 
 #
