@@ -7,18 +7,29 @@
 #' @param c_name name of variable containing id of current row
 #' @param n_name name of variable conttaining id of next row
 #' @export
-sort_edge_pair_df <- function(dat, p_name = 'p', c_name = 'c', n_name = 'n'){
+sort_edge_pair_df <- function(dat, p_name = 'p', c_name = 'c', n_name = 'n', allow_partial = FALSE){
+  if(identical(nrow(dat), 1L)) {
+    if(allow_partial){
+      dat <- data.table::copy(dat)
+      dat$.id <- 1L
+    }
+
+    return(dat)
+  }
+
   dat <- data.table::copy(as.data.table(dat))
 
   p <- dat[[p_name]]
   c <- dat[[c_name]]
   n <- dat[[n_name]]
 
-  sorted <- sort_edge_pairs(p, c, n)
+  sorted  <- sort_edge_pairs(p, c, n, allow_partial = allow_partial)
+  order   <- match(paste(sorted$p, sorted$c, sorted$n), paste(dat[[p_name]], dat[[c_name]], dat[[n_name]]))
+  res     <- dat[order]
 
-  order <- match(paste(sorted$p, sorted$c, sorted$n), paste(dat[[p_name]], dat[[c_name]], dat[[n_name]]))
+  if(allow_partial){res$.id <- sorted$.id}
 
-  dat <- dat[order]
+  return(res)
 }
 
 
@@ -36,32 +47,35 @@ sort_edge_pair_df <- function(dat, p_name = 'p', c_name = 'c', n_name = 'n'){
 #'
 #' @return a sorted data.table
 #' @export
-sort_edge_pairs <- function(p, c, n){
+sort_edge_pairs <- function(p, c, n, allow_partial = FALSE){
 
   # Check inputs ----
     assert_that(identical(length(p), length(c)))
     assert_that(identical(length(p), length(n)))
-    assert_that(identical(sum(is.na(c)), 0L))
 
-    na_p <- sum(is.na(p))
-    na_n <- sum(is.na(n))
+    if(!allow_partial){
+      assert_that(identical(sum(is.na(c)), 0L))
 
-
-  # Check if inputs can be sorted ----
-    max_one_parentless_node       <-  na_p <= 1
-    max_one_childless_node        <-  na_n <= 1
-
-    # Each 'previous' node, except the first, must also be a 'current' node
-    # Each 'next' node, except the last, must have been a 'current' node
-    current_and_previous_nodes_ok <-  sum(p %in% c) == length(p) - 1
-    current_and_next_nodes_ok     <-  sum(n %in% c) == length(p) - 1
+      na_p <- sum(is.na(p))
+      na_n <- sum(is.na(n))
 
 
-    if(!(max_one_parentless_node &
-         max_one_childless_node &
-         current_and_previous_nodes_ok &
-         current_and_next_nodes_ok)){
-      stop(cannot_be_sorted_error())
+      # Check if inputs can be sorted ----
+      max_one_parentless_node       <-  na_p <= 1
+      max_one_childless_node        <-  na_n <= 1
+
+      # Each 'previous' node, except the first, must also be a 'current' node
+      # Each 'next' node, except the last, must have been a 'current' node
+      current_and_previous_nodes_ok <-  sum(p %in% c) == length(p) - 1
+      current_and_next_nodes_ok     <-  sum(n %in% c) == length(p) - 1
+
+
+      if(!(max_one_parentless_node &
+           max_one_childless_node &
+           current_and_previous_nodes_ok &
+           current_and_next_nodes_ok)){
+        stop(cannot_be_sorted_error())
+      }
     }
 
 
@@ -98,56 +112,58 @@ sort_edge_pairs <- function(p, c, n){
   }
 
 
+  nblocks <- length(sorted)
+  j       <- 1
+
   # Sort the blocks
-  failsave <- 0
-
-  while(length(sorted) > 1){
-    failsave <- failsave+1
-    cur <- sorted[[1]]
-
-    prv_id <- get_prv(sorted, cur)
-
-    if(length(prv_id) > 0){
-      prv              <- sorted[[prv_id]]
-      sorted[[prv_id]] <- NULL
-    } else {
-      prv <- data.table::data.table()
-    }
+  while(length(sorted) > j){
+    cur      <- sorted[[j]]
+    failsave <- cur
 
 
-    nxt_id <- get_nxt(sorted, cur)
+    # Pop previous element
+      prv_id <- get_prv(sorted, cur)
 
-    if(length(nxt_id) > 0){
-      nxt              <- sorted[[nxt_id]]
-      sorted[[nxt_id]] <- NULL
-    } else {
-      nxt <- data.table::data.table()
-    }
+      if(length(prv_id) > 0){
+        prv              <- sorted[[prv_id]]
+        sorted[[prv_id]] <- NULL
+      } else {
+        prv <- data.table::data.table()
+      }
 
-    sorted[[1]] <- data.table::rbindlist(list(prv, cur, nxt))
+    # Pop next element
+      nxt_id <- get_nxt(sorted, cur)
+
+      if(length(nxt_id) > 0){
+        nxt              <- sorted[[nxt_id]]
+        sorted[[nxt_id]] <- NULL
+      } else {
+        nxt <- data.table::data.table()
+      }
+
+    # Attach previous and current elements to front and back of sorted elements
+      sorted[[j]] <- data.table::rbindlist(list(prv, cur, nxt))
 
 
-    if(failsave > 1000){
-      stop('Sorting algrotihm did not terminate. Input is likely corrup.')
-    }
+    # If no previous or next nodes were found, but the whole list has not
+    # yet been sorted: Fail
+      if(length(sorted) > 1 & identical(sorted[[j]], failsave)){
+        if(allow_partial){
+          j = j+1
+        } else {
+          stop(cannot_be_sorted_error())
+        }
+      }
   }
 
-  res <- sorted[[1]]
+  res <- data.table::rbindlist(sorted, idcol = allow_partial)
 
+  if(allow_partial){
+    res[, assert_that(is_sorted_edge_pairs(p, c, n)), by = '.id']
+  } else{
+    assert_that(is_sorted_edge_pairs(res))
+  }
 
-  # Check if everything went right, only first and last node can have no parent / child
-    ok <- sum(is.na(res[1]))         < 2
-    ok <- ok & sum(is.na(res[nrow(res)])) < 2
-
-    if(nrow(res) > 2){
-      sub <- res[2:(nrow(res)-1)]
-      ok  <- ok & sum(is.na(sub)) %identical% 0L
-    }
-
-    assert_that(ok == TRUE)
-
-
-  assert_that(is_sorted_edge_pairs(res))
   return(res)
 }
 

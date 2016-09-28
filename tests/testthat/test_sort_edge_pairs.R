@@ -3,6 +3,7 @@ context("Sort edge pairs")
 
 # setwd(system.file('tests', 'testthat', package = 'hammr'))
 
+
 # Setup test data ----
   # Must be sorted (will be scrambled for testing and compared with original data)
   small_sorted <- data.table::data.table(
@@ -92,12 +93,9 @@ context("Sort edge pairs")
   # Missing links
   expect_false(with(unconnected_sorted, is_sortable_edge_pairs(p, c, n)))
   expect_error(testfun(unconnected_sorted))
-
   expect_false(with(unconnected_2, is_sortable_edge_pairs(p, c, n)))
   expect_error(testfun(unconnected_2, 10))
-
 })
-
 
 
 
@@ -123,25 +121,58 @@ test_that("sort edge pair df works", {
   # Best case scenarion
   expect_true(testfun(best_sorted))
 
+  # Best case scenario (but first elemen is NA)
+  expect_true(testfun(na_sorted))
+
+  # Duplicated nodes
+  expect_true(testfun(tdat_rw))
+  expect_true(testfun(tchain24))
+
+  # Missing links
+  expect_error(testfun(unconnected_sorted))
+  expect_error(testfun(unconnected_2, 10))
+})
+
+
+
+test_that("partial sort edge pair df works", {
+
+  testfun <- function(testdata, iterations = 10L){
+    require(foreach)
+    require(magrittr)
+    res <- foreach(i = 1:iterations, .combine = c) %do% {
+
+      testdata_scrambled <- testdata %>%
+        dplyr::sample_frac()
+
+      sorted <- sort_edge_pair_df(testdata, allow_partial = TRUE)
+
+      identical(sorted, testdata)
+    }
+
+    all(res)
+  }
+
+
+  # Best case scenarion
+  expect_true(testfun(best_sorted))
 
   # Best case scenario (but first elemen is NA)
   expect_true(testfun(na_sorted))
 
-
   # Duplicated nodes
   expect_true(testfun(tdat_rw))
-
   expect_true(testfun(tchain24))
 
 
+  res <- sort_edge_pair_df(testdata_scrambled, allow_partial = TRUE)
+  res[, .(ok = is_sorted_edge_pairs(p, c, n)), by = '.id']
+  expect_true(all(res$ok))
 
 
   # Missing links
   expect_error(testfun(unconnected_sorted))
-
   expect_error(testfun(unconnected_2, 10))
-
-
 })
 
 
