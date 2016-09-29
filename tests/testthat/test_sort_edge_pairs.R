@@ -5,13 +5,21 @@ context("Sort edge pairs")
 
 
 # Setup test data ----
+
+  # Data will be scrambled/sorted nit times. Higher numbers will slow down
+  # testing process and are likely not necessary if you do not modify the
+  # sorting alogirthm
+
+  nit <- 2L
+
+
+
   # Must be sorted (will be scrambled for testing and compared with original data)
   small_sorted <- data.table::data.table(
     p = c(NA_character_, '2181'),
     c = c('2181', '2243'),
     n = c("2243", '2155')
   )
-
 
   best_sorted <- data.table::data.table(
     p = letters[1:20],
@@ -55,7 +63,7 @@ context("Sort edge pairs")
 
   test_that("sort edge pairs", {
 
-  testfun <- function(testdata, iterations = 10L){
+  testfun <- function(testdata, iterations = nit){
     require(foreach)
     res <- foreach(i = 1:iterations, .combine = c) %do% {
 
@@ -99,9 +107,9 @@ context("Sort edge pairs")
 
 
 
-test_that("sort edge pair df works", {
+test_that("sort edge pair data.frame works", {
 
-  testfun <- function(testdata, iterations = 10L){
+  testfun <- function(testdata, iterations = nit){
     require(foreach)
     require(magrittr)
     res <- foreach(i = 1:iterations, .combine = c) %do% {
@@ -109,7 +117,7 @@ test_that("sort edge pair df works", {
       testdata_scrambled <- testdata %>%
         dplyr::sample_frac()
 
-      sorted <- sort_edge_pair_df(testdata)
+      sorted <- sort_edge_pairs(testdata)
 
       identical(sorted, testdata)
     }
@@ -117,27 +125,42 @@ test_that("sort edge pair df works", {
     all(res)
   }
 
-
   # Best case scenarion
-  expect_true(testfun(best_sorted))
+    expect_true(testfun(best_sorted))
 
   # Best case scenario (but first elemen is NA)
-  expect_true(testfun(na_sorted))
+    expect_true(testfun(na_sorted))
 
   # Duplicated nodes
-  expect_true(testfun(tdat_rw))
-  expect_true(testfun(tchain24))
+    expect_true(testfun(tdat_rw))
+    expect_true(testfun(tchain24))
 
   # Missing links
-  expect_error(testfun(unconnected_sorted))
-  expect_error(testfun(unconnected_2, 10))
+    expect_error(testfun(unconnected_sorted))
+    expect_error(testfun(unconnected_2, 10))
+
+  # Classes are assigned correctly
+    tdat1 <- na_sorted %>%
+      dplyr::sample_frac()
+
+    tdat2 <- na_sorted %>%
+      dplyr::sample_frac() %>%
+      as.data.frame()
+
+    res1 <- sort_edge_pairs(tdat1)
+    res2 <- sort_edge_pairs(tdat2)
+
+    expect_identical(as.data.frame(res1), res2)
+
+    expect_identical(class(res1), c('data.table', 'data.frame'))
+    expect_identical(class(res2), c('data.frame'))
 })
 
 
 
 test_that("partial sort edge pair df works", {
 
-  testfun <- function(testdata, iterations = 10L){
+  testfun <- function(testdata, iterations = nit){
     require(foreach)
     require(magrittr)
     res <- foreach(i = 1:iterations, .combine = c) %do% {
@@ -145,8 +168,8 @@ test_that("partial sort edge pair df works", {
       testdata_scrambled <- testdata %>%
         dplyr::sample_frac()
 
-      sorted <- sort_edge_pair_df(testdata, allow_partial = TRUE)
-
+      sorted <- sort_edge_pairs(testdata, allow_partial = TRUE)
+      sorted[, .id := NULL]
       identical(sorted, testdata)
     }
 
@@ -164,15 +187,9 @@ test_that("partial sort edge pair df works", {
   expect_true(testfun(tdat_rw))
   expect_true(testfun(tchain24))
 
-
-  res <- sort_edge_pair_df(testdata_scrambled, allow_partial = TRUE)
-  res[, .(ok = is_sorted_edge_pairs(p, c, n)), by = '.id']
-  expect_true(all(res$ok))
-
-
   # Missing links
-  expect_error(testfun(unconnected_sorted))
-  expect_error(testfun(unconnected_2, 10))
+  expect_silent(testfun(unconnected_sorted))
+  expect_silent(testfun(unconnected_2, 10))
 })
 
 
