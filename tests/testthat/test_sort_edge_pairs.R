@@ -13,7 +13,6 @@ context("Sort edge pairs")
   nit <- 2L
 
 
-
   # Must be sorted (will be scrambled for testing and compared with original data)
   small_sorted <- data.table::data.table(
     p = c(NA_character_, '2181'),
@@ -223,8 +222,6 @@ test_that('getting next and previous elements works', {
     c = letters[10:13],
     n = letters[11:14]
   )
-
-
 
 
   # Run tests ----
