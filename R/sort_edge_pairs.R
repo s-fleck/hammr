@@ -1,18 +1,34 @@
+#' Sort a edge pairs into a path
+#'
+#' Sorts a finite number of directed edge-pairs defined by
+#' previous, current and next node.
+#'
+#' \code{\link{sort_edge_pairs.default}} and \code{\link{sort_edge_pairs.data.table}}
+#'
+#'
+#' @import data.table
+#'
+#' @return a sorted data.table consisting of the columns p, c and n (and .id if allow_partial = TRUE)
+#' @export
 sort_edge_pairs <- function(x, ..., allow_partial) UseMethod('sort_edge_pairs')
+
 
 #' Sort a edge pairs into a path
 #'
-#' Sorts a finite number of directed edge-pairs bedfined by the input
-#' previous, current and next node. If the input cannot be sorted into
-#' a connected path, an error will be thrown.
+#' Sorts a finite number of directed edge-pairs defined by
+#' previous, current and next node.
 #'
 #' @param p revious node
 #' @param c current node (node connecting both edges)
 #' @param n next node
+#' @param allow_partial If allow partial is set to FALSE, an unsortable data set
+#'  (eg not all nodes are connected) will throw an error. If set to TRUE, the
+#'  nodes are sorted as well as possible. An additonal column .id is added to
+#'  the results data.table to indicate each sorted group.
 #'
 #' @import data.table
 #'
-#' @return a sorted data.table
+#' @return a sorted data.table consisting of the columns p, c and n (and .id if allow_partial = TRUE)
 #' @export
 sort_edge_pairs.default <- function(x, c, n, allow_partial = FALSE){
   p <- x
@@ -122,7 +138,7 @@ sort_edge_pairs.default <- function(x, c, n, allow_partial = FALSE){
 #'
 #' If the data frame row ids do not form a consecutive path, an error is thrown
 #'
-#' @param dat a data frame
+#' @param x a data frame
 #' @param p_name name of variable containing id of previous row
 #' @param c_name name of variable containing id of current row
 #' @param n_name name of variable conttaining id of next row
@@ -231,17 +247,7 @@ sort_edge_pairs.data.frame <- function(x, p_name = 'p', c_name = 'c', n_name = '
   }
 
 
-
-
-
-
-
-
-
 # Utils ----
-
-
-
 
 #' @export
 is_sorted_edge_pairs <- function(p, c = NULL, n = NULL){
@@ -272,7 +278,6 @@ is_sorted_edge_pairs <- function(p, c = NULL, n = NULL){
   return(is_sorted)
 }
 
-
 #' @export
 is_sortable_edge_pairs <- function(p, c, n){
   tt  <- try(sort_edge_pairs(x=p, c=c, n=n), silent = TRUE)
@@ -280,5 +285,3 @@ is_sortable_edge_pairs <- function(p, c, n){
 
   return(res)
 }
-
-
