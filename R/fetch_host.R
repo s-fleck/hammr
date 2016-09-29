@@ -10,7 +10,7 @@
 #'
 #' @return
 fetch_host_file <- function(file, outdir = '.', creds = ftp_creds, overwrite = FALSE, ...){
-  cat("HOST-Download wird gestartet...\n")
+  message("HOST-Download wird gestartet...\n")
 
   fetch_ftp(file, outdir, creds, overwrite, ...)
 
