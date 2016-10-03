@@ -79,18 +79,20 @@ typecast_cols <-  function(dat, conv = list()){
 #' str(y)
 
 typecast_all <- function(dat, from = 'factor', to = 'character'){
-
-  from  <- tolower(from)
+  dat   <- as.data.frame(dat)
   tofun <- cfun(to)
 
-  vars <- unlist(lapply(dat, class) == from)
-  dat[, vars] <- unlist(lapply(dat[, vars], tofun))
+  vars <- names(dat)[unlist(lapply(dat, class) == from)]
+
+  for(i in vars){
+    dat[[i]] <- tofun(dat[[i]])
+  }
+
   return(dat)
 }
 
 
 cfun <- function(x){
-
   res <- switch(x,
                 'logical'  = as.logical2,
                 'integer'   = as.integer2,

@@ -21,17 +21,32 @@ testdat <- data.frame(
 
 
 test_that("mass typecasting data.frame columns works.", {
-  res <- typecast_all(testdat, 'factor', 'character')
 
-  expect_identical(res$a, c("6", "5", "3", "4", "5"))
-  expect_identical(res$b, c('one', 'two', 'three', 'four', ' apple '))
-  expect_identical(res$c, testdat$c)
-  expect_identical(res$d, testdat$d)
+  # Factor to character...
+    res1 <- typecast_all(testdat, 'factor', 'character')
+
+    expect_identical(res1$a, c("6", "5", "3", "4", "5"))
+    expect_identical(res1$b, c('one', 'two', 'three', 'four', ' apple '))
+    expect_identical(res1$c, testdat$c)
+    expect_identical(res1$d, testdat$d)
+
+    expect_true(all(lapply(res1, class) != 'factor'))
 
 
-  tdat <- data.frame(
-    a = c(NA, NA, "-1", "9999", "one", "6", NA, NA, "3", "1", "2", "1", "0", NA, NA, NA, NA, NA, NA, NA)
+  # Character to factor...
+    res2 <-  typecast_all(testdat, 'character', 'factor')
+    expect_true(all(lapply(res2, class) != 'character'))
+
+
+ expect_identical(
+    typecast_all(res1, 'factor', 'character'),
+    typecast_all(res2, 'factor', 'character')
   )
+
+
+    tdat <- data.frame(
+      a = c(NA, NA, "-1", "9999", "one", "6", NA, NA, "3", "1", "2", "1", "0", NA, NA, NA, NA, NA, NA, NA)
+    )
 
   conv = list(a = 'integer')
 
