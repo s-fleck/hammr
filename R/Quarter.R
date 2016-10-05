@@ -80,8 +80,9 @@ as.Date.Quarter <- function(x){
   dat$m[dat$q == 3] = 7
   dat$m[dat$q == 4] = 10
 
-  paste(dat$y, dat$m, 01, sep = '-') %>%
-    as.Date()
+  res <- paste(dat$y, dat$m, 01, sep = '-')
+  res[grep('NA', res)] <- NA
+  as.Date(res)
 }
 
 
