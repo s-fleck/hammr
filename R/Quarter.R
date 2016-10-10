@@ -102,6 +102,7 @@ quarter_as_date <- function(y, q){
 }
 
 
+#' @export
 quarter_from_month <- function(x){
   res <- data.frame(
     x = x,
