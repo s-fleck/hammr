@@ -100,3 +100,18 @@ quarter_as_date <- function(y, q){
 
   return(res)
 }
+
+
+quarter_from_month <- function(x){
+  res <- data.frame(
+    x = x,
+    q = NA
+  )
+
+  res$q[res$x %in% 1:3]   <- 1
+  res$q[res$x %in% 4:6]   <- 2
+  res$q[res$x %in% 7:9]   <- 3
+  res$q[res$x %in% 10:12] <- 4
+
+  return(res$q)
+}
