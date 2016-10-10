@@ -43,9 +43,10 @@ sort_edge_pairs.default <- function(x, c, n, allow_partial = FALSE){
 
 
   # Setup variables ----
-    dat    <- data.table::data.table(p, c, n)
-    sorted <- list()
-    i      <- 1
+    dat      <- data.table::data.table(p, c, n)
+    nrow_dat <- nrow(dat)                            # Required for early return
+    sorted   <- list()
+    i        <- 1
 
 
   # Logic ----
@@ -63,6 +64,46 @@ sort_edge_pairs.default <- function(x, c, n, allow_partial = FALSE){
       nxt <- dat[ sel]
       dat <- dat[!sel]
 
+
+      # Trigger early return for trivial cases (covers >99% of all cases for SGV transport chains) ----
+
+        # Everything sorted correclty
+        if(nrow_dat %identical% 2L & any(
+            nrow(nxt) %identical% 1L,
+            nrow(prv) %identical% 1L)){
+
+            res <- rbindlist(list(prv, cur, nxt))
+
+            if(allow_partial){
+              res[, .id := 1L]
+            }
+
+            return(res)
+        }
+
+        if(nrow_dat %identical% 3 & all(
+          nrow(nxt) %identical% 1L,
+          nrow(prv) %identical% 1L)){
+
+          res <- rbindlist(list(prv, cur, nxt))
+          if(allow_partial){
+            res[, .id := 1L]
+          }
+
+          return(res)
+        }
+
+        # n = 2 and not sortable
+        if(nrow_dat %identical% 2L & all(
+          nrow(nxt) %identical% 0L,
+          nrow(prv) %identical% 0L)){
+             res <- rbindlist(list(cur, dat), idcol = ifelse(allow_partial, TRUE, NULL))
+             return(res)
+        }
+
+
+      # Continue if no early exit was possible ----
+
       sorted[[i]] <- rbind(prv, cur, nxt)
       if(!is_sorted_edge_pairs(sorted[[i]]) |
          (!nrow(cur) %identical% 1L) |
@@ -73,6 +114,9 @@ sort_edge_pairs.default <- function(x, c, n, allow_partial = FALSE){
 
       i = i+1
     }
+
+
+
 
 
   # Sort the blocks
