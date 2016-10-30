@@ -80,8 +80,9 @@ as.Date.Quarter <- function(x){
   dat$m[dat$q == 3] = 7
   dat$m[dat$q == 4] = 10
 
-  paste(dat$y, dat$m, 01, sep = '-') %>%
-    as.Date()
+  res <- paste(dat$y, dat$m, 01, sep = '-')
+  res[grep('NA', res)] <- NA
+  as.Date(res)
 }
 
 
@@ -98,4 +99,20 @@ quarter_as_date <- function(y, q){
     as.Date()
 
   return(res)
+}
+
+
+#' @export
+quarter_from_month <- function(x){
+  res <- data.frame(
+    x = x,
+    q = NA
+  )
+
+  res$q[res$x %in% 1:3]   <- 1
+  res$q[res$x %in% 4:6]   <- 2
+  res$q[res$x %in% 7:9]   <- 3
+  res$q[res$x %in% 10:12] <- 4
+
+  return(res$q)
 }
