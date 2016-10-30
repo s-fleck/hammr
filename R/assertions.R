@@ -63,7 +63,7 @@ assert_class <- function(dat, class){
 #' @param dat a data.frame or list
 #' @param classes a list of column classes. Its names must match
 #'        the names of dat exactly (see example)
-#' @method if \code{all}, ensure that all columns named in \code{classes} are present in \code{dat},
+#' @param method if \code{all}, ensure that all columns named in \code{classes} are present in \code{dat},
 #'         if \code{any}, ensure that any of the  columns named in \code{classes} are present in \code{dat},
 #'         if \code{identical}, ensure that the names of dat and classes are identical
 #' @export

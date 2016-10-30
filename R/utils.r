@@ -59,7 +59,7 @@ remove_whitespace = function(dat, process_factors = FALSE){
 #'
 #' source: http://stackoverflow.com/questions/13649473/add-a-common-legend-for-combined-ggplots
 #'
-#' @param a.gplot a ggplot2 object
+#' @param dat a ggplot2 object
 #'
 #' @return a legend or an empty grob
 #' @export
@@ -73,7 +73,7 @@ get_legend <- function(dat) {
 
 
 g_legend <- function(dat){
-  warning('Deprecated. use get_legend')
+  warning('Deprecated. use get_legend instead.')
   get_legend(dat)
 }
 
@@ -101,7 +101,6 @@ ggplotify_spdf = function(sp, region){
 #'
 #' @return a data.frame without the columns specified in drop
 #' @export
-
 drop_if_exists <- function(dat, drop){
 
   drop <- paste0('^', drop, '$')
