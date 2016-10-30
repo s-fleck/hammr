@@ -13,7 +13,6 @@
 }
 
 
-
 #' @export
 `%identical%` <- identical
 

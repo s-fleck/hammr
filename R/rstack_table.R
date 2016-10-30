@@ -1,5 +1,3 @@
-
-
 #' Format as row-stacked tabled
 #'
 #' @param line1 data.frame containing the first row of grouped table

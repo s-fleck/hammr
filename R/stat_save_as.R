@@ -1,6 +1,6 @@
 #' Save as
 #'
-#' Generic used by other STAT packages
+#' Generic used by other STAT packages that depend on this package
 #'
 #' @param dat
 #' @param format
