@@ -1,4 +1,4 @@
-context('df_drop_if_exists')
+context('df_drop_cols')
 
 testdat <- data.frame(
   a = factor(c(6,5,3,4,5)),
@@ -23,13 +23,19 @@ testdat <- data.frame(
 test_that("Dropping columns by name works.", {
   res <- list()
 
-  res$a <- drop_if_exists(testdat, 'j')
-  res$b <- drop_if_exists(testdat, c("a", "b", "c", 'dog', 'j'))
+  res$a <- df_drop_cols(testdat, 'j')
+  res$b <- df_drop_cols(testdat, c("a", "b", "c", 'dog', 'j'))
+  res$c <- df_drop_cols(testdat, c("n"))
 
-  res$c <- drop_if_exists(testdat, c("n"))
+  expect_error(
+    df_drop_cols(testdat, c("a", "b", "c", 'dog', 'j'),  allow_partial = FALSE)
+    )
+
+  expect_warning(
+    expect_identical(df_drop_cols(testdat, c('dog'), allow_partial = TRUE), testdat)
+  )
 
   expect_equal(names(res$a)[1:9], c("a", "b", "c", "d", "e", "f", "g", "h", "i"))
   expect_equal(names(res$b)[1:6], c("d", "e", "f", "g", "h", "i"))
   expect_equal(names(res$c)[1:14], c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n2"))
-
 })
