@@ -64,13 +64,18 @@ remove_whitespace = function(dat, process_factors = FALSE){
 #' @return a legend or an empty grob
 #' @export
 #'
-g_legend<-function(a.gplot){
-  tmp <- ggplot_gtable(ggplot_build(a.gplot))
-  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+get_legend <- function(dat) {
+  tmp    <- ggplot_gtable(ggplot_build(dat))
+  leg    <- which(lapply(tmp$grobs, function(x) x$name) == "guide-box")
   legend <- tmp$grobs[[leg]]
-  return(legend)}
+  return(legend)
+}
 
 
+g_legend <- function(dat){
+  warning('Deprecated. use get_legend')
+  get_legend(dat)
+}
 
 
 #' Prepare SPDF for ggplot2
