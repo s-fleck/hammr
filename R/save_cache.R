@@ -1,4 +1,3 @@
-
 #' Save object to hard disk chache (of a package)
 #'
 #' @param ... R objects to save to chache dir, usually /inst/chache

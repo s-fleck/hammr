@@ -1,4 +1,3 @@
-
 #' Reorder character vector or levels of a factor based on priorities
 #'
 #' Shoves elements of a character or factor vector to the front.

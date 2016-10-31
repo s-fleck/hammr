@@ -1,3 +1,7 @@
+# Various helper functions to help assinging text labels to variables used
+# by various STAT packages. Should probably go into a lookup database
+
+
 labels_verka <- c('6' = 'Inland',
                   '1' = 'Empfang',
                   '2' = 'Versand',
