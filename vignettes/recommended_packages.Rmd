@@ -16,4 +16,5 @@ library(RCurl)
 set_config( config( ssl_verifypeer = 0L ) )
 
 devtools::install_github('sfr/RStudio-Addin-Snippets')
+devtools::install_github("timelyportfolio/listviewer")
 ```
