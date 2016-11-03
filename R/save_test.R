@@ -6,7 +6,7 @@
 #' @param subdir subdirectory of the chache dir to save data to
 #'
 #' @section Side effects:
-#' Saves an R object to a cache dir in the current package
+#' Saves an R object to a test_data dir in the current package
 #'
 #' @seealso \code{\link{load_cache}}.
 #' @export
@@ -45,12 +45,11 @@ save_test <- function(..., pkg = '.', subdir){
 
 #' Load object from hard disk chache
 #'
-#' @param ... R objects to load from cache dir, usually /inst/chache
-#' @param envir target environment
+#' @param ... A single r object to load from /tests/testthat/test_data/(subdir)
 #' @param package the current package
 #'
 #' @section Side effects:
-#' Loads an R object from a chache dir in the current package
+#' Loads an R object from a test_data dir in the current package
 #'
 #' @seealso \code{\link{save_cache}}.
 #' @export
