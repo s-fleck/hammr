@@ -11,20 +11,9 @@
 #' @import xtable openxlsx
 #'
 #' @examples
-save_as <- function(dat, outfile, ...)   UseMethod('save_as')
+save_as <- function(dat, outfile, format, ...){
 
-#' Print as
-#'
-#' @param dat
-#' @param format
-#' @param ...
-#'
-#' @return
-#' @export
-#' @import xtable
-#'
-#' @examples
-print_as <- function(dat, format, ...){   UseMethod('print_as')
+
 }
 
 
