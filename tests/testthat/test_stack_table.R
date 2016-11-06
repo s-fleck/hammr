@@ -17,5 +17,19 @@ tdat2 <- data.frame(
 )
 
 
+tdat3 <- data.frame(
+  numbers_xt = factor(c(1, 290, 0.311, 0.210, 1000)),
+  animals_xt = c(5L, 5L, 10L, 30L, 25L),
+  factors_xt = factor(c('tractor', 'hector', 'andrew', 'milli', 'vanilli')),
+  ints       = c('god', 'tac', 'lemac', 'gip', 'esuom'),
+  stringsAsFactors = FALSE
+)
+
+
 expect_error(stack_table(tdat1, tdat2))
-stack_table(tdat1, tdat2, rem_ext = '_xt')
+expect_silent(st1 <- stack_table(tdat1, tdat2, rem_ext = '_xt'))
+expect_silent(st2 <- stack_table(tdat1, tdat3, rem_ext = '_xt'))
+
+expect_error(stack_rows(tdat1))
+stack_rows(st1)
+stack_rows(st2) %>% str
