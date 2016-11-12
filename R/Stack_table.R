@@ -21,7 +21,7 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
 }
 
 
-as.data.frame.Stack_table <- function(dat, method = 'r'){
+as.data.frame.Stack_table <- function(dat, method = 'row'){
   dat    %assert_class% 'stack_table'
   method %assert_class% 'character'
   assert_that(is.scalar(method))
