@@ -48,17 +48,18 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite =
 
   # Move file to destination dir
   tfile   <- file.path(tdir, .file)
-  copy_ok <- file.copy(from = tfile, to = outfile, overwrite = .overwrite)
-
+  if(tfile %identical% outfile){
+    copy_ok <- TRUE
+  } else {
+    copy_ok <- FALSE
+  }
 
   message('Successfully transferred ',   sum(copy_ok), ' of ', length(.file), ' files.\n')
 
   if(all(copy_ok)) {
-    file.remove(tfile)
     message("File(s) saved to: ", .outdir, '\n')
     invisible(TRUE)
   } else if (sum(copy_ok > 0)){
-    file.remove(tfile)
     message("File(s) saved to: ", .outdir, '\n')
     stop('Not all files were transferred successfully')
   } else {
