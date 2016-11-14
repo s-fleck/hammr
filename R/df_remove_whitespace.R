@@ -5,7 +5,7 @@
 #'
 #' @return a data.frame
 #' @export
-remove_whitespace = function(dat, process_factors = FALSE){
+df_trimws = function(dat, process_factors = FALSE){
   dat %assert_class% 'data.frame'
 
   for(i in 1:length(dat)){
@@ -19,3 +19,10 @@ remove_whitespace = function(dat, process_factors = FALSE){
 
   return(dat)
 }
+
+#' @export
+remove_whitespace <- function(dat, process_factors = FALSE){
+  warning('deprecated. use df_trimws')
+
+  df_trimws(dat = dat, process_factors = process_factors)
+  }
