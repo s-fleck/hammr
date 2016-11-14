@@ -19,17 +19,31 @@ tdat2 <- data.frame(
 
 tdat3 <- data.frame(
   numbers_xt = factor(c(1, 290, 0.311, 0.210, 1000)),
-  animals_xt = c(5L, 5L, 10L, 30L, 25L),
+  animals_xt = factor(c('god', 'tac', 'lemac', 'gip', 'esuom')),
   factors_xt = factor(c('tractor', 'hector', 'andrew', 'milli', 'vanilli')),
   ints       = c('god', 'tac', 'lemac', 'gip', 'esuom'),
   stringsAsFactors = FALSE
 )
 
 
-expect_error(stack_table(tdat1, tdat2))
-expect_silent(st1 <- stack_table(tdat1, tdat2, rem_ext = '_xt'))
-expect_silent(st2 <- stack_table(tdat1, tdat3, rem_ext = '_xt'))
+test_that('stacking tables by row works', {
+  # Creating stack tables
+    expect_error(stack_table(tdat1, tdat2))
+    expect_silent(st1 <- stack_table(tdat1, tdat2, rem_ext = '_xt'))
+    expect_silent(st2 <- stack_table(tdat1, tdat3, rem_ext = '_xt'))
 
-expect_error(stack_rows(tdat1))
-stack_rows(st1)
-stack_rows(st2) %>% str
+  # Create row stacked data.table
+    expect_error(stack_rows(tdat1))
+    res1 <- stack_rows(st1)
+    res2 <- stack_rows(st2)
+
+    expect_identical(lapply(res1, class), lapply(tdat1, class))
+    expect_identical(as.character(lapply(res2, class)), as.character(lapply(tdat3, class)))
+
+  # Create row stacked latex table
+
+
+
+
+})
+

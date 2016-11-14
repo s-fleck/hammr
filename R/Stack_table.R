@@ -20,8 +20,71 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
   return(res)
 }
 
+print_tex.Stack_table <- function(dat,
+                                  method = 'row',
+                                  insert_empty_row = TRUE,
+                                  format_fun_tab1 = identity,
+                                  format_fun_tab2 = function(x) paste0('(', x, ')'),
+                                  format_num_tab1 = list(big.mark = '~', digits = 0, format = 'f'),
+                                  format_num_tab2 = list(digits = 2, format = 'f')){
 
-as.data.frame.Stack_table <- function(dat, method = 'r'){
+  method %assert_class% 'character'
+  insert_empty_row %assert_class% 'logical'
+  assert_that(is.scalar(method))
+  assert_that(is.scalar(insert_empty_row))
+
+  tab1     <-  dat[[1]] %>%
+    df_format(num_format = format_num_tab1, format_fun = format_fun_tab1)
+
+
+  tab2     <- dat[[2]] %>%
+    df_format(num_format = format_num_tab2, format_fun = format_fun_tab2)
+
+
+  res <- switch(method,
+         'row' = stack_rows_tex(tab1, tab2, insert_empty_row = FALSE),
+         'col' = stack_cols_tex(tab1, tab2))
+
+  return(res)
+}
+
+
+stack_cols_tex <- function(tab1, tab2, insert_empty_row) {
+
+  res <- foreach(i = 1:nrow(tab1), .combine = rbind) %do% {
+    r <- paste(tab1[i,], tab2[i,], sep = ' ') %>%
+      t() %>%
+      as.data.frame()
+    names(r) <-  names(tab1)
+
+    return(r)
+  }
+}
+
+
+stack_rows_tex <- function(tab1, tab2, insert_empty_row) {
+  empty_row <- rep('', length(tab1)) %>%
+    t() %>%
+    as.data.frame(stringsAsFactors = FALSE) %>%
+    data.table::setnames(names(tab1))
+
+  res <- foreach(i = 1:nrow(tab1), .combine = rbind) %do% {
+    r <- paste(tab1[i,], tab2[i,], sep = ' \\newline ') %>%
+      t() %>%
+      as.data.frame()
+    names(r) <-  names(tab1)
+
+
+    if (insert_empty_row && i != nrow(tab1)) {
+      r <- rbind(r, empty_row)
+    }
+
+    return(r)
+  }
+}
+
+
+as.data.frame.Stack_table <- function(dat, method = 'row'){
   dat    %assert_class% 'stack_table'
   method %assert_class% 'character'
   assert_that(is.scalar(method))
@@ -44,9 +107,6 @@ stack_rows <- function(dat,
   }
 
   data.table::rbindlist(rows)
-
-
-
 }
 
 
