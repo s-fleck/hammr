@@ -17,4 +17,8 @@ set_config( config( ssl_verifypeer = 0L ) )
 
 devtools::install_github('sfr/RStudio-Addin-Snippets')
 devtools::install_github("timelyportfolio/listviewer")
+devtools::install_github("seasmith/AlignAssign")
+devtools::install_github("eddelbuettel/digest")
+devtools::install_github("jeroenooms/jsonlite")
+devtools::install_github("DerekYves/placement")
 ```
