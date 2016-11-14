@@ -9,10 +9,10 @@
 #' @export
 #'
 #' @return
-fetch_host_file <- function(file, outdir = '.', creds = ftp_creds, overwrite = FALSE, ...){
+fetch_host_file <- function(file, outdir = '.', creds = ftp_creds, server = "mfstat01", overwrite = FALSE, ...){
   message("HOST-Download wird gestartet...\n")
 
-  fetch_ftp(file, outdir, creds, overwrite, ...)
+  fetch_ftp(.file = file, .outdir = outdir, .creds = creds, .server = server, .overwrite = overwrite, ...)
 }
 
 

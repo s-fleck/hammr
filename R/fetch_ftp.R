@@ -1,5 +1,5 @@
 #' @export
-fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE, .mode = 'ascii') {
+fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite = FALSE, .mode = 'ascii', ...) {
 
   # Setup paths and credentials ----
   outfile                     <- file.path(.outdir, .file)
@@ -17,30 +17,17 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE, .
   }
 
 
-  ftp_commands <- tempfile()
-  if (file.exists(ftp_commands)){
-    file.remove(ftp_commands)
-  }
+  tdir <- tempdir()
+  ftp_comfile  <- generate_ftp_command_file('cmds', creds = .creds, mode = .mode, files = .file, local_dir = tdir)
+  cmd          <- paste0("ftp -n -s:", ftp_comfile, " ", .server)
+  ftplog       <- shell(cmd, intern = TRUE)
+  file.remove(ftp_comfile)
 
-  # Create ftp command file
-  logon  <- paste0("user ", .creds$user, "\n", .creds$pw, "\n", "cd .. \n")
-  mode   <- paste(.mode, '\n')
-  gets   <- paste('get', .file, collapse = '\n')
-  logoff <- "\nquit"
-  coms <- paste0(logon, mode, gets, logoff)
-  writeLines(coms, ftp_commands)
-
-
-  # Fetch file via ftp
-  cmd    <- paste0("ftp -n -s:", ftp_commands," mfstat01")
-  ftplog <- shell(cmd, intern = TRUE)
 
   message('FTP Log\n',
           '---------------------------------------------------------------------\n',
           paste(ftplog, collapse = '\n'), '\n',
           '---------------------------------------------------------------------\n')
-  file.remove(ftp_commands)
-
 
   res <- tryCatch(check_ftp_log(ftplog),
                   'ftp_530_creds_error' = function(x) {
@@ -60,22 +47,43 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .overwrite = FALSE, .
 
 
   # Move file to destination dir
-  copy_ok <- file.copy(from = .file, to = outfile, overwrite = .overwrite)
+  tfile   <- file.path(tdir, .file)
+  copy_ok <- file.copy(from = tfile, to = outfile, overwrite = .overwrite)
+
 
   message('Successfully transferred ',   sum(copy_ok), ' of ', length(.file), ' files.\n')
 
   if(all(copy_ok)) {
-    file.remove(.file)
+    file.remove(tfile)
     message("File(s) saved to: ", .outdir, '\n')
     invisible(TRUE)
   } else if (sum(copy_ok > 0)){
-    file.remove(.file)
+    file.remove(tfile)
     message("File(s) saved to: ", .outdir, '\n')
     stop('Not all files were transferred successfully')
   } else {
     stop('Something went wrong. No files were transferred successfully')
   }
 
+}
+
+
+generate_ftp_command_file <- function(fname, creds, mode, files, local_dir, get_command = 'get'){
+
+  if (file.exists(fname)){
+    file.remove(fname)
+  }
+
+
+  # Create ftp command file
+  logon  <- paste0("user ", creds$user, "\n", creds$pw, "\n", "cd .. \n", "lcd ", '"', local_dir, '"', "\n")
+  mode   <- paste(mode, '\n')
+  gets   <- paste(get_command, files, collapse = '\n')
+  logoff <- "\nquit"
+
+  coms <- paste0(logon, mode, gets, logoff)
+  writeLines(coms, fname)
+  return(fname)
 }
 
 
