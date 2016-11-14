@@ -1,3 +1,14 @@
+#' Title
+#'
+#' @param dat
+#' @param num_format
+#' @param date_format
+#' @param format_fun
+#'
+#' @return
+#' @export
+#'
+#' @examples
 df_format <- function(dat, num_format, date_format, format_fun) {UseMethod('df_format')}
 
 df_format.default <- function(dat, num_format = list(digits = 1, format = 'f'), date_format = NULL, format_fun = identity){
