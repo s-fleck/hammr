@@ -76,3 +76,20 @@ host_db2_table_info <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['
 
   return(res)
 }
+
+
+#' @export
+fetch_host_merkmb <- function(x){
+  tdir  <- tempdir()
+  fname <- sprintf('T60.MERKMB.P31(%s)', toupper(x))
+
+  suppressMessages(
+    fetch_host_file(fname, outdir = tdir, overwrite = TRUE)
+  )
+  res <- readLines(file.path(tdir, fname))
+  file.remove(file.path(tdir, fname))
+
+  cat(paste(res, collapse = '\n'))
+  invisible(res)
+
+}
