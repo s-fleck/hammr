@@ -35,7 +35,7 @@ valid_range <- function(dat, from = 'from', to = 'to'){
 #'
 #' @param key A vector key names
 #' @param value A vector of the same lengths with values for the specific key
-#' @param kv_range An object of type Valid_range (see \code\link{valid_range})
+#' @param kv_range An object of type Valid_range (see \code{\link{valid_range}})
 #' @param kv_range_keycol The column in the Valid_range object to compare \code{key} with,
 #'
 #' @return

@@ -16,33 +16,13 @@
 #' @export
 `%identical%` <- identical
 
-
-# example of how to redefine the + operator for
-# string concattenation
-#
-# http://stackoverflow.com/questions/4730551/making-a-string-concatenation-operator-in-r
-#
-# `+` <- function (e1, e2) {
-#   UseMethod("+")
-# }
-#
-# `+.default` <- function (e1, e2) .Primitive("+")(e1, e2)
-#
-# `+.character` <- function(e1, e2) {
-#   if(length(e1) == length(e2)) {
-#     paste(e1, e2, sep = '')
-#   } else stop('String Verctors of Different Lengths')
-# }
-#
-
-
 #' String concatenation infix operator
+#'
+#' %_% pastes two strings together (with " " as sepparator)
+#' %-% pastes two strings together (without sepparator)
 #'
 #' @param a A string
 #' @param b Another string
-#'
-#' %_% pastes two strings together (with ' ' as sepparator)
-#' %-% pastes two strings together (without sepparator)
 #'
 #' @return a and b pasted together
 #' @export
