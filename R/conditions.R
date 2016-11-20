@@ -5,6 +5,13 @@ ftp_530_creds_error<- function(text) {
             message = msg)
 }
 
+fun_arg_error <- function(text){
+  msg <- 'Function argument error:' %_% text
+
+  condition(c('fun_arg_error', 'error'),
+            message = msg)
+}
+
 
 
 #' Condition constructor
