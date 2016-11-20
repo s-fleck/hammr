@@ -6,7 +6,7 @@ Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
-Imports: stringr, assertthat, magrittr, dplyr
+Imports: assertthat, magrittr, data.table, dplyr, dtplyr, bit64, foreach, openxlsx, stringi, xtable
 Suggests: bit64
 LazyData: TRUE
 RoxygenNote: 5.0.1
