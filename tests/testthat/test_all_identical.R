@@ -20,7 +20,7 @@ testdat <- data.frame(
 )
 
 test_that("all_identical works.", {
-  res <- remove_whitespace(testdat)
+  res <- df_trimws(testdat)
 
   expect_false(all_identical(testdat$a))
   expect_false(all_identical(testdat$b))

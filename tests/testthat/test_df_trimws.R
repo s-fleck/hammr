@@ -20,8 +20,8 @@ testdat <- data.frame(
 )
 
 test_that("removing whitespaces from character columns of data frame works.", {
-  res  <- remove_whitespace(testdat)
-  res2 <- remove_whitespace(testdat, process_factors = TRUE)
+  res  <- df_trimws(testdat)
+  res2 <- df_trimws(testdat, process_factors = TRUE)
 
   expect_identical(res$a, testdat$a)
   expect_identical(res$b, testdat$b)

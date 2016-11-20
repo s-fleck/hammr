@@ -60,19 +60,19 @@ context("Key-value Range")
   })
 
 
-  test_that("checking whether a value lies withing a valid_range works (real-world data)", {
-    test_range <- readRDS('test_data/valid_range/test_range.rds')
-    keycol     <- readRDS('test_data/valid_range/keycol.rds')
-    value      <- readRDS('test_data/valid_range/value.rds')
-    res1       <- readRDS('test_data/valid_range/res1.rds')
-
-
-    expect_warning(tmp <- all(within_valid_range(keycol = keycol, value = value, test_range = test_range, check_key = 'pr')))
-    expect_warning(tmp <- all(within_kv_range(keycol, value, test_range, 'pr')))
-    expect_false(tmp)
-
-    expect_warning(tmp <- within_valid_range(keycol = keycol, value = value, test_range = test_range, check_key = 'rics'))
-    expect_warning(tmp <- within_kv_range(keycol, value, test_range, 'rics'))
-
-    expect_identical(res1, tmp)
-  })
+  # test_that("checking whether a value lies withing a valid_range works (real-world data)", {
+  #   test_range <- readRDS('test_data/valid_range/test_range.rds')
+  #   keycol     <- readRDS('test_data/valid_range/keycol.rds')
+  #   value      <- readRDS('test_data/valid_range/value.rds')
+  #   res1       <- readRDS('test_data/valid_range/res1.rds')
+  #
+  #
+  #   expect_warning(tmp <- all(within_valid_range(keycol = keycol, value = value, test_range = test_range, check_key = 'pr')))
+  #   expect_warning(tmp <- all(within_kv_range(keycol, value, test_range, 'pr')))
+  #   expect_false(tmp)
+  #
+  #   expect_warning(tmp <- within_valid_range(keycol = keycol, value = value, test_range = test_range, check_key = 'rics'))
+  #   expect_warning(tmp <- within_kv_range(keycol, value, test_range, 'rics'))
+  #
+  #   expect_identical(res1, tmp)
+  # })

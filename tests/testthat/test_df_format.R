@@ -1,7 +1,5 @@
 context('df_format')
 
-
-
 tdf <- data.frame(
   a = c('alpha', 'beta', 'ceta'),
   b = c(1.230,-1124.0, 1.90),
@@ -14,9 +12,7 @@ tdt <- data.table::as.data.table(tdf)
 
 tti <- tibble::as_tibble(tdf)
 
-
-
-test_that("classes get preserved.", {
+test_that("function yields expected types.", {
 
   rdf <- df_format(tdf)
   rdt <- df_format(tdt)
@@ -25,6 +21,11 @@ test_that("classes get preserved.", {
   expect_identical(rdf, tdf)
   expect_identical(rdt, rdf)
   expect_identical(rti, rdf)
+
+})
+
+
+test_that("function yields expected results.", {
 
   parenthesise <- function(x) paste0('(', trimws(x) , ')')
 
@@ -57,6 +58,11 @@ test_that("classes get preserved.", {
   expect_identical(tres, eres)
 
   expect_identical(
+    df_format(tdf, date_format = '%m/%d/%y'),
+    df_format(tdf, date_format = list(format = '%m/%d/%y'))
+  )
+
+  expect_identical(
     df_format(tdf, dtime_format = '%m/%d/%y %H:%M:%S'),
     df_format(tdf, dtime_format = list(format = '%m/%d/%y %H:%M:%S'))
   )
@@ -65,5 +71,8 @@ test_that("classes get preserved.", {
     df_format(tdf, num_format = 2),
     df_format(tdf, num_format = list(digits = 2))
   )
+
+  expect_error(df_format(tdf, num_format = '2'))
+  expect_error(df_format(tdf, date_format = 1))
 
 })
