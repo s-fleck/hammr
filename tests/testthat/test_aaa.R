@@ -9,7 +9,7 @@ registerDoParallel(cl)
 
 test_that("Dummy test", {
   expect_true(TRUE)
-  library(data.table)
+  suppressWarnings(library(data.table))
   data.table(NULL)
 })
 
