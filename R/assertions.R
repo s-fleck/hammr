@@ -69,11 +69,12 @@ assert_class <- function(dat, class){
 #' @export
 is_col_classes <- function(dat, classes, method = 'identical'){
   classes %assert_class% 'list'
-  assert_that('list' %in% is(dat))
   assert_that(length(classes) > 0)
   assert_that(length(names(classes)) %identical% length(classes))
   assert_that(is.scalar(method))
   assert_that(method %in% c('all', 'any', 'identical'))
+
+  dat <- as.list(dat)
 
 
   if(method %identical% 'all'){
@@ -168,22 +169,4 @@ on_failure(is_any_class) <- function(call, env){
 }
 
 
-#' Check if an object is valid
-#'
-#' requires that is_valid.class is defined somewhere
-#'
-#' @param x an R object
-#'
-#' @return logical; whether this object meets pre-defined validity conditions.
-#' @export
-is_valid <- function(x, ...) {
-  UseMethod("is_valid")
-}
-
-#' @export
-on_failure(is_valid) <- function(call, env){
-  cls <- class(deparse(call$x))
-  cls <- paste(cls, collapse = ', ')
-  paste("A validity check failed for object of class", cls)
-}
 
