@@ -24,6 +24,7 @@ test_that("Downloading files via ftp works.", {
 
   tfiles  <- c('dummyfile.blb', 'dumm2.blb')
   toutdir <- tempdir()
+  ldir    <- tempdir()
   tcreds  <- list(user = "tuser", pw = "tpw")
   tserver <- 'dummy:server'
   tmode   <- 'ascii'
@@ -31,12 +32,11 @@ test_that("Downloading files via ftp works.", {
   expect_error(fetch_ftp(file, outdir, creds))
 
   tcmd <- tempfile()
-  generate_ftp_command_file(fname = tcmd, creds = tcreds, mode = tmode, files = tfiles)
+  generate_ftp_command_file(fname = tcmd, creds = tcreds, mode = tmode, files = tfiles, local_dir = ldir)
   expect_identical(readLines(tcmd),
-                   c("user tuser", "tpw", "cd .. ", "ascii ", "get dummyfile.blb",
-                     "get dumm2.blb", "quit")
+                   c("user tuser", "tpw", "cd .. ", "lcd \"/tmp/RtmpKFhPqO\"", "ascii ",
+                     "get dummyfile.blb", "get dumm2.blb", "quit")
   )
-
 
   shellmock <- function(...){
     for(f in tfiles){
@@ -44,15 +44,8 @@ test_that("Downloading files via ftp works.", {
     }
   }
 
-
-  file.remove(tfiles[1])
-  file.remove(tfiles[2])
-
-  with_mock(fetch_ftp(.file = tfiles, .outdir = toutdir, .creds = tcreds, .server = tserver, .overwrite = FALSE, .mode = tmode),
-            shell = shellmock)
-
-
-
-
+  with_mock(
+    fetch_ftp(.file = tfiles, .outdir = toutdir, .creds = tcreds, .server = tserver, .overwrite = FALSE, .mode = tmode),
+    shell = shellmock)
 
 })
