@@ -19,7 +19,7 @@
 #'
 #' str(dat)
 
-typecast_cols <-  function(dat, conv = list()){
+df_typecast_cols <-  function(dat, conv = list()){
 
   conv2 <- conv[names(conv) %in% names(dat)]
   if(length(conv2) < length(conv)) {
@@ -78,7 +78,7 @@ typecast_cols <-  function(dat, conv = list()){
 #' str(x)
 #' str(y)
 
-typecast_all <- function(dat, from = 'factor', to = 'character'){
+df_typecast_all <- function(dat, from = 'factor', to = 'character'){
   dat   <- as.data.frame(dat)
   tofun <- cfun(to)
 
@@ -111,3 +111,10 @@ as.numeric2   <- function(x) as.numeric(as.character(x))
 as.integer2   <- function(x) as.integer(as.character(x))
 as.integer642 <- function(x) bit64::as.integer64(as.character(x))
 as.logical2   <- function(x) as.logical(as.character(x))
+
+
+#' @export
+typecast_cols <- df_typecast_cols
+
+#' @export
+typecast_all  <- df_typecast_all
