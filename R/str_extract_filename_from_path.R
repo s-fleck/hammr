@@ -47,7 +47,7 @@ extract_extension_from_path <- function(x, fsep = NULL){
 # Utility Functions ----
 
 guess_fsep <- function(x){
-  if(is.null(fsep)){
+
     a <- length(unlist(stringi::stri_locate_all(x, regex = '\\\\')))
     b <- length(unlist(stringi::stri_locate_all(x, regex = '/')))
 
@@ -56,7 +56,6 @@ guess_fsep <- function(x){
     } else {
       fsep <- '/'
     }
-  }
 
   return(fsep)
 }
