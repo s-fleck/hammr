@@ -4,6 +4,7 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite =
   # Setup paths and credentials ----
   outfile                     <- file.path(.outdir, .file)
 
+
   if (any(file.exists(outfile))) {
     if(.overwrite){
       warning('Mindestens eine Zieldatei existiert und wird ueberschrieben')
@@ -17,8 +18,7 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite =
   }
 
 
-  tdir <- tempdir()
-  ftp_comfile  <- generate_ftp_command_file('cmds', creds = .creds, mode = .mode, files = .file, local_dir = tdir)
+  ftp_comfile  <- generate_ftp_command_file('cmds', creds = .creds, mode = .mode, files = .file, local_dir = .outdir)
   cmd          <- paste0("ftp -n -s:", ftp_comfile, " ", .server)
   ftplog       <- shell(cmd, intern = TRUE)
   file.remove(ftp_comfile)
@@ -47,8 +47,8 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite =
 
 
   # Move file to destination dir
-  tfile   <- file.path(tdir, .file)
-  if(tfile %identical% outfile){
+  tfile   <- file.path(.outdir , .file)
+  if(file.exists(outfile)){
     copy_ok <- TRUE
   } else {
     copy_ok <- FALSE
@@ -99,6 +99,7 @@ check_ftp_log <- function(dat){
 }
 
 
+#' @export
 ui_credentials <- function(){
   res <- list()
 
