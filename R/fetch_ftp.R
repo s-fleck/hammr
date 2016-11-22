@@ -38,7 +38,9 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite =
                         .file      = .file,
                         .outdir    = .outdir,
                         .creds     = NULL,
-                        .overwrite = .overwrite
+                        .server    = .server,
+                        .overwrite = .overwrite,
+                        .mode      = .mode
                       )
                     } else {
                       stop(x)
@@ -96,15 +98,4 @@ check_ftp_log <- function(dat){
     msg <- gsub('\r', '', msg)
     stop(ftp_530_creds_error(msg))
   }
-}
-
-
-#' @export
-ui_credentials <- function(){
-  res <- list()
-
-  res$user  <- readline("User:")
-  res$pw    <- readline("Passwort:")
-
-  return(res)
 }
