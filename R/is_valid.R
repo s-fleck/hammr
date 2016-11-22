@@ -18,11 +18,19 @@ on_failure(is_valid) <- function(call, env){
 }
 
 
-warn_invalid <- function(dat){
+warn_false <- function(dat){
   dat %assert_class% 'list'
   assert_that(unlist(unique(lapply(dat, class))) %identical% 'logical')
 
-  if(all(as.logical(dat))){
+  datl <- as.logical(dat)
+  if(any(is.na(datl))){
+    warning("Treating NAs as 'FALSE'")
+  }
+
+  dat[which(is.na(datl))] <- FALSE
+  datl[is.na(datl)]       <- FALSE
+
+  if(all(datl)){
     return(TRUE)
   } else {
     failed      <- dat[as.logical(lapply(dat, identical, FALSE))]
@@ -33,3 +41,4 @@ warn_invalid <- function(dat){
 }
 
 
+warn_invalid <- warn_false
