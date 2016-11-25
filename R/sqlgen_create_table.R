@@ -67,7 +67,10 @@ check_sql_types_db2 <- function(col_types){
     'GRAPHIC\\([1-9][0:9]{0,2}\\)',
     'VARGRAPHIC\\([1-9][0:9]{0,2}\\)',
     'DBCLOB\\([1-9][0:9]{0,2}\\)',
-    'BLOB\\([1-9][0:9]{0,2}\\)')
+    'BLOB\\([1-9][0:9]{0,2}\\)',
+    'DATE',
+    'TIME',
+    'TIMESTAMP')
 
   res <- foreach(i = col_types) %do% {
     any(stringi::stri_detect(i, regex = valid_col_types))

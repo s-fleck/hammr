@@ -74,6 +74,7 @@ is_col_classes <- function(dat, classes, method = 'identical'){
   assert_that(is.scalar(method))
   assert_that(method %in% c('all', 'any', 'identical'))
 
+
   dat <- as.list(dat)
 
 

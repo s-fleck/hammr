@@ -105,3 +105,17 @@ increment_month_internal = function(x, increment = 1L){
 
   return(res)
 }
+
+#' @export
+first_day_of_quarter <- function(y, q){
+  res <- quarter(y, q)
+  as.Date(res)
+}
+
+#' @export
+last_day_of_quarter <- function(y, q){
+  res <- quarter(y, q)
+  res <- increment(res, inc = 1)
+  as.Date(res)-1
+}
+

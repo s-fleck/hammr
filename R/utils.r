@@ -57,3 +57,15 @@ capwords <- function(s, strict = FALSE) {
 }
 
 
+#' @export
+unique_single <- function(x){
+  res <- unique(x)
+  assert_that(is.scalar(res))
+  if(!length(res) %identical% 1L){
+    stop('more than one elment')
+  } else {
+    res[[1]]
+  }
+}
+
+

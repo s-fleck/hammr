@@ -13,6 +13,14 @@
 
 quarter <- function(y, q) {
   y <- as.character(y)
+  q <- dplyr::case_when(
+    is.numeric(q) ~ as.integer(q),
+    is.integer(q) ~ as.integer(q),
+    tolower(q) == 'q1' ~ 1L,
+    tolower(q) == 'q2' ~ 2L,
+    tolower(q) == 'q3' ~ 3L,
+    tolower(q) == 'q4' ~ 4L
+  )
 
   if(missing(q)) {
     assert_that(all(grepl('\\d{4}-Q[1-4]', y)))
@@ -116,3 +124,6 @@ quarter_from_month <- function(x){
 
   return(res$q)
 }
+
+
+

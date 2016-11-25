@@ -18,6 +18,7 @@ on_failure(is_valid) <- function(call, env){
 }
 
 
+#' @export
 warn_false <- function(dat){
   dat %assert_class% 'list'
   assert_that(unlist(unique(lapply(dat, class))) %identical% 'logical')
