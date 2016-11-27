@@ -68,6 +68,7 @@ df_format <- function(dat, num_format, date_format, dtime_format, col_format){
 
 df_format <- function(dat,
                       num_format   = NULL,
+                      int_format   = num_format,
                       date_format  = NULL,
                       dtime_format = NULL,
                       col_format   = NULL){
@@ -77,6 +78,11 @@ df_format <- function(dat,
   if(is.scalar(num_format) & (
      is.integer(num_format) || is.numeric(num_format))){
     num_format <- list(digits = num_format)
+  }
+
+  if(is.scalar(int_format) & (
+    is.integer(int_format) || is.numeric(int_format))){
+    int_format <- list(digits = int_format)
   }
 
   if(is.scalar(date_format) && is.character(date_format)) {
@@ -89,6 +95,7 @@ df_format <- function(dat,
 
   params      <- list(
     'numeric' = num_format,
+    'integer' = int_format,
     'Date'    = date_format,
     'POSIXt'  = dtime_format,
     'col'     = col_format

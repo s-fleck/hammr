@@ -3,7 +3,7 @@ context('df_format')
 tdf <- data.frame(
   a = c('alpha', 'beta', 'ceta'),
   b = c(1.230,-1124.0, 1.90),
-  c = c(1L, 3L, 5L),
+  c = c(190L, 3111111L, 5L),
   d = as.Date(c('2009-01-12', '2009-01-12', '2009-01-12')),
   t = as.POSIXct(c('2009-01-12 10:01:01', '2009-01-12 23:01:03', '2009-01-12 16:01:01'), format = "%Y-%m-%d %H:%M:%S"),
   stringsAsFactors = FALSE)
@@ -45,7 +45,7 @@ test_that("function yields expected results.", {
     a = c("(alpha)", "(beta)", "(ceta)"),
     b = c("(1,23)",
           "(-1.124,00)", "(1,90)"),
-    c = c("(1)", "(3)", "(5)"),
+    c = c("(190)", "(3.111.111)", "(5)"),
     d = c("(01/12/09)",
           "(01/12/09)", "(01/12/09)"),
     t = c(
@@ -74,5 +74,7 @@ test_that("function yields expected results.", {
 
   expect_error(df_format(tdf, num_format = '2'))
   expect_error(df_format(tdf, date_format = 1))
+
+  df_format(tdf, num_format = 3, int_format = 1)
 
 })
