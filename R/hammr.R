@@ -1,4 +1,4 @@
-#' Package mit ultity functions
+#' Package misc ultity functions
 #'
 #' @section Foo functions:
 #' The foo functions ...
@@ -7,3 +7,4 @@
 #' @docType package
 #' @name hammr
 NULL
+

@@ -5,7 +5,7 @@ Version: 0.0.2
 Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
-License: What license is it under?
+License: GPL3
 Imports: assertthat, magrittr, data.table, dplyr, dtplyr, bit64, foreach, openxlsx, stringi, xtable
 Suggests: bit64
 LazyData: TRUE
