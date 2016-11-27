@@ -1,3 +1,28 @@
+#' Stack Table
+#'
+#' Stack tables are designed to make it easy to put together multidimensional
+#' tables from two data.frames. An example where this might be useful is
+#' if you have a data.frame of numeric values, and a second data.frame of
+#' associated standard errors.
+#'
+#' Stack table provides a framework to stack those two data.frames together
+#' into one data.frame with alternating rows or columns. You can then output the
+#' stacked table as latex \code{\link{print_tex.Stack_table}}, as xlsx
+#' \code{\link{save_as.Stack_table}} or simply as data.table or data.frame
+#' via \code{as.data.table} or \code{as.data.frame}.
+#'
+#' If your goal is to present formated tables as latex or xlsx, you  should aslo
+#' look into \code{\link{df_format}}, \code{\link{df_round}} and
+#' \code{\link{df_signif}}.
+#'
+#' @param dat1
+#' @param dat2
+#' @param rem_ext
+#'
+#' @return
+#' @export
+#'
+#' @examples
 stack_table <- function(dat1, dat2, rem_ext = NULL){
   dat1 %assert_class% 'data.frame'
   dat2 %assert_class% 'data.frame'
@@ -22,7 +47,7 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
 
 #' print a Stack_table as latex
 #'
-#' Stacked rows are sepparated by \code{\newline}, therefor this only works
+#' Stacked rows are sepparated by \code{\\newline}, therefor this only works
 #' correctly for columns that have an 'X' column type (see documentation of
 #' the tabularx latex package). If you want each stack element in a proper
 #' tabular row, use \code{xtable::xtable(as.data.frame(dat))} instead.
@@ -35,7 +60,7 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
 #' @param insert_empty_row insert additional empty row after each row of the
 #'        tabular environment. \renewcommand{\arraystretch}{1.5}
 #' @param .align the [pos] argument of the tabular environment. Passed on
-#'        to \code{\link{xtable}}. Please note that \code{\newline} only
+#'        to \code{\link{xtable}}. Please note that \code{\\newline} only
 #'        works in \code{X} columns. If you use another format the 'stacking'
 #'        will not work correclty.
 #' @param .include.rownames passed on to \code{\link{print.xtable}}
