@@ -20,62 +20,150 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
   return(res)
 }
 
+#' print a Stack_table as latex
+#'
+#' Stacked rows are sepparated by \code{\newline}, therefor this only works
+#' correctly for columns that have an 'X' column type (see documentation of
+#' the tabularx latex package). If you want each stack element in a proper
+#' tabular row, use \code{xtable::xtable(as.data.frame(dat))} instead.
+#' By default this uses the \code{tabularx} and \code{booktabs} latex packages.
+#' Booktabs can be switched of, but the tabularx package is hardcoded into the
+#' xtable settings right now as some of the formatting magic depends on it
+#'
+#' @param dat an input stack table
+#' @param stack Stack by by \code{row} or \code{col}
+#' @param insert_empty_row insert additional empty row after each row of the
+#'        tabular environment. \renewcommand{\arraystretch}{1.5}
+#' @param .align the [pos] argument of the tabular environment. Passed on
+#'        to \code{\link{xtable}}. Please note that \code{\newline} only
+#'        works in \code{X} columns. If you use another format the 'stacking'
+#'        will not work correclty.
+#' @param .include.rownames passed on to \code{\link{print.xtable}}
+#' @param .floating passed on to \code{\link{print.xtable}}
+#' @param .tabular.environment passed on to \code{\link{print.xtable}}
+#' @param .booktabs passed on to \code{\link{print.xtable}}
+#' @param .sanitize.text.function passed on to \code{\link{print.xtable}}
+#' @param .width passed on to \code{\link{print.xtable}}
+#' @param ... Additoinal arguments passed on to \code{\link{xtable}} and
+#'        \code{\link{print.xtable}}
+#'
+#' @return
+#' @import xtable data.table foreach
+#' @export
+#'
+#' @examples
 print_tex.Stack_table <- function(dat,
-                                  method = 'row',
-                                  insert_empty_row = TRUE,
-                                  format_fun_tab1 = identity,
-                                  format_fun_tab2 = function(x) paste0('(', x, ')'),
-                                  format_num_tab1 = list(big.mark = '~', digits = 0, format = 'f'),
-                                  format_num_tab2 = list(digits = 2, format = 'f')){
+                                  stack_method = 'row',
+                                  insert_empty_row = (stack_method == 'row'),
+                                  .align = paste0('lX', paste(rep('X', ncol(dat[[1]])-1), collapse = '')),
+                                  .include.rownames=FALSE,
+                                  .floating = FALSE,
+                                  .booktabs = TRUE,
+                                  .sanitize.text.function = identity,
+                                  .width = '\\textwidth',
+                                  ...){
 
-  method %assert_class% 'character'
-  insert_empty_row %assert_class% 'logical'
-  assert_that(is.scalar(method))
-  assert_that(is.scalar(insert_empty_row))
-
-  tab1     <-  dat[[1]] %>%
-    df_format(num_format = format_num_tab1, format_fun = format_fun_tab1)
-
-
-  tab2     <- dat[[2]] %>%
-    df_format(num_format = format_num_tab2, format_fun = format_fun_tab2)
+  # Preconditions
+    stack_method %assert_class% 'character'
+    insert_empty_row %assert_class% 'logical'
+    assert_that(is.scalar(stack_method))
+    assert_that(is.scalar(insert_empty_row))
 
 
-  res <- switch(method,
-         'row' = stack_rows_tex(tab1, tab2, insert_empty_row = FALSE),
-         'col' = stack_cols_tex(tab1, tab2))
+  # Stacking
+  res <- switch(stack_method,
+         'row' = stack_rows_tex(dat, insert_empty_row = FALSE),
+         'col' = stack_cols_tex(dat))
 
-  return(res)
+  # format latex
+    xtable::xtable(res, align = .align, ...) %>%
+      print(include.rownames = .include.rownames,
+            floating = .floating,
+            tabular.environment = 'tabularx',
+            booktabs = .booktabs,
+            sanitize.text.function = .sanitize.text.function,
+            width = .width,
+            ...)
 }
 
 
-stack_cols_tex <- function(tab1, tab2, insert_empty_row) {
 
-  res <- foreach(i = 1:nrow(tab1), .combine = rbind) %do% {
-    r <- paste(tab1[i,], tab2[i,], sep = ' ') %>%
-      t() %>%
-      as.data.frame()
-    names(r) <-  names(tab1)
+save_as.Stack_table <- function(dat, outfile, format){
 
-    return(r)
+}
+
+
+#' Title
+#'
+#' @param dat
+#' @param stack_method
+#' @param ... passed on to as.data.frame.data.table
+#'
+#' @return
+#' @export
+#'
+#' @examples
+as.data.table.Stack_table <- function(dat, stack_method = 'row'){
+  stack_method  %assert_class% 'character'
+  assert_that(is.scalar(stack))
+  if(stack_method %in% c('c', 'col', 'column', 'columns')){
+    res <- stack_cols(dat)
+  } else if(stack_method %in% c('r', 'row', 'rows')) {
+    res <- stack_rows(dat)
+  } else{
+    stop('stack_method must be either "row" or "col".')
   }
+
+  return(as.data.table(res))
 }
 
 
-stack_rows_tex <- function(tab1, tab2, insert_empty_row) {
-  empty_row <- rep('', length(tab1)) %>%
+#' Title
+#'
+#' Stacking uses \code{data.table}s internally,
+#'
+#' @param dat
+#' @param stack_method
+#' @param ... parameters passed on to \code{as.data.frame.data.table}
+#'
+#' @return
+#' @export
+#'
+#' @examples
+as.data.frame.Stack_table <- function(dat, stack_method = 'row'){
+  as.data.frame(as.data.table(dat))
+}
+
+# Utility funs -----------------------------------------------------------------
+stack_rows <- function(dat){
+  dat %assert_class% 'Stack_table'
+  res <- rbind(dat[[1]], dat[[2]])
+
+  roworder <- foreach(i = seq_len(nrow(dat[[1]])), .combine = c) %do% {
+    c(i, i + nrow(dat[[1]]))
+  }
+
+  assert_that(max(roworder) %identical% nrow(res))
+  return(res[roworder])
+}
+
+
+stack_rows_tex <- function(dat, insert_empty_row) {
+  dat %assert_class% 'Stack_table'
+
+  empty_row <- rep('', length(dat[[1]])) %>%
     t() %>%
     as.data.frame(stringsAsFactors = FALSE) %>%
-    data.table::setnames(names(tab1))
+    data.table::setnames(names(dat[[2]]))
 
-  res <- foreach(i = 1:nrow(tab1), .combine = rbind) %do% {
-    r <- paste(tab1[i,], tab2[i,], sep = ' \\newline ') %>%
+  res <- foreach(i = 1:nrow(dat[[1]]), .combine = rbind) %do% {
+    r <- paste(dat[[1]][i,], dat[[2]][i,], sep = ' \\newline ') %>%
       t() %>%
       as.data.frame()
-    names(r) <-  names(tab1)
+    names(r) <-  names(dat[[1]])
 
 
-    if (insert_empty_row && i != nrow(tab1)) {
+    if (insert_empty_row && i != nrow(dat[[1]])) {
       r <- rbind(r, empty_row)
     }
 
@@ -84,54 +172,30 @@ stack_rows_tex <- function(tab1, tab2, insert_empty_row) {
 }
 
 
-as.data.frame.Stack_table <- function(dat, method = 'row'){
-  dat    %assert_class% 'stack_table'
-  method %assert_class% 'character'
-  assert_that(is.scalar(method))
-  if(method %in% c('c', 'column')) method <- 'col'
-  if(method %in% c('r'))           method <- 'row'
-
-}
-
-
-stack_rows <- function(dat,
-                       as_character = TRUE,
-                       format_args1 = NULL,
-                       format_args2 = NULL){
+stack_cols <- function(dat){
   dat %assert_class% 'Stack_table'
+  res <- cbind(dat[[1]], dat[[2]])
 
-  rows <- foreach(i = 1:nrow(dat[[1]]), .combine = c) %do% {
-    list(dplyr::slice(dat[[1]], i),
-          dplyr::slice(dat[[2]], i)
-    )
+  colorder <- foreach(i = seq_along(dat[[1]]), .combine = c) %do% {
+    c(i, i+ncol(dat[[1]]))
   }
 
-  data.table::rbindlist(rows)
+  assert_that(max(colorder) %identical% ncol(res))
+  setcolorder(res, colorder)
+  return(res)
 }
 
 
-# df_stack <- function(dat1, dat2, method = 'r'){
-#
-#   # preconditions ----
-#     dat1   %assert_class% 'data.frame'
-#     dat2   %assert_class% 'data.frame'
-#
-#
-#     output %assert_class% 'character'
-#     assert_that(is.scalar(output))
-#
-#     # parse input parameters
-#
-#
-#       if(output %in% c('df'))            output <- 'data.frame'
-#       if(output %in% c('xls', 'excell')) output <- 'xlsx'
-#       if(output %in% c('tex'))           output <- 'latex'
-#
-#   assert_that(method %in% c('row', 'col'))
-#   assert_that(output %in% c('data.frame', 'xlsx', 'latex'))
-#
-# }
+stack_cols_tex <- function(dat, insert_empty_row) {
 
-save_as.Stack_table <- function(dat, outfile, format){
+  res <- foreach(i = 1:nrow(dat[[1]]), .combine = rbind) %do% {
+    r <- paste(dat[[1]][i,], dat[[2]][i,], sep = ' ') %>%
+      t() %>%
+      as.data.frame()
+    names(r) <-  names(dat[[1]])
 
+    return(r)
+  }
 }
+
+
