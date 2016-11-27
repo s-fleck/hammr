@@ -57,7 +57,7 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
 #'
 #' @param dat an input stack table
 #' @param stack Stack by by \code{row} or \code{col}
-#' @param insert_empty_row insert additional empty row after each row of the
+#' @param insert_blank_row insert additional empty row after each row of the
 #'        tabular environment. \renewcommand{\arraystretch}{1.5}
 #' @param .align the [pos] argument of the tabular environment. Passed on
 #'        to \code{\link{xtable}}. Please note that \code{\\newline} only
@@ -79,7 +79,7 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
 #' @examples
 print_tex.Stack_table <- function(dat,
                                   stack_method = 'row',
-                                  insert_empty_row = (stack_method == 'row'),
+                                  insert_blank_row = (stack_method == 'row'),
                                   .align = paste0('lX', paste(rep('X', ncol(dat[[1]])-1), collapse = '')),
                                   .include.rownames=FALSE,
                                   .floating = FALSE,
@@ -90,14 +90,14 @@ print_tex.Stack_table <- function(dat,
 
   # Preconditions
     stack_method %assert_class% 'character'
-    insert_empty_row %assert_class% 'logical'
+    insert_blank_row %assert_class% 'logical'
     assert_that(is.scalar(stack_method))
-    assert_that(is.scalar(insert_empty_row))
+    assert_that(is.scalar(insert_blank_row))
 
 
   # Stacking
   res <- switch(stack_method,
-         'row' = stack_rows_tex(dat, insert_empty_row = FALSE),
+         'row' = stack_rows_tex(dat, insert_blank_row = FALSE),
          'col' = stack_cols_tex(dat))
 
   # format latex
@@ -113,10 +113,26 @@ print_tex.Stack_table <- function(dat,
 
 
 
-save_as.Stack_table <- function(dat, outfile, format){
+save_xlsx.StackTable <- function(dat,
+                                 outfile,
+                                 stack_method = 'row',
+                                 insert_blank_row = TRUE,
+                                 second_row_height = 30,
+                                 sheet_name = 'sheet1',
+                                 ...){
 
+  res <- as.data.table(dat, stack_method = stack_method, insert_blank_row = insert_blank_row)
+
+  wb <- openxlsx::createWorkbook()
+  openxlsx::addWorksheet(wb, '')
+  openxlsx::writeData(wb, 1, res)
+
+
+  sel_rows <- seq(4, nrow(res), by = 2)
+
+  openxlsx::setRowHeights(wb, 1, sel_rows, second_row_height)
+  openxlsx::saveWorkbook(wb, outfile, ...)
 }
-
 
 #' Title
 #'
@@ -128,13 +144,14 @@ save_as.Stack_table <- function(dat, outfile, format){
 #' @export
 #'
 #' @examples
-as.data.table.Stack_table <- function(dat, stack_method = 'row'){
+as.data.table.Stack_table <- function(dat, stack_method = 'row', insert_blank_row = FALSE){
   stack_method  %assert_class% 'character'
   assert_that(is.scalar(stack))
   if(stack_method %in% c('c', 'col', 'column', 'columns')){
+    if(insert_blank_row) warning('insert_blank_row only possible when stacking by row')
     res <- stack_cols(dat)
   } else if(stack_method %in% c('r', 'row', 'rows')) {
-    res <- stack_rows(dat)
+    res <- stack_rows(dat, insert_blank_row)
   } else{
     stop('stack_method must be either "row" or "col".')
   }
@@ -160,12 +177,30 @@ as.data.frame.Stack_table <- function(dat, stack_method = 'row'){
 }
 
 # Utility funs -----------------------------------------------------------------
-stack_rows <- function(dat){
+stack_rows <- function(dat, insert_blank_row = FALSE){
   dat %assert_class% 'Stack_table'
-  res <- rbind(dat[[1]], dat[[2]])
+
+  if(insert_blank_row){
+    dat_blank <- rep('', nrow(dat[[1]]) * ncol(dat[[1]])) %>%
+      `dim<-`(dim(dat[[1]])) %>%
+      as.data.table()
+
+    res <- data.table::rbindlist(list(dat[[1]], dat[[2]], dat_blank))
+    res <- res[1:(nrow(res)-1)]
+  } else {
+    res <- rbind(dat[[1]], dat[[2]])
+  }
 
   roworder <- foreach(i = seq_len(nrow(dat[[1]])), .combine = c) %do% {
-    c(i, i + nrow(dat[[1]]))
+    if(insert_blank_row){
+      r <- c(i, i + nrow(dat[[1]]), i + 2L * nrow(dat[[1]]))
+    } else {
+      c(i, i + nrow(dat[[1]]))
+    }
+  }
+
+  if(insert_blank_row){
+    roworder <- roworder[-which(roworder == max(roworder))]
   }
 
   assert_that(max(roworder) %identical% nrow(res))
@@ -173,7 +208,7 @@ stack_rows <- function(dat){
 }
 
 
-stack_rows_tex <- function(dat, insert_empty_row) {
+stack_rows_tex <- function(dat, insert_blank_row) {
   dat %assert_class% 'Stack_table'
 
   empty_row <- rep('', length(dat[[1]])) %>%
@@ -188,7 +223,7 @@ stack_rows_tex <- function(dat, insert_empty_row) {
     names(r) <-  names(dat[[1]])
 
 
-    if (insert_empty_row && i != nrow(dat[[1]])) {
+    if (insert_blank_row && i != nrow(dat[[1]])) {
       r <- rbind(r, empty_row)
     }
 
@@ -211,7 +246,7 @@ stack_cols <- function(dat){
 }
 
 
-stack_cols_tex <- function(dat, insert_empty_row) {
+stack_cols_tex <- function(dat) {
 
   res <- foreach(i = 1:nrow(dat[[1]]), .combine = rbind) %do% {
     r <- paste(dat[[1]][i,], dat[[2]][i,], sep = ' ') %>%
