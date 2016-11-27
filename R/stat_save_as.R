@@ -56,25 +56,4 @@ print.Rstack_table_latex <- function(dat){
 }
 
 
-#' Title
-#'
-#' @param tab
-#' @param digits
-#' @param ...
-#'
-#' @return
-#' @export
-#' @import xtable
-#'
-#' @examples
-print_xtable <- function(tab, alignment = paste0('ll', paste(rep('X', ncol(tab)-1), collapse = '')), digits = 0, ...) {
-  xtable::xtable(tab, align = alignment, digits = digits, ...) %>%
-    print(format.args = list(big.mark = "~"),
-          include.rownames=FALSE,
-          floating = FALSE,
-          tabular.environment = 'tabularx',
-          booktabs = TRUE,
-          sanitize.text.function = identity,
-          width = '\\textwidth')
-}
 
