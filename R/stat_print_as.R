@@ -22,7 +22,8 @@ print_as.default <- function(dat, format, ...){
          'tex' = print_tex(dat, ...))
 }
 
-print_tex <- function(dat){
+
+print_tex <- function(dat, ...){
   UseMethod('print_tex')
 }
 
