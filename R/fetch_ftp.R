@@ -50,13 +50,13 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite =
 
   # Move file to destination dir
   tfile   <- file.path(.outdir , .file)
-  if(file.exists(outfile)){
-    copy_ok <- TRUE
-  } else {
-    copy_ok <- FALSE
-  }
+  copy_ok <- file.exists(outfile)
 
   message('Successfully transferred ',   sum(copy_ok), ' of ', length(.file), ' files.\n')
+
+  if(.outdir == '.'){
+    .outdir <- getwd()
+  }
 
   if(all(copy_ok)) {
     message("File(s) saved to: ", .outdir, '\n')
