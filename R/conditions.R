@@ -1,3 +1,11 @@
+ftp_not_all_files_transferred_error <- function(text) {
+  msg <- 'Not all files were transferred succesfully:' %_% text
+
+  condition(c('ftp_not_all_files_transferred_error', 'error'),
+            message = msg)
+}
+
+
 ftp_530_creds_error<- function(text) {
   msg <- 'FTP login error:' %_% text
 

@@ -63,7 +63,7 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite =
     invisible(TRUE)
   } else if (sum(copy_ok > 0)){
     message("File(s) saved to: ", .outdir, '\n')
-    stop('Not all files were transferred successfully')
+    stop(ftp_not_all_files_transferred_error(' '))
   } else {
     stop('Something went wrong. No files were transferred successfully')
   }
