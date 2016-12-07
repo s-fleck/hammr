@@ -1,5 +1,5 @@
 #' @export
-fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite = FALSE, .mode = 'ascii', ...) {
+download_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite = FALSE, .mode = 'ascii', ...) {
 
   # Setup paths and credentials ----
   outfile                     <- file.path(.outdir, .file)
@@ -34,7 +34,7 @@ fetch_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite =
                     retry <- tolower(readline('Retry? (y/n): ')) %in%  c('y', 'yes')
 
                     if (retry) {
-                      fetch_ftp(
+                      download_ftp(
                         .file      = .file,
                         .outdir    = .outdir,
                         .creds     = NULL,
