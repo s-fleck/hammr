@@ -98,7 +98,7 @@ is_col_classes <- function(dat, classes, method = 'identical'){
   }
 
 
-  return(all(res))
+  all_with_warning(res)
 }
 
 assertthat::on_failure(is_col_classes) <- function(call, env){
