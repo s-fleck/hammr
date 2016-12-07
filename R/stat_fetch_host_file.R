@@ -4,75 +4,129 @@
 #' @param outdir local destination directory
 #' @param overwrite should existing files be overwritten?
 #' @param creds login credentials for host
-#' @param ... params passed to fetch_ftp
+#' @param ... params passed to download_ftp
 #'
 #' @export
 #'
 #' @return
-fetch_host_file <- function(file, outdir = '.', creds = ftp_creds, server = "mfstat01", overwrite = FALSE, ...){
+download_host_file <- function(file, outdir = '.', creds = ftp_creds, server = "mfstat01", overwrite = FALSE, ...){
   message("HOST-Download wird gestartet...\n")
 
-  fetch_ftp(.file = file, .outdir = outdir, .creds = creds, .server = server, .overwrite = overwrite, ...)
+  download_ftp(.file = file, .outdir = outdir, .creds = creds, .server = server, .overwrite = overwrite, ...)
 }
 
 
-#' Send Querry to Host
-#'
-#' @param q
-#' @param con
 #' @export
-
-query_host_db2 <- function(q, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn'],
-                                                uid=gvk_secrets['uid'],
-                                                pwd=gvk_secrets['pwd'])
-               ){
-
-  res        <- RODBC::sqlQuery(con, q, errors=FALSE)
-  con_string <- strsplit(attr(con, "connection.string"), ";", fixed = TRUE)[[1L]]
-
-  attr(res, 'date')       <- Sys.time()
-  attr(res, 'fetch_date') <- attr(res, 'date')
-  attr(res, 'con')        <- c(con_string, table = table)
-  class(res)              <- c('host_db2_fetch', class(res))
-
-  RODBC::odbcCloseAll()
-
-  return(res)
+fetch_host_fwf <- function(file, ...) {
+  UseMethod('fetch_host_fwf')
 }
 
 
-#' Fetch db2 tables from host
+#' @export
+fetch_host_fwf.character <- function(infile, col_positions, ...){
+
+  if(length(infile) %identical% 1L){
+    assert_that(names(col_positions) %identical% c("begin", "end", "col_names"))
+  } else {
+    assert_that(
+      (names(col_positions) %identical% c("begin", "end", "col_names")) ||
+      (length(infile) %identical% length(col_positions))
+      )
+  }
+
+  tdir <- tempdir()
+
+
+  download_host_file(infile, outdir = tdir, creds = creds, overwrite = TRUE)
+
+  res <- foreach(f = infile, .combine = rbind) %do% {
+    tfile <- file.path(tdir, f)
+
+    if(file.exists(tfile)){
+      suppressWarnings(
+        res   <- readr::read_fwf(tfile,
+                                 col_positions = col_positions,
+                                 ...)
+      )
+    } else {
+      warning('Skipped ', f, ' (file not found)')
+      return(NULL)
+    }
+
+    res   <- data.table::as.data.table(res)
+    file.remove(tfile)
+    return(res)
+  }
+
+}
+
+
+
+
+
+
+#' Title
 #'
-#' @section Tips:
-#'
-#' Fetch 'sysibm.systables' to get infos about all tables on db2 server (warning: big query)
-#'
-#' @param table name of the table to be retrieved
-#' @param con an ROBC connection object
+#' @param year
+#' @param quarter
+#' @param mask
+#' @param reverse
 #'
 #' @return
 #' @export
 #'
 #' @examples
-fetch_host_db2 <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn'],
-                                                          uid=gvk_secrets['uid'],
-                                                          pwd=gvk_secrets['pwd'])){
-  q = paste('select * from', table)
-  res <- query_host_db2(q, con)
-  attr(res, 'source') <- table
+generate_yq_filename <- function(year, quarter = NULL, mask = 'example_%s-Q%s', reverse = FALSE){
+  if(is.null(quarter)){
+    timeframe <- expand.grid(year, c(1:4))
+  } else {
+    assert_that(length(year) %identical% length(quarter))
 
-  return(res)
+    timeframe <- data.frame(
+      Var1 = year,
+      Var2 = quarter
+    )
+  }
+
+  if(reverse){
+    names(timeframe) <- rev(names(timeframe))
+  }
+
+  # Filenames
+  res <- foreach(i = seq_len(nrow(timeframe))) %do% {
+    sprintf(mask,
+            timeframe$Var1[[i]],
+            timeframe$Var2[[i]])
+  }
+
+  return(unlist(res))
 }
 
 
-host_db2_table_info <-function(table, con = RODBC::odbcConnect(dsn=gvk_secrets['dsn'],
-                                                          uid=gvk_secrets['uid'],
-                                                          pwd=gvk_secrets['pwd'])){
+fetch_ric_raw_internal <- function(params, creds){
+  tdir <- tempdir()
 
-  q <- "select NAME,TBNAME,COLTYPE,LENGTH,REMARKS,SCALE from sysibm.syscolumns
-            where tbcreator = 'SGVP' and tbname='TURPRIV' ;'"
 
-  res <- query_host_db2(q, con)
+  tryCatch(download_host_file(params$infile, outdir = tdir, creds = creds, overwrite = TRUE),
+           'ftp_not_all_files_transferred_error' = function(x) (warning(x)))
 
-  return(res)
+
+  res <- foreach(f = params$infile, .combine = rbind) %do% {
+    tfile <- file.path(tdir, f)
+
+    if(file.exists(tfile)){
+      suppressWarnings(
+        res   <- readr::read_fwf(tfile,
+                                 col_positions = params$col_widths,
+                                 locale = readr::locale(encoding = 'ISO-8859-1'))
+      )
+    } else {
+      warning('Skipped ', f, ' (file not found)')
+      return(NULL)
+    }
+
+    res   <- data.table::as.data.table(res)
+    file.remove(tfile)
+    return(res)
+  }
 }
