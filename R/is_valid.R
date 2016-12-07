@@ -18,28 +18,4 @@ on_failure(is_valid) <- function(call, env){
 }
 
 
-#' @export
-warn_false <- function(dat){
-  dat %assert_class% 'list'
-  assert_that(unlist(unique(lapply(dat, class))) %identical% 'logical')
 
-  datl <- as.logical(dat)
-  if(any(is.na(datl))){
-    warning("Treating NAs as 'FALSE'")
-  }
-
-  dat[which(is.na(datl))] <- FALSE
-  datl[is.na(datl)]       <- FALSE
-
-  if(all(datl)){
-    return(TRUE)
-  } else {
-    failed      <- dat[as.logical(lapply(dat, identical, FALSE))]
-    warn        <- 'A validity check has vailed for:' %_% paste(names(failed), collapse = ', ')
-    warning(warn)
-    return(FALSE)
-  }
-}
-
-
-warn_invalid <- warn_false
