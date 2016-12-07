@@ -6,7 +6,7 @@ context("Key-value Range")
     to   = as.Date(c("2008-01-01", "1008-01-01", "2999-09-30", "2013-10-01", "2013-01-01", "2013-01-01", '2999-09-30', NA, '2999-09-30')) + 10,
     key  = c('apple', 'apple', 'pear', 'orange', 'dog', 'horse', 'Z000A212W', NA, NA),
     stringsAsFactors = FALSE
-  ) %>% valid_range()
+  ) %>% kv_range()
 
 
   test_range2 <- data.frame(
@@ -14,7 +14,7 @@ context("Key-value Range")
     to   = as.Date(c("2008-01-01", "1008-01-01", "2999-09-30", "2013-10-01", "2013-01-01", "2013-01-01", '2999-09-30')) + 10,
     key  = c('apple', 'apple', 'pear', 'orange', 'dog', 'horse', 'Z000A212W'),
     stringsAsFactors = FALSE
-  ) %>% valid_range()
+  ) %>% kv_range()
 
 
   testdat <- data.frame(

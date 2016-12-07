@@ -21,4 +21,8 @@ devtools::install_github("seasmith/AlignAssign")
 devtools::install_github("eddelbuettel/digest")
 devtools::install_github("jeroenooms/jsonlite")
 devtools::install_github("DerekYves/placement")
+devtools::install_github("rich-iannone/DiagrammeR")
+
+
 ```
+

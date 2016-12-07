@@ -45,17 +45,16 @@ test_that('stacking tables by row works', {
     stack_rows(st1)
     stack_rows_tex(st1, insert_empty_row = TRUE)
     stack_rows_tex(st1, insert_empty_row = FALSE)
-    print_tex(st1, stack_method = 'row')
+    #print_tex(st1, stack_method = 'row')
 
     stack_cols(st1)
     stack_cols_tex(st1)
-    print_tex(st1, stack_method = 'col')
+    #print_tex(st1, stack_method = 'col')
 
-    expect_identical(lapply(res1, class), lapply(tdat1, class))
     expect_identical(as.character(lapply(res2, class)), as.character(lapply(tdat3, class)))
 
   # Create row stacked latex table
-    print_tex(st1)
+    #print_tex(st1)
 })
 
 test_that('stacking tables by col', {
@@ -73,6 +72,6 @@ test_that('stacking tables by col', {
   expect_identical(as.character(lapply(res2, class)), as.character(lapply(tdat3, class)))
 
   # Create row stacked latex table
-  print_tex(st1)
+  # print_tex(st1)
 })
 

@@ -1,4 +1,4 @@
-context('fetch_ftp')
+context('download_ftp')
 
 testdat <- data.frame(
   a = factor(c(6,5,3,4,5)),
@@ -29,7 +29,7 @@ test_that("Downloading files via ftp works.", {
   tserver <- 'dummy:server'
   tmode   <- 'ascii'
 
-  expect_error(fetch_ftp(file, outdir, creds))
+  expect_error(download_ftp(file, outdir, creds))
 
   tcmd <- tempfile()
   generate_ftp_command_file(fname = tcmd, creds = tcreds, mode = tmode, files = tfiles, local_dir = ldir)
@@ -47,7 +47,7 @@ test_that("Downloading files via ftp works.", {
   # }
   #
   # with_mock(
-  #   fetch_ftp(.file = tfiles, .outdir = toutdir, .creds = tcreds, .server = tserver, .overwrite = FALSE, .mode = tmode),
+  #   download_ftp(.file = tfiles, .outdir = toutdir, .creds = tcreds, .server = tserver, .overwrite = FALSE, .mode = tmode),
   #   shell = shellmock)
 
 })

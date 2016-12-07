@@ -1,6 +1,6 @@
 context("Assertions")
 
-testdat <- quarter('2015-Q1')
+testdat <- hammr::quarter('2015-Q1')
 tdat1 <- data.frame(
   x = c('a', 'b', 'c'),
   y = factor(c('r', 'u', 'b')),
@@ -25,7 +25,7 @@ test_that("mass checking of data.frame column / list element classes works.", {
     error_classes2 <- list(x = 'character', y = 'factor', z = 'numeric', u = 'integer')
 
     expect_true(is_col_classes(dat, true_classes))
-    expect_false(is_col_classes(dat, false_classes))
+    expect_warning(expect_false(is_col_classes(dat, false_classes)))
 
     expect_error(is_col_classes(dat, error_classes))
     expect_true(is_col_classes(dat, true_classes[1:2], method = 'all'))
