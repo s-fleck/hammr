@@ -13,7 +13,7 @@
 save_test <- function(..., pkg = '.', subdir){
 
   pkg       <- devtools::as.package(pkg)
-  pkg_dir   <- system.file(package = pkg$package)
+  pkg_dir   <- base::system.file(package = pkg$package)                #base:: prevents devtools from inserting /inst/ into path
   cache_dir <- file.path(pkg_dir, 'tests', 'testthat', 'test_data')
 
   if(!missing(subdir)){
@@ -55,7 +55,7 @@ save_test <- function(..., pkg = '.', subdir){
 #' @export
 load_test <- function(..., pkg = '.', subdir, envir = globalenv()){
   pkg       <- devtools::as.package(pkg)
-  pkg_dir   <- system.file(package = pkg$package)
+  pkg_dir   <- base::system.file(package = pkg$package)
   cache_dir <- file.path(pkg_dir, 'tests', 'testthat', 'test_data')
 
   if(!missing(subdir)){
