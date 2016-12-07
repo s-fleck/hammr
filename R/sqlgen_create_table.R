@@ -12,12 +12,16 @@
 #' @export
 #'
 #' @examples
-sqlgen_create_table <- function(table_name, col_names, col_types, dialect = NULL){
+sqlgen_create_table <- function(table_name, col_names, col_types, col_options = NULL, dialect = NULL){
 
   # preconditions
     assert_that(is.scalar(table_name))
     assert_that(length(col_names) %identical% length(col_types))
     assert_that(all(is.na(col_names) == FALSE | is.na(col_names) == is.na(col_types)))
+
+    assert_that(is.null(col_options) |
+                length(col_options %identical% length(col_names)))
+
     table_name %assert_class% 'character'
     col_names  %assert_class% 'character'
     col_types  %assert_class% 'character'
@@ -35,16 +39,24 @@ sqlgen_create_table <- function(table_name, col_names, col_types, dialect = NULL
       col_types <- col_types[!is.na(col_types)]
     }
 
-  # check processed col_types
-    assert_that(check_sql_types(col_types, dialect = 'db2'))
 
-  cols <- paste0(paste0(col_names, ' ', col_types), collapse = ', ')
+  # check processed col_types
+    assert_that(check_sql_types(col_types, dialect = dialect))
+
+
+  cols <- paste0(paste0(col_names, ' ', col_types, ' ', col_options), collapse = ', ')
 
   sprintf('CREATE TABLE %s (%s)', table_name, cols)
 }
 
 
 check_sql_types <- function(col_types, dialect){
+  if(is.null(dialect)){
+    return(TRUE)
+  }
+
+  dialect <- tolower(dialect)
+
   switch(dialect,
          'db2' = check_sql_types_db2(col_types))
 
@@ -52,6 +64,7 @@ check_sql_types <- function(col_types, dialect){
 
 
 check_sql_types_db2 <- function(col_types){
+
   valid_col_types <- c(
     'SMALLINT',
     'INTEGER', 'INT',
@@ -77,5 +90,5 @@ check_sql_types_db2 <- function(col_types){
   }
 
   names(res) <- col_types
-  warn_false(res)
+  all_with_warning(res)
 }
