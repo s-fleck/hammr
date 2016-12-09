@@ -37,36 +37,37 @@ test_that('stacking tables by works', {
     res1 <- stack_rows(st1)
     res2 <- stack_rows(st2)
 
-  as.data.table(st1, insert_blank_row = TRUE)
-
-
-  # Create a col_stacked data.table
-    expect_error(stack_rows(tdat1))
-    res1 <- stack_cols(st1)
-    res2 <- stack_rows(st2)
-
-    stack_rows(st1)
-    stack_rows_tex(st1, insert_empty_row = TRUE)
-    stack_rows_tex(st1, insert_empty_row = FALSE)
-    print_tex(st1, stack_method = 'row')
-
-
-
-
-
     expect_identical(lapply(res1, class), lapply(tdat1, class))
     expect_identical(as.character(lapply(res2, class)), as.character(lapply(tdat3, class)))
 
-  # Create row stacked latex table
-    print_tex(st1)
+  # Inserting blank rows works
+    res1 <- as.data.table(st1, insert_blank_row = TRUE)
+    expect_warning(as.data.table(st1, stack_method = 'col', insert_blank_row = TRUE))
+
+    sel <- seq(3, nrow(res1), 3)
+    expect_true(all(rowSums(res1[sel] == '') == ncol(res1)))
+    expect_false(any(rowSums(res1[-sel] == '') == ncol(res1)))
+})
+
+
+test_that('printing as latex works', {
+  res2 <- stack_rows(st1)
+  res2 <- stack_rows(st2)
+
+  expect_silent(stack_rows_tex(st1, insert_blank_row = TRUE))
+  expect_silent(stack_rows_tex(st1, insert_blank_row = FALSE))
+  expect_output(print_tex(st1, stack_method = 'row'))
+  expect_output(print_tex(st2))
+
 })
 
 
 
-
 test_that('exporting as xlsx works', {
-
   expect_silent(st1 <- stack_table(tdat1, tdat2, rem_ext = '_xt'))
-
   save_xlsx.StackTable(st1, '/home/hoelk/blah.xlsx', overwrite = TRUE)
+  save_xlsx.StackTable(st1, '/home/hoelk/blah.xlsx', overwrite = TRUE, startRow = 10)
+  save_xlsx.StackTable(st1, '/home/hoelk/blah.xlsx', overwrite = TRUE, xy = c(6, 10))
+  save_xlsx.StackTable(st1, '/home/hoelk/blah.xlsx', overwrite = TRUE, sep_height = 24, xy = c(6, 10))
+  save_xlsx.StackTable(st1, '/home/hoelk/blah.xlsx', overwrite = TRUE, sep_height = 24, xy = c(6, 10), insert_blank_row = TRUE)
 })
