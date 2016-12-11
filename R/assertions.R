@@ -1,6 +1,3 @@
-# is_class ----
-
-
 #' Check if object is of a certain class
 #'
 #' These functions are desinged to be used in combination with the assertthat
@@ -26,6 +23,7 @@ is_class <- function(dat, class){
   class %in% class(dat)
 }
 
+
 on_failure(is_class) <- function(call, env){
   #print(call)
   #class = eval(env$class)
@@ -40,11 +38,13 @@ assert_class <- function(dat, class){
   assert_that(is_class(dat = dat, class = class))
 }
 
+
 #' @export
 #' @rdname is_class
 `%assert_class%` <- function(dat, class){
   assert_class(dat = dat, class = class)
 }
+
 
 #' @export
 #' @rdname is_class
@@ -74,9 +74,7 @@ is_col_classes <- function(dat, classes, method = 'identical'){
   assert_that(is.scalar(method))
   assert_that(method %in% c('all', 'any', 'identical'))
 
-
   dat <- as.list(dat)
-
 
   if(method %identical% 'all'){
     assert_that(all(names(classes) %in% names(dat)))
@@ -89,7 +87,6 @@ is_col_classes <- function(dat, classes, method = 'identical'){
     stop('method must be "all", "any" or "identical"')
   }
 
-
   res <- rep(FALSE, length(names(classes)))
   names(res) <- names(classes)
 
@@ -97,9 +94,9 @@ is_col_classes <- function(dat, classes, method = 'identical'){
     res[i] <- i %in% names(dat) && classes[[i]] == class(dat[[i]])
   }
 
-
   return(all(res))
 }
+
 
 assertthat::on_failure(is_col_classes) <- function(call, env){
   dat     <- eval(call$dat)
@@ -139,13 +136,6 @@ assertthat::on_failure(is_col_classes) <- function(call, env){
 }
 
 
-has_field <- function(dat, field, type){
-  field_exists           <- field %in% names(dat)
-  field_has_correct_type <- ifelse(class(dat[[field]]) == type, TRUE, FALSE)
-  return(field_exists && field_has_correct_type)
-}
-
-
 #' Check if any of the classes of the object match a certain string
 #'
 #' @param dat the object
@@ -164,10 +154,8 @@ is_any_class <- function(dat, choices){
   any(choices %in% class(dat))
 }
 
+
 on_failure(is_any_class) <- function(call, env){
   choices = paste(eval(call$choices), collapse=", ")
   paste("Input must be an object of any of the following classes:", choices)
 }
-
-
-

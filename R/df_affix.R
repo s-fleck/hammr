@@ -1,14 +1,24 @@
-#' Paste a suffix or prefix to each column of a data.frame
+#' Paste a suffix and/or prefix to each column of a data.frame
 #'
-#' @param dat
-#' @param prefix
+#' @param dat a data.frame
+#' @param prefix to be pasted before each elemtn
 #' @param suffix
 #'
-#' @return
+#' @return a data frame
 #' @export
 #' @rdname df_affix
 #'
 #' @examples
+#' dat <- data.frame(
+#'   a = c(1, 2),
+#'   b = c('a', 'b'),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' df_affix(dat, "prefix-", "-suffix" )
+#' df_parenthesis(dat)
+#' df_brackets(dat)
+#'
 df_affix <- function(dat, prefix, suffix){
 
   fun   <- function(x, p= prefix, s = suffix) paste0(p, x, s)

@@ -1,12 +1,11 @@
 Package: hammr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Various utility functions for a wide range of purposes
 Version: 0.0.2
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
+Author: Stefan Fleck
+Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
 Description: More about what it does (maybe more than one line)
 License: GPL3
 Imports: assertthat, magrittr, data.table, dplyr, dtplyr, bit64, foreach, openxlsx, stringi, xtable
-Suggests: bit64
 LazyData: TRUE
 RoxygenNote: 5.0.1
