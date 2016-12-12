@@ -42,6 +42,8 @@ download_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrit
                         .overwrite = .overwrite,
                         .mode      = .mode
                       )
+
+                      return()
                     } else {
                       stop(x)
                     }

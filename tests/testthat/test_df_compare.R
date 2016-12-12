@@ -64,7 +64,7 @@ test_that("Dropping columns by name works.", {
   expect_identical(res3$d, dat1$d)
 
 
-  df_pdiff(dat2, dat1, digits = 0)
+  df_pdiff(dat2, dat1)
 
 
 })

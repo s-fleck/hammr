@@ -1,37 +1,14 @@
-ftp_not_all_files_transferred_error <- function(text) {
-  msg <- 'Not all files were transferred succesfully:' %_% text
-
-  condition(c('ftp_not_all_files_transferred_error', 'error'),
-            message = msg)
-}
-
-
-ftp_530_creds_error<- function(text) {
-  msg <- 'FTP login error:' %_% text
-
-  condition(c('ftp_530_creds_error', 'error'),
-            message = msg)
-}
-
-fun_arg_error <- function(text){
-  msg <- 'Function argument error:' %_% text
-
-  condition(c('fun_arg_error', 'error'),
-            message = msg)
-}
-
-
-
 #' Condition constructor
 #'
-#' From http://adv-r.had.co.nz/beyond-exception-handling.html
+#' A constructur function for conditions, taken rom
+#' http://adv-r.had.co.nz/beyond-exception-handling.html
 #'
-#' @param subclass
-#' @param message
-#' @param call
-#' @param ...
+#' @param subclass Subclass to assign to the condition
+#' @param message  message to be passed to the condition
+#' @param call     call passed on to the conditon
+#' @param ...      further list elements to be passed on to the resulting object
 #'
-#' @return
+#' @return a condition object
 #' @export
 #'
 #' @examples
@@ -66,3 +43,21 @@ condition <- function(subclass, message, call = sys.call(-1), ...) {
     list(message = message, call = call, ...)
   )
 }
+
+
+ftp_530_creds_error<- function(text) {
+  msg <- 'FTP login error:' %_% text
+
+  condition(c('ftp_530_creds_error', 'error'),
+            message = msg)
+}
+
+
+fun_arg_error <- function(text){
+  msg <- 'Function argument error:' %_% text
+
+  condition(c('fun_arg_error', 'error'),
+            message = msg)
+}
+
+

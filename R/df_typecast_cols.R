@@ -7,6 +7,7 @@
 #'
 #' @return a data.frame with typecasted columns
 #' @export
+#' @import bit64
 #'
 #' @examples
 #' dat <- data.frame(foo = c('5', '6', '5'),
@@ -94,14 +95,15 @@ df_typecast_all <- function(dat, from = 'factor', to = 'character'){
 
 cfun <- function(x){
   res <- switch(x,
-                'logical'  = as.logical2,
+                'logical'   = as.logical,
                 'integer'   = as.integer2,
                 'integer64' = as.integer642,
                 'factor'    = as.factor,
                 'numeric'   = as.numeric2,
                 'character' = as.character,
                 'POSIXct'   = as.POSIXct,
-                stop('Input must be any of "numeric", integer", "factor", "character"')
+                'Date'      = as.Date,
+                stop('Input must be any of "numeric", integer", "factor", "character", "POSIXct", "integer64", "Date", but is ', x)
   )
   return(res)
 }
@@ -110,7 +112,6 @@ cfun <- function(x){
 as.numeric2   <- function(x) as.numeric(as.character(x))
 as.integer2   <- function(x) as.integer(as.character(x))
 as.integer642 <- function(x) bit64::as.integer64(as.character(x))
-as.logical2   <- function(x) as.logical(as.character(x))
 
 
 #' @export
