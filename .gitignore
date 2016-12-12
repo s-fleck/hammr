@@ -3,7 +3,6 @@
 .RData
 .Ruserdata
 .Rbuildignore
-man/
 bfg-1.12.13.jar
 cache
 *.pdf
