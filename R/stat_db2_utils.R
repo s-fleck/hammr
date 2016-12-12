@@ -12,3 +12,20 @@ db2ExistsTable <- function(con, tname){
   res   <- RODBC::sqlQuery(con, paste("select * from", tname, "FETCH FIRST 1 ROWS ONLY"))
   return(class(res) %identical% 'data.frame')
 }
+
+
+#' @export
+db2ExistsSequence <- function(con, sname){
+
+  sname <- trimws(toupper(sname))
+  schema <- stringi::stri_split(sname, fixed = '.')[[1]][1]
+  tname  <- stringi::stri_split(sname, fixed = '.')[[1]][2]
+
+  res   <- RODBC::sqlQuery(con,
+                           "select *
+                           from syscat.sequences")
+
+  any(trimws(as.character(res$SEQSCHEMA)) == schema &
+        as.character(res$SEQNAME) == tname)
+}
+

@@ -23,6 +23,10 @@ devtools::install_github("jeroenooms/jsonlite")
 devtools::install_github("DerekYves/placement")
 devtools::install_github("rich-iannone/DiagrammeR")
 
+devtools::install_bitbucket('s_fleck/testthis')
+
+    expect_silent(st1 <- stack_table(tdat1, tdat2, rem_ext = '_xt'))
+    expect_silent(st2 <- stack_table(tdat1, tdat3, rem_ext = '_xt'))
 
 ```
 
