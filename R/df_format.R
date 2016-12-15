@@ -66,6 +66,12 @@ df_format <- function(dat, num_format, date_format, dtime_format, col_format){
   UseMethod('df_format')
 }
 
+
+df_format_num <- function(dat, format_integer = TRUE, ...){
+  df_format(dat, num_format = list(...), int_format = list(...))
+}
+
+
 df_format <- function(dat,
                       num_format   = NULL,
                       int_format   = num_format,
