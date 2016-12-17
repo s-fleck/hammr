@@ -4,41 +4,20 @@
 \alias{df_format}
 \title{Format columns of a data.frame}
 \usage{
-df_format(dat, num_format = NULL, int_format = num_format,
-  date_format = NULL, dtime_format = NULL, col_format = NULL)
+df_format(dat, ...)
 }
 \arguments{
 \item{dat}{a \code{data.frame} (or something that can be coearced with \code{as.data.frame})}
 
-\item{num_format}{a list of parameters to \code{format}, or an arbitrary function
-that will be applied to all \code{numeric} columns. You can also supply
-an integer (or numeric) vector of length one that will be used as
-"digits" arumgent to \code{format} (see examples)}
-
-\item{date_format}{a list of parameters to \code{format}, or an arbitrary function (\code{\link{format.Date}})
-that will be applied to all \code{Date} columns. You can also supply
-a character vector of length one that will be used as
-"format" arumgent to \code{format} (see examples).}
-
-\item{dtime_format}{a list of parameters to \code{format}
-(\code{\link{format.POSIXct}}, \code{\link{format.POSIXlt}},
-or an arbitrary function)
-that will be applied to all \code{POSIXt} columns. You can also supply
-a character vector of length one that will be used as
-"format" arumgent to \code{format} (see examples).}
-
-\item{col_format}{a list of parameters to \code{format}, or an arbitrary function
-that will be applied to all columns.}
+\item{...}{Key value pairst of the form classname = list(parameters to \code{format}) (see examples)}
 }
 \value{
 a formatted data.frame
 }
 \description{
-Utility function to apply formating to each column of a data frame.
-Input can bei either a list of paramters to \code{\link{format}},
-or an arbitrary function to be applied to each column. If an abriraty
-function is supplied, all you have to ensure is that it returns a vector
-of length \code{nrow(dat)}
+This function applies formatting to each column of a data.frame
+that matches a specified type. For details refer to the documentation of
+\link{\code{format}}
 }
 \examples{
 
@@ -50,30 +29,14 @@ d = as.Date(c("2009-01-12", "2009-01-12", "2009-01-12")),
 t = as.POSIXct(c("2009-01-12 10:01:01", "2009-01-12 23:01:03", "2009-01-12 16:01:01"), "\%Y-\%m-\%d \%H:\%M:\%S"),
 stringsAsFactors = FALSE)
 
-parenthesise <- function(x) paste0("(", trimws(x) , ")")
-
 df_format(tdf,
-  num_format   = list(digits = 3, big.mark = ".", decimal.mark = ","),
-  date_format  = list("\%m/\%d/\%y"),
-  dtime_format = list("\%m/\%d/\%y \%H:\%M:\%S"),
-  col_format   = parenthesise)
+  integer = list(digits = 3, big.mark = ".", decimal.mark = ","),
+  date    = list("\%m/\%d/\%y"),
+  POSIXct = list("\%m/\%d/\%y \%H:\%M:\%S"))
 
-If you supply a vector of length one as *_format, df_format will try to guess
-what you wanted, so
 
-df_format(tdf, dtime_format = "\%m/\%d/\%y \%H:\%M:\%S")
-
-# is dentical to
-
-df_format(tdf, dtime_format = list(format = "\%m/\%d/\%y \%H:\%M:\%S"))
-
-# and
-
-df_format(tdf, num_format = 2)
-
-# is identical to
-
-df_format(tdf, num_format = list(digits = 2))
-
+}
+\seealso{
+df_format_num
 }
 

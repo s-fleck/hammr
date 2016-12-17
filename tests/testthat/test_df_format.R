@@ -14,67 +14,43 @@ tti <- tibble::as_tibble(tdf)
 
 test_that("function yields expected types.", {
 
-  rdf <- df_format(tdf)
-  rdt <- df_format(tdt)
-  rti <- df_format(tti)
-
-  expect_identical(rdf, tdf)
-  expect_identical(rdt, rdf)
-  expect_identical(rti, rdf)
+  tres <- df_format(tdf, numeric = c(digits = 3), 'integer' = list(big.mark = '-'))
+  expect_identical(class(tres), 'data.frame')
+  expect_warning(df_format(tdf, numeric = c(digits = 3), 'integer' = list(big.mark = '-'), 'blubb' = 3))
 
 })
 
 
 test_that("function yields expected results.", {
 
-  parenthesise <- function(x) paste0('(', trimws(x) , ')')
-
   tres <- df_format(tdf,
-                    num_format   = list(digits = 3, big.mark = '.', decimal.mark = ','),
-                    date_format  = list('%m/%d/%y'),
-                    dtime_format = list('%m/%d/%y %H:%M:%S'),
-                    col_format   = parenthesise)
+                    numeric   = list(digits = 3, big.mark = '.', decimal.mark = ','),
+                    integer   = list(digits = 3, big.mark = '.', decimal.mark = ','),
+                    Date      = list('%m/%d/%y'),
+                    POSIXct   = list('%m/%d/%y %H:%M:%S'))
 
   tres2 <- df_format(tdf,
-                    num_format   = list(digits = 3, big.mark = '.', decimal.mark = ','),
-                    date_format  = '%m/%d/%y',
-                    dtime_format = '%m/%d/%y %H:%M:%S',
-                    col_format   = parenthesise)
+                     numeric  = list(digits = 3, big.mark = '.', decimal.mark = ','),
+                     integer  = list(digits = 3, big.mark = '.', decimal.mark = ','),
+                     Date     = '%m/%d/%y',
+                     POSIXct  = '%m/%d/%y %H:%M:%S')
 
   eres <- data.frame(
-    a = c("(alpha)", "(beta)", "(ceta)"),
-    b = c("(1,23)",
-          "(-1.124,00)", "(1,90)"),
-    c = c("(190)", "(3.111.111)", "(5)"),
-    d = c("(01/12/09)",
-          "(01/12/09)", "(01/12/09)"),
-    t = c(
-      "(01/12/09 10:01:01)",
-      "(01/12/09 23:01:03)",
-      "(01/12/09 16:01:01)"
-    ), stringsAsFactors = FALSE
+    a = c("alpha", "beta", "ceta"),
+    b = c("     1,23", "-1.124,00", "     1,90"),
+    c = c("      190", "3.111.111", "        5"),
+    d = c("01/12/09", "01/12/09", "01/12/09"),
+    t = c("01/12/09 10:01:01", "01/12/09 23:01:03", "01/12/09 16:01:01"), stringsAsFactors = FALSE
   )
 
   expect_identical(tres, eres)
+  expect_identical(tres, tres2)
 
-  expect_identical(
-    df_format(tdf, date_format = '%m/%d/%y'),
-    df_format(tdf, date_format = list(format = '%m/%d/%y'))
-  )
+  tres3 <- df_format_num(tdf, digits = 3, big.mark = '.', decimal.mark = ',')
 
-  expect_identical(
-    df_format(tdf, dtime_format = '%m/%d/%y %H:%M:%S'),
-    df_format(tdf, dtime_format = list(format = '%m/%d/%y %H:%M:%S'))
-  )
-
-  expect_identical(
-    df_format(tdf, num_format = 2),
-    df_format(tdf, num_format = list(digits = 2))
-  )
-
-  expect_error(df_format(tdf, num_format = '2'))
-  expect_error(df_format(tdf, date_format = 1))
-
-  df_format(tdf, num_format = 3, int_format = 1)
-
+  expect_identical(tres3[[1]], eres[[1]])
+  expect_identical(tres3[[2]], eres[[2]])
+  expect_identical(tres3[[3]], eres[[3]])
+  expect_identical(tres3[[4]], tdf[[4]])
+  expect_identical(tres3[[5]], tdf[[5]])
 })
