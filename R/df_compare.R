@@ -1,8 +1,9 @@
 #' Compare columns of two data frames
 #'
-#' Combines da columns indicated by \code{coltypes} using the function \code{fun}.
+#' Combines the columns indicated by \code{coltypes} using the function \code{fun}.
 #' The design idea is to use it for comparing two data.frames, but it can be used
-#' for other purposes as well (see examples)
+#' for other purposes as well, such as adding or multiplying numeric columns of
+#' two similar data.frames (see examples)
 #'
 #' @param dat1 a data.frame
 #' @param dat2 a data.frame that has the same number of rows, column names and column types as dat1

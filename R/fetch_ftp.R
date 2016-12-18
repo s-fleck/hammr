@@ -1,3 +1,17 @@
+#' Download files via FTP
+#'
+#' Calls command line FTP client, only tested on windows, you should probably
+#' rather use the RCurl package for this task
+#'
+#' @param .file name of the file (or files) to download
+#'
+#' @param .outdir local dir to download file to
+#' @param .creds login credentials (see \code{\link{ui_credentials}})
+#' @param .server download server adress
+#' @param .overwrite should local files be overwritten?
+#' @param .mode "binary" or "ascii"
+#' @param ...
+#'
 #' @export
 download_ftp <- function(.file, .outdir = '.', .creds = NULL, .server, .overwrite = FALSE, .mode = 'ascii', ...) {
 

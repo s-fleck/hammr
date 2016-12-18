@@ -15,6 +15,7 @@ df_typecast_cols(dat, conv = list())
 a data.frame with typecasted columns
 }
 \description{
+Bulk convert columns of a data.frame to the data.types specified in a list.
 Use with care, will introduce NAs for some conversion attempts
 }
 \examples{

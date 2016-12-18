@@ -1,5 +1,6 @@
 #' Typecast columns of a data.frame by name
 #'
+#' Bulk convert columns of a data.frame to the data.types specified in a list.
 #' Use with care, will introduce NAs for some conversion attempts
 #'
 #' @param dat a data.frame
@@ -56,7 +57,8 @@ df_typecast_cols <-  function(dat, conv = list()){
 
 #' Typecast all columns of a data.frame of a specific type
 #'
-#' Use with care, will introduce NAs for some conversion attempts
+#' Bulk convert columns of a data.frame that share a certain class to a different
+#' class. Use with care, will introduce NAs for some conversion attempts
 #'
 #' @param dat a data.frame
 #' @param from column type to cast

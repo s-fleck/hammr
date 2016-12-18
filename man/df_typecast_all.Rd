@@ -17,7 +17,8 @@ df_typecast_all(dat, from = "factor", to = "character")
 a data frame with all columns of class from converted to class to
 }
 \description{
-Use with care, will introduce NAs for some conversion attempts
+Bulk convert columns of a data.frame that share a certain class to a different
+class. Use with care, will introduce NAs for some conversion attempts
 }
 \examples{
 

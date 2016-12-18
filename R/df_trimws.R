@@ -19,10 +19,3 @@ df_trimws = function(dat, process_factors = FALSE){
 
   return(dat)
 }
-
-#' @export
-remove_whitespace <- function(dat, process_factors = FALSE){
-  warning('deprecated. use df_trimws')
-
-  df_trimws(dat = dat, process_factors = process_factors)
-  }

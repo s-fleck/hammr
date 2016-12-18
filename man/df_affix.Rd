@@ -23,7 +23,7 @@ df_braces(dat)
 \item{suffix}{}
 }
 \value{
-a data frame
+a \code{data.frame} (with only character columns)
 }
 \description{
 Paste a suffix and/or prefix to each column of a data.frame

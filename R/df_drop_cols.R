@@ -1,5 +1,9 @@
 #' Drop columns of a data.frame
 #'
+#' Drops columns of a data.frame if they exists. The main functional difference
+#' to other ways to drop columns in R is that it will not throw an error of
+#' the columns is not present in the data.frame.
+#'
 #' @param dat a data.frame
 #' @param drop (character vector) names of the columns to be droped
 #' @param allow_partial (logical vector) If set to FALSE an error will be thrown
@@ -32,16 +36,4 @@ df_drop_cols <- function(dat, drop, allow_partial = TRUE){
     dplyr::select_(.dots = paste0('-', drop))
 
   return(res)
-}
-
-#' Drop a column from a data.frame if it exists
-#'
-#' @param dat data.frame
-
-#'
-#' @return a data.frame without the columns specified in drop
-#' @export
-drop_if_exists <- function(dat, drop){
-  warning('Deprecated. Please us df_drop_cols')
-  df_drop_columns(dat, drop, allow_partial = TRUE)
 }

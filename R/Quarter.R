@@ -64,7 +64,7 @@ quarter <- function(y, q) {
       tidyr::separate(col = x, into = c('y', 'q'), sep = '-Q')
   }
 
-
+#' @export
 as.integer.Quarter <- function(x){
   x <- as.character(x)
   x <- gsub('-Q', '', x)
@@ -73,7 +73,7 @@ as.integer.Quarter <- function(x){
 
 
 is_valid.Quarter <- function(x)(
-  FALSE
+  TRUE
 )
 
 

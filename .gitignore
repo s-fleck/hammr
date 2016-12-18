@@ -9,3 +9,4 @@ cache
 *.log
 *.tex
 *.html
+.directory

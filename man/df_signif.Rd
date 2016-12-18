@@ -2,7 +2,7 @@
 % Please edit documentation in R/df_round.R
 \name{df_signif}
 \alias{df_signif}
-\title{Title}
+\title{Round columns of a data frame to a specified number of significant digits.}
 \usage{
 df_signif(dat, digits = 0)
 }
@@ -10,6 +10,9 @@ df_signif(dat, digits = 0)
 \item{digits}{}
 }
 \description{
-Title
+Rounds the values in the numeric columns of a data.frame to the specified number of significant digits.
+}
+\seealso{
+signif
 }
 

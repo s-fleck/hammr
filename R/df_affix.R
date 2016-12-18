@@ -4,7 +4,7 @@
 #' @param prefix to be pasted before each elemtn
 #' @param suffix
 #'
-#' @return a data frame
+#' @return a \code{data.frame} (with only character columns)
 #' @export
 #' @rdname df_affix
 #'

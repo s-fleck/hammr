@@ -2,14 +2,14 @@
 % Please edit documentation in R/df_round.R
 \name{df_round}
 \alias{df_round}
-\title{Title}
+\title{Round columns of a data frame.}
 \usage{
 df_round(dat, digits = 0)
 }
-\arguments{
-\item{digits}{}
-}
 \description{
-Title
+Rounds all numeric columns in a data.frame
+}
+\seealso{
+round
 }
 

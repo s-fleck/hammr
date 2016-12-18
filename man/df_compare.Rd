@@ -30,9 +30,10 @@ df_pdiff(dat1, dat2, coltypes = c("integer", "numeric"), percent = FALSE,
 a data.frame
 }
 \description{
-Combines da columns indicated by \code{coltypes} using the function \code{fun}.
+Combines the columns indicated by \code{coltypes} using the function \code{fun}.
 The design idea is to use it for comparing two data.frames, but it can be used
-for other purposes as well (see examples)
+for other purposes as well, such as adding or multiplying numeric columns of
+two similar data.frames (see examples)
 
 \code{df_ndiff} subtracts dat2 from dat1 (only integer and numeric columns by default)
 
