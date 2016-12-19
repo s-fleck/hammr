@@ -66,5 +66,3 @@ unique_single <- function(x){
     stop('Not all elements of x are identical')
   }
 }
-
-
