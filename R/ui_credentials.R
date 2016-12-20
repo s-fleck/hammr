@@ -1,3 +1,9 @@
+credentials <- function(dat){
+  class(dat) <- c('Credentials', 'list')
+  return(dat)
+}
+
+
 #' @export
 ui_credentials <- function(){
   res <- list()
@@ -5,7 +11,7 @@ ui_credentials <- function(){
   res$user  <- readline("User:")
   res$pw    <- readline("Passwort:")
 
-  return(res)
+  credentials(res)
 }
 
 
