@@ -4,6 +4,12 @@ credentials <- function(dat){
 }
 
 
+credentials_db <- function(dat){
+  class(dat) <- c('Credentials_db', 'Credentials', 'list')
+  return(dat)
+}
+
+
 #' @export
 ui_credentials <- function(){
   res <- list()
@@ -16,12 +22,12 @@ ui_credentials <- function(){
 
 
 #' @export
-ui_creds_db2 <- function(){
+ui_credentials_db <- function(){
   res <- list()
 
   res$user  <- readline("User:")
   res$pw    <- readline("Passwort:")
   res$dsn   <- readline("dsn:")
 
-  return(res)
+  credentials_db(res)
 }
