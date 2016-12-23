@@ -61,3 +61,11 @@ fun_arg_error <- function(text){
 }
 
 
+ftp_not_all_files_transferred_error <- function(text){
+  msg <- 'Not all files transferred:' %_% text
+
+  condition(c('ftp_not_all_files_transferred_error', 'error'),
+            message = msg)
+
+}
+
