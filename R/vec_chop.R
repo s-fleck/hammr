@@ -8,7 +8,7 @@
 #' @examples
 #' vec <- c("a","b","d","e","f","g","h")
 #' chop(vec, 3)
-chop <- function(x, interval){
+vec_chop <- function(x, interval){
   splt                 <- rep(FALSE, interval)
   splt[1]              <- TRUE
   a <- ceiling(length(x) / length(splt))
