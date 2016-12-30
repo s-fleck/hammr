@@ -6,16 +6,24 @@
 #'
 #' @return logical; whether this object meets pre-defined validity conditions.
 #' @export
+#' @rdname is_valid
 is_valid <- function(x, ...) {
   UseMethod("is_valid")
+
+  print('test')
 }
+
 
 #' @export
-on_failure(is_valid) <- function(call, env){
-  cls <- class(deparse(call$x))
-  cls <- paste(cls, collapse = ', ')
-  paste("A validity check failed for object of class", cls)
+#' @rdname is_valid
+assert_valid <- function(dat, ...){
+
+  v <- is_valid(dat)
+
+  if(v){
+    return(TRUE)
+  } else {
+    stop(assert_valid_error(dat))
+  }
+
 }
-
-
-

@@ -60,12 +60,9 @@ capwords <- function(s, strict = FALSE) {
 #' @export
 unique_single <- function(x){
   res <- unique(x)
-  assert_that(is.scalar(res))
-  if(!length(res) %identical% 1L){
-    stop('more than one elment')
+  if(is.scalar(res)){
+    return(res)
   } else {
-    res[[1]]
+    stop('Not all elements of x are identical')
   }
 }
-
-

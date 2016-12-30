@@ -42,3 +42,9 @@
 `%-%` <- function(a, b) {
   paste0(a, b)
 }
+
+
+#' @export
+`%f%` <- function(x, y){
+  do.call(sprintf, as.list(c(x, y)))
+}
