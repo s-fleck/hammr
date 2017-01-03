@@ -47,7 +47,12 @@ df_format <- function(dat, num_format, date_format, dtime_format, col_format){
 #'
 #' @export
 df_format_num <- function(dat, integer_as_numeric = TRUE, ...){
-  df_format(dat, numeric = list(...), integer = list(...))
+
+  if(integer_as_numeric){
+    dat <- df_typecast_all(dat, 'integer', 'numeric')
+  }
+
+  df_format(dat, numeric = list(...))
 }
 
 
