@@ -27,3 +27,15 @@ assert_valid <- function(dat, ...){
   }
 
 }
+
+
+assert_valid_error  <- function(obj) {
+  msg <- sprintf(
+    'A validity check failed for object of class: %s.',
+    paste(class(obj), collapse = ', ')
+  )
+
+  condition(c('assert_valid_error', 'error'),
+            message = msg)
+}
+

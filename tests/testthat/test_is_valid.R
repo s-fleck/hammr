@@ -4,7 +4,7 @@ context("test_is_valid")
 test_that("test_is_valid works as expected", {
 
   testx <- 1
-  class(testx) <- 'test'
+  class(testx) <- c('test', 'rest')
 
   is_valid.test <- function(testx) return(FALSE)
 
@@ -12,6 +12,6 @@ test_that("test_is_valid works as expected", {
     assert_valid((xtt))
   }
 
-  tfun(testx)
+  expect_error(tfun(testx))
 
 })

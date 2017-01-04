@@ -21,13 +21,3 @@ field_cannot_be_parsed_error <- function(text ='') {
 }
 
 
-assert_valid_error  <- function(obj) {
-  msg <- sprintf(
-    'A validity check failed for object of class %s',
-    class(obj)
-  )
-
-  condition(c('line_cannot_be_parsed_error', 'error'),
-            message = msg)
-}
-
