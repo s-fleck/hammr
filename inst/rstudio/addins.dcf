@@ -1,0 +1,9 @@
+Name: Lint current file
+Description: Calls lintr::lint on current file
+Binding: lint_this
+Interactive: false
+
+Name: Lint current file (custom preset)
+Description: Calls lintr::lint on current file
+Binding: lint_this2
+Interactive: false
