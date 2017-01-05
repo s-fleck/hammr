@@ -25,7 +25,8 @@ df_typecast_cols <-  function(dat, conv = list()){
 
   conv2 <- conv[names(conv) %in% names(dat)]
   if(length(conv2) < length(conv)) {
-    missing_cols <- paste(names(conv)[!names(conv) %in% names(conv2)], collapse = ', ')
+    missing_cols <- paste(names(conv)[!names(conv) %in% names(conv2)],
+                          collapse = ', ')
 
     warning('Not all conv present in names(x): ', missing_cols)
   }
@@ -43,7 +44,8 @@ df_typecast_cols <-  function(dat, conv = list()){
 
       dat[[i]] <- tryCatch(f(dat[[i]]),
                            warning = function(w) {
-                             warning(i, '(', class(dat[[i]]), '->', toclass, '): ', w)
+                             warning(i, '(', class(dat[[i]]), '->',
+                                     toclass, '): ', w)
                              f(dat[[i]])
                            }
       )
@@ -96,6 +98,10 @@ df_typecast_all <- function(dat, from = 'factor', to = 'character'){
 
 
 cfun <- function(x){
+
+  msg <- paste('Input must be any of "numeric", integer", "factor"',
+               '"character", "POSIXct", "integer64", "Date", but is', x)
+
   res <- switch(x,
                 'logical'   = as.logical,
                 'integer'   = as.integer2,
@@ -105,7 +111,7 @@ cfun <- function(x){
                 'character' = as.character,
                 'POSIXct'   = as.POSIXct,
                 'Date'      = as.Date,
-                stop('Input must be any of "numeric", integer", "factor", "character", "POSIXct", "integer64", "Date", but is ', x)
+                stop(msg)
   )
   return(res)
 }
@@ -121,3 +127,5 @@ typecast_cols <- df_typecast_cols
 
 #' @export
 typecast_all  <- df_typecast_all
+
+

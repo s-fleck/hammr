@@ -10,6 +10,8 @@ tdat1 <- data.frame(
 
 
 test_that("mass typecasting data.frame columns works.", {
+  #* @testing %is_class%
+  #* @testing %assert_class%
   expect_warning('blah' %is_class% 'character')
   expect_silent('blah' %assert_class% 'character')
 })
