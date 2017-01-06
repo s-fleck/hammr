@@ -25,11 +25,11 @@ context("Key-value Range")
 
 
 # Run the tests ----
-  test_that("checking whether a value lies withing a valid_range works (test data)", {
+  test_that("within_kv_range: checking whether a value is present for a specific
+            key and a specific range", {
 
     res <- testdat
 
-    expect_warning(res$valid <- within_valid_range(keycol = testdat$key, value = testdat$val, test_range = test_range, check_key = 'key'))
     expect_warning(res$valid <- within_kv_range(testdat$key, testdat$val, test_range, 'key'))
 
     expect_true(res$valid[[1]])
@@ -42,37 +42,13 @@ context("Key-value Range")
 
     expect_true(res$valid[[7]])
     expect_true(res$valid[[8]])
-
     expect_true(res$valid[[9]])
 
 
-    expect_warning(expect_true(within_valid_range(testdat$key[1], testdat$val[1], test_range2, check_key = 'key')))
     expect_true(within_kv_range(testdat$key[1], testdat$val[1], test_range2, 'key'))
-    expect_warning(expect_false(within_valid_range(testdat$key[4], testdat$val[4], test_range2, check_key = 'key')))
     expect_false(within_kv_range(testdat$key[4], testdat$val[4], test_range2, 'key'))
 
-
-    expect_warning(expect_error(within_valid_range(testdat$key[1], testdat$val, test_range2, check_key = 'key')))
     expect_error(within_kv_range(testdat$key[1], testdat$val, test_range2, 'key'))
-    expect_warning(expect_error(within_valid_range(testdat$key, testdat$val, test_range2, check_key = 'keybu')))
     expect_error(within_kv_range(testdat$key[1], testdat$val, test_range2, 'keybu'))
-
   })
 
-
-  # test_that("checking whether a value lies withing a valid_range works (real-world data)", {
-  #   test_range <- readRDS('test_data/valid_range/test_range.rds')
-  #   keycol     <- readRDS('test_data/valid_range/keycol.rds')
-  #   value      <- readRDS('test_data/valid_range/value.rds')
-  #   res1       <- readRDS('test_data/valid_range/res1.rds')
-  #
-  #
-  #   expect_warning(tmp <- all(within_valid_range(keycol = keycol, value = value, test_range = test_range, check_key = 'pr')))
-  #   expect_warning(tmp <- all(within_kv_range(keycol, value, test_range, 'pr')))
-  #   expect_false(tmp)
-  #
-  #   expect_warning(tmp <- within_valid_range(keycol = keycol, value = value, test_range = test_range, check_key = 'rics'))
-  #   expect_warning(tmp <- within_kv_range(keycol, value, test_range, 'rics'))
-  #
-  #   expect_identical(res1, tmp)
-  # })

@@ -24,13 +24,6 @@ kv_range <- function(dat, fromcol = 'from', tocol = 'to'){
 }
 
 
-#' @export
-valid_range <- function(dat, from = 'from', to = 'to'){
-  warning('Deprecated. Use kv_range instead.')
-  kv_range(dat, from = from, to = to)
-}
-
-
 #' Check if a value is within a key-value range
 #'
 #' @param key A vector key names
@@ -65,11 +58,3 @@ within_kv_range <- function(key, value, kv_range, kv_range_keycol){
 
   return(res)
 }
-
-
-#' @export
-within_valid_range <- function(keycol, value, test_range, check_key){
-  warning('Deprecated. please us within_kv_range instead.')
-  within_kv_range(keycol, value, kv_range = test_range, kv_range_keycol = check_key)
-}
-

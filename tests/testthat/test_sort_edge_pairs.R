@@ -53,11 +53,17 @@ context("Sort edge pairs")
     col1 = c('a', 'b', 'c')
   )
 
-  tchain24 <- readRDS('test_data/sort_edge_pairs/tchain24.rds') %>%
-    dplyr::rename(p = befprev,
-                  c = bef,
-                  n = befnext)
-  tchain24 <- tchain24[c(3, 1, 2)]
+
+  tfile <- 'test_data/sort_edge_pairs/tchain24.rds'
+
+  if(file.exists(tfile)){
+    tchain24 <- readRDS('test_data/sort_edge_pairs/tchain24.rds') %>%
+      dplyr::rename(p = befprev,
+                    c = bef,
+                    n = befnext)
+    tchain24 <- tchain24[c(3, 1, 2)]
+  }
+
 
 
   test_that("sort edge pairs", {
@@ -132,7 +138,10 @@ test_that("sort edge pair data.frame works", {
 
   # Duplicated nodes
     expect_true(testfun(tdat_rw))
-    expect_true(testfun(tchain24))
+    if(exists('tchain24')){
+      expect_true(testfun(tchain24))
+    }
+
 
   # Missing links
     expect_error(testfun(unconnected_sorted))
@@ -184,7 +193,9 @@ test_that("partial sort edge pair df works", {
 
   # Duplicated nodes
   expect_true(testfun(tdat_rw))
-  expect_true(testfun(tchain24))
+  if(exists('tchain24')){
+    expect_true(testfun(tchain24))
+  }
 
   # Missing links
   expect_silent(testfun(unconnected_sorted))

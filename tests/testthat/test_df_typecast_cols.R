@@ -20,10 +20,10 @@ testdat <- data.frame(
 )
 
 
-test_that("mass typecasting data.frame columns works.", {
+test_that("df_typecast_all: mass typecasting data.frame columns works.", {
 
   # Factor to character...
-  res1 <- typecast_all(testdat, 'factor', 'character')
+  res1 <- df_typecast_all(testdat, 'factor', 'character')
 
   expect_identical(res1$a, c("6", "5", "3", "4", "5"))
   expect_identical(res1$b, c('one', 'two', 'three', 'four', ' apple '))
@@ -34,30 +34,20 @@ test_that("mass typecasting data.frame columns works.", {
 
 
   # Character to factor...
-  res2 <-  typecast_all(testdat, 'character', 'factor')
+  res2 <-  df_typecast_all(testdat, 'character', 'factor')
   expect_true(all(lapply(res2, class) != 'character'))
 
 
   expect_identical(
-    typecast_all(res1, 'factor', 'character'),
-    typecast_all(res2, 'factor', 'character')
-  )
-
-
-  tdat <- data.frame(
-    a = c(NA, NA, "-1", "9999", "one", "6", NA, NA, "3", "1", "2", "1", "0", NA, NA, NA, NA, NA, NA, NA)
-  )
-
-  conv = list(a = 'integer')
-
-  expect_warning(res <- typecast_cols(tdat, conv = conv))
-  expect_identical(res, data.frame(a = as.integer(c(NA, NA, -1L, 9999L, NA, 6L, NA, NA, 3L, 1L, 2L, 1L, 0L, NA, NA, NA, NA, NA, NA, NA)) )
+    df_typecast_all(res1, 'factor', 'character'),
+    df_typecast_all(res2, 'factor', 'character')
   )
 })
 
-test_that("typecasting by name works.", {
 
-  res <- typecast_cols(testdat, list(
+test_that("df_typecast_cols: typecasting by name works.", {
+
+  res <- df_typecast_cols(testdat, list(
     a = 'numeric',
     b = 'character',
     c = 'factor',
@@ -80,6 +70,23 @@ test_that("typecasting by name works.", {
   expect_identical(res$h, c(3L, 4L, 5L, 5L, 5L))
   expect_identical(res$i, c("2015-01-01", "2015-01-05", "2015-05-04", "2015-12-01", "2015-04-13"))
 
+  tdat <- data.frame(
+    a = c(NA, NA, "-1", "9999", "one", "6", NA, NA, "3", "1", "2", "1", "0", NA, NA, NA, NA, NA, NA, NA)
+  )
+
+  conv = list(a = 'integer')
+  expect_warning(res <- df_typecast_cols(tdat, conv = conv),
+                 'NAs introduced by coercion')
+
+  expect_identical(res,
+                   data.frame(a = as.integer(c(NA, NA, -1L, 9999L, NA, 6L, NA,
+                                               NA, 3L, 1L, 2L, 1L, 0L, NA, NA,
+                                               NA, NA, NA, NA, NA))))
+
+
+  conv = list(a = 'character', b = 'numeric', c = 'integer')
+  expect_warning(res <- df_typecast_cols(tdat, conv = conv),
+                 'Not all columns defined in conv are present in')
 })
 
 

@@ -24,11 +24,10 @@
 df_typecast_cols <-  function(dat, conv = list()){
 
   conv2 <- conv[names(conv) %in% names(dat)]
-  if(length(conv2) < length(conv)) {
-    missing_cols <- paste(names(conv)[!names(conv) %in% names(conv2)],
-                          collapse = ', ')
 
-    warning('Not all conv present in names(x): ', missing_cols)
+  if(length(conv2) < length(conv)) {
+    missing_cols <- names(conv)[!names(conv) %in% names(conv2)]
+    warning(defined_column_is_missing_warning(missing_cols))
   }
 
   for(i in names(conv2)){
@@ -42,12 +41,15 @@ df_typecast_cols <-  function(dat, conv = list()){
 
     if(any(class(dat[[i]]) != toclass)) {
 
-      dat[[i]] <- tryCatch(f(dat[[i]]),
-                           warning = function(w) {
-                             warning(i, '(', class(dat[[i]]), '->',
-                                     toclass, '): ', w)
-                             f(dat[[i]])
-                           }
+      dat[[i]] <- tryCatch(
+        f(dat[[i]]),
+        warning = function(w) {
+          warning(typecast_produces_na_warning(i,
+                                               class(dat[[i]]),
+                                               toclass,
+                                               w$message))
+          suppressWarnings(f(dat[[i]]))
+        }
       )
 
     }
@@ -97,6 +99,30 @@ df_typecast_all <- function(dat, from = 'factor', to = 'character'){
 }
 
 
+# Conditions --------------------------------------------------------------
+defined_column_is_missing_warning <- function(missing_cols) {
+  mcs <- paste(missing_cols, collapse = ', ')
+  msg <- sprintf(
+    'Not all columns defined in conv are present in names(x): %s',
+    mcs)
+
+  condition(c('defined_column_is_missing_warning', 'warning'),
+            message = msg)
+}
+
+
+typecast_produces_na_warning <- function(col, fclass, tclass, text) {
+
+  msg <- sprintf('%s(%s->%s): %s', col, fclass, tclass, text)
+
+  condition(c('typecast_produces_na_warning', 'warning'),
+            message = msg)
+}
+
+
+
+# Helpers -----------------------------------------------------------------
+
 cfun <- function(x){
 
   msg <- paste('Input must be any of "numeric", integer", "factor"',
@@ -120,12 +146,3 @@ cfun <- function(x){
 as.numeric2   <- function(x) as.numeric(as.character(x))
 as.integer2   <- function(x) as.integer(as.character(x))
 as.integer642 <- function(x) bit64::as.integer64(as.character(x))
-
-
-#' @export
-typecast_cols <- df_typecast_cols
-
-#' @export
-typecast_all  <- df_typecast_all
-
-
