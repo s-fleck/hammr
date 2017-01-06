@@ -7,7 +7,7 @@ testdat <- data.frame(
 )
 
 
-test_that("Dropping columns by name works.", {
+test_that("df_affix: prefix/postfix data frame values.", {
   r1 <- data.frame(
     a = c('p1s', 'p2s'),
     b = c('pas', 'pbs'),

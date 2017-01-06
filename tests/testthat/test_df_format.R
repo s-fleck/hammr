@@ -12,7 +12,7 @@ tdt <- data.table::as.data.table(tdf)
 
 tti <- tibble::as_tibble(tdf)
 
-test_that("function yields expected types.", {
+test_that("df_format yields expected col classes", {
 
   tres <- df_format(tdf, numeric = c(digits = 3), 'integer' = list(big.mark = '-'))
   expect_identical(class(tres), 'data.frame')
@@ -21,7 +21,7 @@ test_that("function yields expected types.", {
 })
 
 
-test_that("function yields expected results.", {
+test_that("df_format works.", {
 
   tres <- df_format(tdf,
                     numeric   = list(digits = 3, big.mark = '.', decimal.mark = ','),

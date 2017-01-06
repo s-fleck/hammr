@@ -20,14 +20,10 @@ testdat <- data.frame(
 )
 
 
-test_that("string prioritizing works.", {
-
+test_that("prioritize: string prioritizing works.", {
   res <- list()
 
   expect_warning(prioritize(as.character(testdat$a), 'blubb'))
-
-
-
   expect_warning(res$a  <- prioritize(as.character(testdat$a), 'blubb'))
   expect_warning(res$a2 <- prioritize(as.character(testdat$a), 'blubb'))
   res$b  <- prioritise(as.character(testdat$b), high = c('four', 'three'), low = c('one', 'two'))
@@ -38,7 +34,7 @@ test_that("string prioritizing works.", {
 })
 
 
-test_that("factor prioritizing works.", {
+test_that("prioritize: factor prioritizing works.", {
   res <- list()
 
   res$b   <- prioritize(testdat$b, high = c('four', 'three'), low = c('one', 'two'))

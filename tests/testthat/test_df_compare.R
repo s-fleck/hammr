@@ -29,7 +29,7 @@ dt1 <- data.table::as.data.table(dat1)
 dt2 <- data.table::as.data.table(dat2)
 
 
-test_that("Dropping columns by name works.", {
+test_that("df_compare works", {
 
   expect_error(df_ndiff(dat1, dat3))
   expect_error(df_ndiff(dat1, dat2[ ,-1]))

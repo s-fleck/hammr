@@ -20,7 +20,9 @@ testdat <- data.frame(
 )
 
 
-test_that("Downloading files via ftp works.", {
+test_that("download_ftp: Downloading files via ftp works.", {
+  #* @testing generate_ftp_command_file
+  #* @testing generate_ftp_command_file
 
   tfiles  <- c('dummyfile.blb', 'dumm2.blb')
   toutdir <- tempdir()
@@ -37,17 +39,4 @@ test_that("Downloading files via ftp works.", {
                    c("user tuser", "tpw", "cd .. ", paste0("lcd", ' "',ldir, '"'), "ascii ",
                      "get dummyfile.blb", "get dumm2.blb", "quit")
   )
-
-  # todo
-  #
-  # shellmock <- function(...){
-  #   for(f in tfiles){
-  #     writeLines('dummy', con = f)
-  #   }
-  # }
-  #
-  # with_mock(
-  #   download_ftp(.file = tfiles, .outdir = toutdir, .creds = tcreds, .server = tserver, .overwrite = FALSE, .mode = tmode),
-  #   shell = shellmock)
-
 })

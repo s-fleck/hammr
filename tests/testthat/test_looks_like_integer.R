@@ -19,7 +19,7 @@ testdat <- data.frame(
   stringsAsFactors = FALSE
 )
 
-test_that("Looks like integer works.", {
+test_that("looks_like_integer works.", {
   a <- looks_like_integer(testdat$k)
   b <- looks_like_integer(testdat$l)
   c <- looks_like_integer(as.numeric(testdat$k))

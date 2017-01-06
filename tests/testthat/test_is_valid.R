@@ -1,7 +1,8 @@
 context("test_is_valid")
 
 
-test_that("test_is_valid works as expected", {
+test_that("is_valid works as expected", {
+  #* @testing assert_valid
 
   testx <- 1
   class(testx) <- c('test', 'rest')
@@ -12,6 +13,6 @@ test_that("test_is_valid works as expected", {
     assert_valid((xtt))
   }
 
-  expect_error(tfun(testx))
+  expect_error(tfun(testx), 'A validity check failed for object of class: test, rest.')
 
 })

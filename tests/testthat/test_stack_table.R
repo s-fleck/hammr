@@ -26,7 +26,10 @@ tdat3 <- data.frame(
 )
 
 
-test_that('stacking tables by works', {
+test_that('stack_table: stacking tables by row works', {
+  #* @testing stack_rows
+  #* @testing as.data.table.Stack_table
+
   # Creating stack tables
     expect_error(stack_table(tdat1, tdat2))
     expect_silent(st1 <- stack_table(tdat1, tdat2, rem_ext = '_xt'))
@@ -52,6 +55,9 @@ test_that('stacking tables by works', {
 
 
 test_that('printing as latex works', {
+  #* @testing stack_rows_tex
+  #* @testing print_tex
+
   expect_silent(st1 <- stack_table(tdat1, tdat2, rem_ext = '_xt'))
   expect_silent(st2 <- stack_table(tdat1, tdat3, rem_ext = '_xt'))
 

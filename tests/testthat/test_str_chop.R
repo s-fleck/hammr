@@ -1,6 +1,6 @@
 context('string chopping')
 
-test_that("string chopping works.", {
+test_that("str_chop: string chopping works.", {
   x = 'abc defg hijklmnop  999 end'
 
   breaks <- c(1, 3,8, 18, 99999999)

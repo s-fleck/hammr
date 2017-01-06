@@ -9,7 +9,7 @@ tdat1 <- data.frame(
 )
 
 
-test_that("mass typecasting data.frame columns works.", {
+test_that("Infix class checking workss.", {
   #* @testing %is_class%
   #* @testing %assert_class%
   expect_warning('blah' %is_class% 'character')
@@ -18,7 +18,7 @@ test_that("mass typecasting data.frame columns works.", {
 
 
 # is_col_classes
-test_that("mass checking of data.frame column / list element classes works.", {
+test_that("is_col_classes: mass checking of column types works.", {
 
   testfuns <- function(dat){
     true_classes   <- list(x = 'character', y = 'factor', z = 'numeric')

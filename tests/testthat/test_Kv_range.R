@@ -28,6 +28,9 @@ context("Key-value Range")
   test_that("within_kv_range: checking whether a value is present for a specific
             key and a specific range", {
 
+    #* @testing kv_range
+
+
     res <- testdat
 
     expect_warning(res$valid <- within_kv_range(testdat$key, testdat$val, test_range, 'key'))

@@ -6,7 +6,6 @@ cl <- makeCluster(8)
 registerDoParallel(cl)
 
 
-
 test_that("Dummy test", {
   expect_true(TRUE)
   suppressWarnings(library(data.table))

@@ -5,8 +5,7 @@ t2 <- c('a', 'b', 'c', 'm', 'a', 't', 'c', 'h', 'd', 'e', 'm', 'a', 't', 'c')
 s2 <- c('m', 'a', 't', 'c', 'h')
 
 
-
-test_that("matching sequence to vector works.", {
+test_that("vec_match_seq: matching sequence to vector works.", {
   expect_identical(length(s1 %seq_in% t1), length(t1))
   expect_identical(length(s2 %seq_in% t2), length(t2))
 

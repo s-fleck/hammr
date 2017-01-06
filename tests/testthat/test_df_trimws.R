@@ -19,7 +19,7 @@ testdat <- data.frame(
   stringsAsFactors = FALSE
 )
 
-test_that("removing whitespaces from character columns of data frame works.", {
+test_that("df_trimws: removing whitespaces from character columns of data frame works.", {
   res  <- df_trimws(testdat)
   res2 <- df_trimws(testdat, process_factors = TRUE)
 

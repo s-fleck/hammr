@@ -66,3 +66,14 @@ unique_single <- function(x){
     stop('Not all elements of x are identical')
   }
 }
+
+#' @export
+extract_file_extension <- function(x, fsep = NULL){
+  res <- basename(x)
+
+  res %>%
+    strsplit(., '.', fixed = TRUE) %>%
+    unlist() %>%
+    extract(length(.))
+}
+

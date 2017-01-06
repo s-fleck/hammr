@@ -66,8 +66,7 @@ context("Sort edge pairs")
 
 
 
-  test_that("sort edge pairs", {
-
+test_that("is_sortable_edge_pairs: checking for sortable edge pairs works.", {
   testfun <- function(testdata, iterations = nit){
     require(foreach)
     res <- foreach(i = 1:iterations, .combine = c) %do% {
@@ -112,21 +111,18 @@ context("Sort edge pairs")
 
 
 
-test_that("sort edge pair data.frame works", {
+test_that("sort_edge_pairs: sort edge pair data.frame works", {
 
   testfun <- function(testdata, iterations = nit){
     require(foreach)
     require(magrittr)
-    res <- foreach(i = 1:iterations, .combine = c) %do% {
 
+    res <- foreach(i = 1:iterations, .combine = c) %do% {
       testdata_scrambled <- testdata %>%
         dplyr::sample_frac()
-
       sorted <- sort_edge_pairs(testdata)
-
       identical(sorted, testdata)
     }
-
     all(res)
   }
 
@@ -166,21 +162,19 @@ test_that("sort edge pair data.frame works", {
 
 
 
-test_that("partial sort edge pair df works", {
+test_that("sort_edge_pairs: partial sort edge pair df works", {
 
   testfun <- function(testdata, iterations = nit){
     require(foreach)
     require(magrittr)
-    res <- foreach(i = 1:iterations, .combine = c) %do% {
 
+    res <- foreach(i = 1:iterations, .combine = c) %do% {
       testdata_scrambled <- testdata %>%
         dplyr::sample_frac()
-
       sorted <- sort_edge_pairs(testdata, allow_partial = TRUE)
       sorted[, .id := NULL]
       identical(sorted, testdata)
     }
-
     all(res)
   }
 
@@ -203,7 +197,7 @@ test_that("partial sort edge pair df works", {
 })
 
 
-test_that('node sort uitility functions work', {
+test_that('is_sorted_edge_pairs: checking if edge pairs are sorted work', {
   expect_true(is_sorted_edge_pairs(best_sorted$p, best_sorted$c, best_sorted$n))
   expect_true(is_sorted_edge_pairs(na_sorted$p, na_sorted$c, na_sorted$n))
   expect_false(is_sorted_edge_pairs(unconnected_sorted$p, unconnected_sorted$c, unconnected_sorted$n))
@@ -211,7 +205,7 @@ test_that('node sort uitility functions work', {
 })
 
 
-test_that('getting next and previous elements works', {
+test_that('Sort edge pairs: get_prv and get_nxt ultily functions work', {
   # Setup test data ----
 
   tdat <- list()

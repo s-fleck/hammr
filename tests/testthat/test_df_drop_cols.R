@@ -20,7 +20,7 @@ testdat <- data.frame(
 )
 
 
-test_that("Dropping columns by name works.", {
+test_that("df_drop_cols works", {
   res <- list()
 
   res$a <- df_drop_cols(testdat, 'j')

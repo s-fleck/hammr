@@ -19,7 +19,7 @@ ct4 <- c('integer', NA, 'double')
 
 
 
-test_that("Checking sql col types works.", {
+test_that("check_sql_types_db2 works.", {
 
   expect_warning(expect_false(check_sql_types_db2(ct1)))
   expect_true(check_sql_types_db2(ct1[-length(ct1)]))
@@ -35,15 +35,10 @@ test_that("Checking sql col types works.", {
 
   expect_true(check_sql_types_db2(ct1[-length(ct1)]))
   expect_true(check_sql_types(ct1[-length(ct1)], dialect = 'dB2'))
-
-
-
-
 })
 
 
-test_that("Dropping columns by name works.", {
-
+test_that("sqlgen_create_table works.", {
   expect_silent(sqlgen_create_table('testtable', cn1[1:3], ct1[1:3]))
   expect_silent(sqlgen_create_table('testtable', cn4, ct4))
 
@@ -54,13 +49,8 @@ test_that("Dropping columns by name works.", {
   )
 
   expect_warning(sqlgen_create_table('testtable', cn3, ct3))
-
   expect_error(sqlgen_create_table('testtable', cn2, ct2))
-
   expect_warning(expect_error(sqlgen_create_table('testtable', cn1, ct1, dialect = 'DB2')))
-
-  # sqlgen_create_table('test', cn1, ct1, col_options = co1)
-
 })
 
 

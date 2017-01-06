@@ -10,7 +10,7 @@ testdat <- data.frame(
   stringsAsFactors = FALSE
 )
 
-test_that("Greater / Less than operations work for quarters.", {
+test_that("quarter: Greater / Less than operations work.", {
 
   a  <- quarter(testdat$a)
   b  <- quarter(testdat$b)
@@ -35,6 +35,7 @@ test_that("Greater / Less than operations work for quarters.", {
 
 
 test_that("Incrementing / Decrementing quarters works.", {
+  #* @testing increment
   x  <- with(testdat, quarter(c(a, b ,c ,d)))
 
   #"2013-Q4" "2014-Q1" "2014-Q2" "2014-Q3"
