@@ -7,5 +7,6 @@ Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
 Description: More about what it does (maybe more than one line)
 License: GPL3
 Imports: assertthat, magrittr, data.table, dplyr, dtplyr, bit64, foreach, openxlsx, stringi, xtable
+Suggests: lintr
 LazyData: TRUE
 RoxygenNote: 5.0.1
