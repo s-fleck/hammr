@@ -67,13 +67,23 @@ unique_single <- function(x){
   }
 }
 
-#' @export
-extract_file_extension <- function(x, fsep = NULL){
-  res <- basename(x)
 
-  res %>%
+#' @export
+basename_sans_ext <- function(x){
+  res <- x %>%
+    basename() %>%
     strsplit(., '.', fixed = TRUE) %>%
     unlist() %>%
-    extract(length(.))
+    magrittr::extract(1:(length(.)-1)) %>%
+    paste(collapse = '.')
 }
 
+
+#' @export
+extract_file_extension <- function(x){
+  res <- x %>%
+    basename() %>%
+    strsplit(., '.', fixed = TRUE) %>%
+    unlist() %>%
+    magrittr::extract(length(.)-1)
+}
