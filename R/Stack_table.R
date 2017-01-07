@@ -80,7 +80,10 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
 print_tex.Stack_table <- function(dat,
                                   stack_method = 'row',
                                   insert_blank_row = (stack_method == 'row'),
-                                  .align = paste0('lX', paste(rep('X', ncol(dat[[1]])-1), collapse = '')),
+                                  .align = paste0('lX',
+                                                  paste(rep('X',
+                                                            ncol(dat[[1]]) - 1),
+                                                        collapse = '')),
                                   .include.rownames=FALSE,
                                   .floating = FALSE,
                                   .booktabs = TRUE,
@@ -210,11 +213,16 @@ save_xlsx.StackTable <- function(dat,
 #' @export
 #'
 #' @examples
-as.data.table.Stack_table <- function(dat, stack_method = 'row', insert_blank_row = FALSE){
+as.data.table.Stack_table <- function(dat,
+                                      stack_method = 'row',
+                                      insert_blank_row = FALSE){
+
   stack_method  %assert_class% 'character'
   assert_that(is.scalar(stack))
   if(stack_method %in% c('c', 'col', 'column', 'columns')){
-    if(insert_blank_row) warning('insert_blank_row only possible when stacking by row')
+    if(insert_blank_row){
+      warning('insert_blank_row only possible when stacking by row')
+    }
     res <- stack_cols(dat)
   } else if(stack_method %in% c('r', 'row', 'rows')) {
     res <- stack_rows(dat, insert_blank_row)
@@ -252,14 +260,14 @@ stack_rows <- function(dat, insert_blank_row = FALSE){
       as.data.table()
 
     res <- data.table::rbindlist(list(dat[[1]], dat[[2]], dat_blank))
-    res <- res[1:(nrow(res)-1)]
+    res <- res[1:(nrow(res) - 1)]
   } else {
     res <- rbind(dat[[1]], dat[[2]])
   }
 
   roworder <- foreach(i = seq_len(nrow(dat[[1]])), .combine = c) %do% {
     if(insert_blank_row){
-      r <- c(i, i + nrow(dat[[1]]), i + 2L * nrow(dat[[1]]))
+      c(i, i + nrow(dat[[1]]), i + 2L * nrow(dat[[1]]))
     } else {
       c(i, i + nrow(dat[[1]]))
     }
@@ -283,7 +291,7 @@ stack_rows_tex <- function(dat, insert_blank_row) {
     data.table::setnames(names(dat[[2]]))
 
   res <- foreach(i = 1:nrow(dat[[1]]), .combine = rbind) %do% {
-    r <- paste(dat[[1]][i,], dat[[2]][i,], sep = ' \\newline ') %>%
+    r <- paste(dat[[1]][i, ], dat[[2]][i, ], sep = ' \\newline ') %>%
       t() %>%
       as.data.frame()
     names(r) <-  names(dat[[1]])
@@ -303,7 +311,7 @@ stack_cols <- function(dat){
   res <- cbind(dat[[1]], dat[[2]])
 
   colorder <- foreach(i = seq_along(dat[[1]]), .combine = c) %do% {
-    c(i, i+ncol(dat[[1]]))
+    c(i, i + ncol(dat[[1]]))
   }
 
   assert_that(max(colorder) %identical% ncol(res))
@@ -313,9 +321,8 @@ stack_cols <- function(dat){
 
 
 stack_cols_tex <- function(dat) {
-
-  res <- foreach(i = 1:nrow(dat[[1]]), .combine = rbind) %do% {
-    r <- paste(dat[[1]][i,], dat[[2]][i,], sep = ' ') %>%
+  foreach(i = 1:nrow(dat[[1]]), .combine = rbind) %do% {
+    r <- paste(dat[[1]][i, ], dat[[2]][i, ], sep = ' ') %>%
       t() %>%
       as.data.frame()
     names(r) <-  names(dat[[1]])
@@ -323,5 +330,3 @@ stack_cols_tex <- function(dat) {
     return(r)
   }
 }
-
-

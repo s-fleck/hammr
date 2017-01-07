@@ -15,12 +15,14 @@ info <- function(dat){
 #' @export
 rexpat <- function(){
   list(
-    valid_urs	=	'[Z,R,K,S,U,L,F,G]\\d{3}[A-Z]\\d{3}.'
+    valid_urs = '[Z,R,K,S,U,L,F,G]\\d{3}[A-Z]\\d{3}.'
   )
 }
 
 #' @export
-as_readr_col <- function(dat){ UseMethod('as_readr_col')}
+as_readr_col <- function(dat){
+  UseMethod('as_readr_col')
+  }
 
 #' @export
 as_readr_col.character <- function(dat){
@@ -33,7 +35,7 @@ as_readr_col.character <- function(dat){
 
 #' @export
 as_readr_col.list <- function(dat){
-  res <- lapply(dat, as_readr_col)
+  lapply(dat, as_readr_col)
 }
 
 
@@ -50,10 +52,16 @@ as_readr_col.list <- function(dat){
 #'
 #' @examples
 capwords <- function(s, strict = FALSE) {
-  cap <- function(s) paste(toupper(substring(s, 1, 1)),
-                           {s <- substring(s, 2); if(strict) tolower(s) else s},
-                           sep = "", collapse = " " )
-  sapply(strsplit(s, split = " "), cap, USE.NAMES = !is.null(names(s)))
+  cap <- function(s){
+    s_upper <- toupper(substring(s, 1, 1))
+    s_lower <- substring(s, 2)
+    if(strict) s_lower <- tolower(s_lower)
+    paste(s_upper, s_lower, sep = "", collapse = " " )
+  }
+
+  sapply(strsplit(s, split = " "),
+         cap,
+         USE.NAMES = !is.null(names(s)))
 }
 
 
@@ -74,7 +82,7 @@ basename_sans_ext <- function(x){
     basename() %>%
     strsplit(., '.', fixed = TRUE) %>%
     unlist() %>%
-    magrittr::extract(1:(length(.)-1)) %>%
+    magrittr::extract(1:(length(.) - 1)) %>%
     paste(collapse = '.')
 }
 
@@ -85,5 +93,5 @@ extract_file_extension <- function(x){
     basename() %>%
     strsplit(., '.', fixed = TRUE) %>%
     unlist() %>%
-    magrittr::extract(length(.)-1)
+    magrittr::extract(length(.) - 1)
 }
