@@ -43,6 +43,8 @@ sqlgen_create_table <- function(table_name, col_names, col_types, col_options = 
   # check processed col_types
     assert_that(check_sql_types(col_types, dialect = dialect))
 
+    col_options[is.na(col_options)] <- ''
+
 
   cols <- paste0(paste0(col_names, ' ', col_types, ' ', col_options), collapse = ', ')
 
