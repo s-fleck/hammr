@@ -14,5 +14,4 @@ test_that("is_valid works as expected", {
   }
 
   expect_error(tfun(testx), 'A validity check failed for object of class: test, rest.')
-
 })
