@@ -95,3 +95,19 @@ extract_file_extension <- function(x){
     unlist() %>%
     magrittr::extract(length(.) - 1)
 }
+
+
+#' Title
+#'
+#' @param infile
+#'
+#' @return
+#' @export
+#'
+#' @examples
+load_rda <- function(infile){
+  env <- new.env()
+  nm <- load(infile, env)[1]
+  env[[nm]]
+}
+
