@@ -38,80 +38,12 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
   }
 
   assert_that(identical(sort(names(dat1)), sort(names(dat2))))
-  dat2 <- dplyr::select_(dat2, .dots = names(dat1))
+  setcolorder(dat2, names(dat1))
+
 
   res <- list(dat1, dat2)
   class(res) <- c('Stack_table', 'list')
   return(res)
-}
-
-#' print a Stack_table as latex
-#'
-#' Stacked rows are sepparated by \code{\\newline}, therefor this only works
-#' correctly for columns that have an 'X' column type (see documentation of
-#' the tabularx latex package). If you want each stack element in a proper
-#' tabular row, use \code{xtable::xtable(as.data.frame(dat))} instead.
-#' By default this uses the \code{tabularx} and \code{booktabs} latex packages.
-#' Booktabs can be switched of, but the tabularx package is hardcoded into the
-#' xtable settings right now as some of the formatting magic depends on it
-#'
-#' @param dat an input stack table
-#' @param stack Stack by by \code{row} or \code{col}
-#' @param insert_blank_row insert additional empty row after each row of the
-#'        tabular environment. \renewcommand{\arraystretch}{1.5}
-#' @param .align the [pos] argument of the tabular environment. Passed on
-#'        to \code{\link{xtable}}. Please note that \code{\\newline} only
-#'        works in \code{X} columns. If you use another format the 'stacking'
-#'        will not work correclty.
-#' @param .include.rownames passed on to \code{\link{print.xtable}}
-#' @param .floating passed on to \code{\link{print.xtable}}
-#' @param .tabular.environment passed on to \code{\link{print.xtable}}
-#' @param .booktabs passed on to \code{\link{print.xtable}}
-#' @param .sanitize.text.function passed on to \code{\link{print.xtable}}
-#' @param .width passed on to \code{\link{print.xtable}}
-#' @param ... Additoinal arguments passed on to \code{\link{xtable}} and
-#'        \code{\link{print.xtable}}
-#'
-#' @return
-#' @import xtable data.table foreach
-#' @export
-#'
-#' @examples
-print_tex.Stack_table <- function(dat,
-                                  stack_method = 'row',
-                                  insert_blank_row = (stack_method == 'row'),
-                                  .align = paste0('lX',
-                                                  paste(rep('X',
-                                                            ncol(dat[[1]]) - 1),
-                                                        collapse = '')),
-                                  .include.rownames=FALSE,
-                                  .floating = FALSE,
-                                  .booktabs = TRUE,
-                                  .sanitize.text.function = identity,
-                                  .width = '\\textwidth',
-                                  ...){
-
-  # Preconditions
-    stack_method %assert_class% 'character'
-    insert_blank_row %assert_class% 'logical'
-    assert_that(is.scalar(stack_method))
-    assert_that(is.scalar(insert_blank_row))
-
-
-  # Stacking
-  res <- switch(stack_method,
-         'row' = stack_rows_tex(dat, insert_blank_row = FALSE),
-         'col' = stack_cols_tex(dat))
-
-  # format latex
-    xtable::xtable(res, align = .align, ...) %>%
-      print(include.rownames = .include.rownames,
-            floating = .floating,
-            tabular.environment = 'tabularx',
-            booktabs = .booktabs,
-            sanitize.text.function = .sanitize.text.function,
-            width = .width,
-            ...)
 }
 
 
@@ -215,17 +147,14 @@ save_xlsx.StackTable <- function(dat,
 #' @examples
 as.data.table.Stack_table <- function(dat,
                                       stack_method = 'row',
-                                      insert_blank_row = FALSE){
+                                      ...){
 
   stack_method  %assert_class% 'character'
   assert_that(is.scalar(stack))
   if(stack_method %in% c('c', 'col', 'column', 'columns')){
-    if(insert_blank_row){
-      warning('insert_blank_row only possible when stacking by row')
-    }
-    res <- stack_cols(dat)
+    res <- stack_cols(dat, ...)
   } else if(stack_method %in% c('r', 'row', 'rows')) {
-    res <- stack_rows(dat, insert_blank_row)
+    res <- stack_rows(dat, ...)
   } else{
     stop('stack_method must be either "row" or "col".')
   }
@@ -246,8 +175,8 @@ as.data.table.Stack_table <- function(dat,
 #' @export
 #'
 #' @examples
-as.data.frame.Stack_table <- function(dat, stack_method = 'row'){
-  as.data.frame(as.data.table(dat))
+as.data.frame.Stack_table <- function(dat, stack_method = 'row', ...){
+  as.data.frame(as.data.table(dat, ...))
 }
 
 # Utility funs -----------------------------------------------------------------
@@ -306,16 +235,34 @@ stack_rows_tex <- function(dat, insert_blank_row) {
 }
 
 
-stack_cols <- function(dat){
+stack_cols <- function(dat, id_vars = NULL, suffixes = c('', '')){
   dat %assert_class% 'Stack_table'
-  res <- cbind(dat[[1]], dat[[2]])
+  assert_that(length(suffixes) %identical% 2L)
 
-  colorder <- foreach(i = seq_along(dat[[1]]), .combine = c) %do% {
-    c(i, i + ncol(dat[[1]]))
+  dd1 <- data.table::copy(dat[[1]])
+  dd2 <- data.table::copy(dat[[2]])
+
+  if (is.null(id_vars)){
+    setnames(dd1, paste0(names(dd1), suffixes[[1]]))
+    setnames(dd2, paste0(names(dd2), suffixes[[2]]))
+    res <- cbind(dd1, dd2)
+    start_order <- 1
+  } else {
+    res <- merge(dat[[1]], dat[[2]], by = id_vars, suffixes = suffixes)
+    start_order <- length(id_vars) + 1
   }
 
+  assert_that(start_order < ncol(dat[[1]]))
+
+  colorder <- foreach(i = start_order:ncol(dat[[1]]), .combine = c) %do% {
+    c(i, i + ncol(dat[[1]]) - (start_order - 1L))
+  }
+  colorder <- as.integer(c(seq_along(id_vars), colorder))
   assert_that(max(colorder) %identical% ncol(res))
+
+
   setcolorder(res, colorder)
+
   return(res)
 }
 
