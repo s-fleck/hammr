@@ -99,6 +99,8 @@ extract_file_extension <- function(x){
 
 #' Title
 #'
+#' http://stackoverflow.com/questions/5577221/how-can-i-load-an-object-into-a-variable-name-that-i-specify-from-an-r-data-file
+#'
 #' @param infile
 #'
 #' @return
