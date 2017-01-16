@@ -21,6 +21,7 @@
 #'
 #' @return
 #' @export
+#' @rdname stack_table
 #'
 #' @examples
 stack_table <- function(dat1, dat2, rem_ext = NULL){
@@ -47,59 +48,20 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
 }
 
 
-as_workbook <- function(...){
-  UseMethod('as_workbook')
-}
-
-#' Title
-#'
-#' @param dat
-#' @param stack_method
-#' @param insert_blank_row
-#' @param sep_height
-#' @param sheet_name
-#' @param ... parameters passed on to openxlsx::writeDate
-#'
-#' @return
 #' @export
-#'
-#' @examples
-as_workbook.Stack_table <- function(dat,
-                                   stack_method,
-                                   insert_blank_row,
-                                   sep_height = 20,
-                                   sheet_name = 'sheet1',
-                                   ...){
-
-  res <- as.data.table(dat,
-                       stack_method = stack_method,
-                       insert_blank_row = insert_blank_row)
-
-  wb <- openxlsx::createWorkbook()
-  openxlsx::addWorksheet(wb, '')
-  openxlsx::writeData(wb, 1, res, ...)
-
-
-  if(!is.null(sep_height)){
-    if('startRow' %in% names(list(...))){
-      row_off <- list(...)[['startRow']] - 1
-    } else if ('xy' %in% names(list(...))){
-      row_off <- list(...)[['xy']][[2]] - 1
-    } else {
-      row_off <- 0
-    }
-
-    if(insert_blank_row){
-      sel_rows <- seq(4 + row_off, nrow(res) + row_off, by = 3)
-    } else {
-      sel_rows <- seq(4 + row_off, nrow(res) + row_off, by = 2)
-    }
-
-    openxlsx::setRowHeights(wb, 1, sel_rows, sep_height)
-  }
-
-  return(wb)
+#' @rdname stack_table
+rstack <- function(dat1, dat2, rem_ext = NULL){
+  stack_rows(stack_table(dat1, dat2, rem_ext = rem_ext))
 }
+
+
+#' @export
+#' @rdname stack_table
+cstack <- function(dat1, dat2, rem_ext = NULL){
+  stack_cols(stack_table(dat1, dat2, rem_ext = rem_ext))
+}
+
+
 
 #' Title
 #'
