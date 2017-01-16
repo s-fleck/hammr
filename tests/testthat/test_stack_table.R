@@ -37,19 +37,81 @@ test_that('stack_table: stacking tables by row works', {
 
   # Create row stacked data.table
     expect_error(stack_rows(tdat1))
-    res1 <- stack_rows(st1)
-    res2 <- stack_rows(st2)
+    expect_silent(res1 <- stack_rows(st1))
+    expect_silent(res2 <- stack_rows(st2))
 
     expect_identical(lapply(res1, class), lapply(tdat1, class))
     expect_identical(as.character(lapply(res2, class)), as.character(lapply(tdat3, class)))
 
   # Inserting blank rows works
-    res1 <- as.data.table(st1, insert_blank_row = TRUE)
-    expect_warning(as.data.table(st1, stack_method = 'col', insert_blank_row = TRUE))
+    expect_silent(res1 <- as.data.table(st1, insert_blank_row = TRUE))
+    expect_error(as.data.table(st1, stack_method = 'col', insert_blank_row = TRUE))
 
     sel <- seq(3, nrow(res1), 3)
     expect_true(all(rowSums(res1[sel] == '') == ncol(res1)))
     expect_false(any(rowSums(res1[-sel] == '') == ncol(res1)))
+
+})
+
+
+test_that('stack_table: stacking tables by col works', {
+  #* @testing stack_cols
+  #* @testing as.data.table.Stack_table
+
+  # Creating stack tables
+  expect_silent(st1 <- stack_table(tdat1, tdat2, rem_ext = '_xt'))
+  expect_silent(st2 <- stack_table(tdat1, tdat3, rem_ext = '_xt'))
+
+  # Create col stacked data.table
+  expect_error(stack_cols(tdat1))
+  expect_error(stack_cols(st1, suffixes = c('.x', '.y', '.z')))
+  expect_silent(res1 <- stack_cols(st1))
+
+  # Create col stacked data.table (with id_vars)
+  st1[[1]]$id_1 <- LETTERS[1:5]
+  st1[[2]]$id_1 <- LETTERS[1:5]
+  st1[[1]]$id_2 <- letters[6:10]
+  st1[[2]]$id_2 <- letters[6:10]
+
+  expect_silent(res1 <- stack_cols(st1, id_vars = c('id_1', 'id_2')))
+  expect_silent(res2 <- stack_cols(st1, id_vars = c('id_1', 'id_2'),
+                                   suffixes = c('foo', 'bar')))
+  expect_silent(res3 <- stack_cols(st1))
+  expect_silent(res4 <- stack_cols(st1,
+                                   suffixes = c('.x', '.y')))
+
+
+  expect_identical(unlist(
+    lapply(res1, class), use.names = FALSE),
+    c("character", "character", "numeric", "numeric", "character",
+      "character", "factor", "factor", "integer", "integer")
+  )
+
+  expect_identical(
+    names(res2),
+    c("id_1", "id_2", "numbersfoo", "numbersbar", "animalsfoo", "animalsbar",
+      "factorsfoo", "factorsbar", "intsfoo", "intsbar")
+  )
+
+  expect_identical(
+    names(res3),
+    c("numbers", "numbers", "animals", "animals", "factors", "factors",
+      "ints", "ints", "id_1", "id_1", "id_2", "id_2")
+  )
+
+  expect_identical(
+    names(res4),
+    c("numbers.x", "numbers.y", "animals.x", "animals.y", "factors.x",
+      "factors.y", "ints.x", "ints.y", "id_1.x", "id_1.y", "id_2.x",
+      "id_2.y")
+  )
+
+
+
+
+
+
+
 
 })
 
