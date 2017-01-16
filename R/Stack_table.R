@@ -50,52 +50,25 @@ stack_table <- function(dat1, dat2, rem_ext = NULL){
 
 #' @export
 #' @rdname stack_table
-rstack <- function(dat1, dat2, rem_ext = NULL){
-  stack_rows(stack_table(dat1, dat2, rem_ext = rem_ext))
+rstack <- function(dat1, dat2, rem_ext = NULL, ...){
+  as.data.table(
+    stack_table(dat1, dat2, rem_ext = rem_ext),
+    stack_method = 'row',
+    ...
+  )
 }
 
 
 #' @export
 #' @rdname stack_table
-cstack <- function(dat1, dat2, rem_ext = NULL){
-  stack_cols(stack_table(dat1, dat2, rem_ext = rem_ext))
+cstack <- function(dat1, dat2, rem_ext = NULL, ...){
+  as.data.table(
+    stack_table(dat1, dat2, rem_ext = rem_ext),
+    stack_method = 'col',
+    ...
+  )
 }
 
-
-
-#' Title
-#'
-#' @param dat
-#' @param outfile
-#' @param stack_method
-#' @param insert_blank_row
-#' @param sep_height
-#' @param sheet_name
-#' @param overwrite
-#' @param ... parameters passed on to
-#'
-#' @return
-#' @export
-#'
-#' @examples
-save_xlsx.StackTable <- function(dat,
-                                 outfile,
-                                 stack_method = 'row',
-                                 insert_blank_row = FALSE,
-                                 sep_height = 24,
-                                 sheet_name = 'sheet1',
-                                 overwrite = FALSE,
-                                 ...){
-
-  wb <- as_workbook(dat,
-                    stack_method = stack_method,
-                    insert_blank_row = insert_blank_row,
-                    sep_height = sep_height,
-                    sheet_name = sheet_name,
-                    ...)
-
-  openxlsx::saveWorkbook(wb, outfile, overwrite = overwrite)
-}
 
 #' Title
 #'
