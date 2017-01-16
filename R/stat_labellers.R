@@ -10,16 +10,31 @@ labels_verka <- c('6' = 'Inland',
 )
 
 #' @export
-labeller_verka <- ggplot2::as_labeller(labels_verka)
+labeller_verka  <- ggplot2::as_labeller(labels)
 
 #' @export
-label_verka <- function(x, as_factor = TRUE){
-  res <- unlist(labeller_verka(x))
+labeller_verka2 <- ggplot2::as_labeller(c(labels, '99' = 'Insgesamt'))
 
-  if(as_factor) {
-    res <- factor(res, levels = labels_verka)
+
+#' @export
+label_verka <- function(x,
+                        as_factor = TRUE,
+                        totals = NULL,
+                        tname = 'Insgesamt',
+                        labels = labels_verka){
+
+  recode <- names(labels)
+  names(recode) <- labels
+
+  if(!is.null(totals)){
+    recode[[tname]] <- totals
   }
-}
+
+  res <- forcats::fct_recode(as.factor(x),
+                      recode)
+
+  res <- forcats::fct_relevel(res, names(recode))
+  }
 
 
 labels_nstrk <- c(
