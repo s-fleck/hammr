@@ -4,8 +4,7 @@
 \alias{as.data.table.Stack_table}
 \title{Title}
 \usage{
-\method{as.data.table}{Stack_table}(dat, stack_method = "row",
-  insert_blank_row = FALSE)
+\method{as.data.table}{Stack_table}(dat, stack_method = "row", ...)
 }
 \arguments{
 \item{...}{passed on to as.data.frame.data.table}

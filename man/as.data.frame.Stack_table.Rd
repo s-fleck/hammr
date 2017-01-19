@@ -4,7 +4,7 @@
 \alias{as.data.frame.Stack_table}
 \title{Title}
 \usage{
-\method{as.data.frame}{Stack_table}(dat, stack_method = "row")
+\method{as.data.frame}{Stack_table}(dat, stack_method = "row", ...)
 }
 \arguments{
 \item{...}{parameters passed on to \code{as.data.frame.data.table}}
