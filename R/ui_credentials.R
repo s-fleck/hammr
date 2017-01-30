@@ -25,9 +25,10 @@ ui_credentials <- function(){
 ui_credentials_db <- function(){
   res <- list()
 
-  res$user  <- readline("User:")
-  res$pw    <- readline("Passwort:")
-  res$dsn   <- readline("dsn:")
+  res$user    <- readline("User:")
+  res$pw      <- readline("Passwort:")
+  res$odbcdsn <- readline("ODBC DSN (optional):")
+  res$jdcburl <- readline("JDBC URL (optional):")
 
   credentials_db(res)
 }
