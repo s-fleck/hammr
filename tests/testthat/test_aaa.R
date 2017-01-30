@@ -12,4 +12,8 @@ test_that("Dummy test", {
   data.table(NULL)
 })
 
+
+# Important for testing error messages:
+Sys.setenv(LANG = "en")
+
 cat('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
