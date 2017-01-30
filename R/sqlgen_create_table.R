@@ -12,12 +12,20 @@
 #' @export
 #'
 #' @examples
-sqlgen_create_table <- function(table_name, col_names, col_types, col_options = NULL, dialect = NULL){
-
+sqlgen_create_table <- function(
+  table_name,
+  col_names,
+  col_types,
+  col_options = NULL,
+  dialect = NULL
+){
   # preconditions
     assert_that(is.scalar(table_name))
     assert_that(length(col_names) %identical% length(col_types))
-    assert_that(all(is.na(col_names) == FALSE | is.na(col_names) == is.na(col_types)))
+    assert_that(all(
+      is.na(col_names) == FALSE |
+      is.na(col_names) == is.na(col_types)
+    ))
 
     assert_that(is.null(col_options) |
                 length(col_options %identical% length(col_names)))
@@ -26,6 +34,7 @@ sqlgen_create_table <- function(table_name, col_names, col_types, col_options = 
     col_names  %assert_class% 'character'
     col_types  %assert_class% 'character'
     col_types  <- toupper(col_types)
+
 
   # process input
     empty_cols <- is.na(col_names) & is.na(col_types)
@@ -39,17 +48,24 @@ sqlgen_create_table <- function(table_name, col_names, col_types, col_options = 
       col_types <- col_types[!is.na(col_types)]
     }
 
+    if(is.null(coll_options)){
+      col_options <- rep('', length(col_names))
+    }
+      col_options[is.na(col_options)] <- ''
+
 
   # check processed col_types
     assert_that(check_sql_types(col_types, dialect = dialect))
 
-    col_options[is.na(col_options)] <- ''
 
-
-  cols <- paste0(paste0(col_names, ' ', col_types, ' ', col_options), collapse = ', ')
+  cols <- paste0(
+    paste0(col_names, ' ', col_types, ' ', col_options),
+    collapse = ', '
+  )
 
   sprintf('CREATE TABLE %s (%s)', table_name, cols)
 }
+
 
 
 check_sql_types <- function(col_types, dialect){
@@ -65,8 +81,8 @@ check_sql_types <- function(col_types, dialect){
 }
 
 
-check_sql_types_db2 <- function(col_types){
 
+check_sql_types_db2 <- function(col_types){
   valid_col_types <- c(
     'SMALLINT',
     'INTEGER', 'INT',
@@ -87,8 +103,8 @@ check_sql_types_db2 <- function(col_types){
     'TIME',
     'TIMESTAMP')
 
-  res <- foreach(i = col_types) %do% {
-    any(stringi::stri_detect(i, regex = valid_col_types))
+  res <- foreach(col_type = col_types) %do% {
+    any(stringi::stri_detect(col_type, regex = valid_col_types))
   }
 
   names(res) <- col_types
