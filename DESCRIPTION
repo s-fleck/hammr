@@ -4,10 +4,9 @@ Title: Hammr - A Personal utility functions package
 Version: 0.0.3
 Author: Stefan Fleck
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
-Description: Personal utility functions package. Use at own risk. Generally
-useful functions will eventually be migrated to their own package.
+Description: Personal utility functions package. Use at own risk. Generally useful functions will eventually be migrated to their own package.
 License: GPL3
 Imports: assertthat, magrittr, data.table, dplyr, dtplyr, bit64, foreach, openxlsx, stringi, xtable
-Suggests: lintr
+Suggests: lintr, testthat
 LazyData: TRUE
 RoxygenNote: 5.0.1

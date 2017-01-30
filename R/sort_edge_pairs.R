@@ -6,7 +6,7 @@
 #' \code{\link{sort_edge_pairs.default}} and \code{\link{sort_edge_pairs.data.table}}
 #'
 #'
-#' @import data.table
+#' @importFrom data.table data.table
 #'
 #' @return a sorted data.table consisting of the columns p, c and n (and .id if allow_partial = TRUE)
 #' @export
@@ -26,7 +26,7 @@ sort_edge_pairs <- function(x, ..., allow_partial) UseMethod('sort_edge_pairs')
 #'  nodes are sorted as well as possible. An additonal column .id is added to
 #'  the results data.table to indicate each sorted group.
 #'
-#' @import data.table
+#' @importFrom data.table data.table
 #'
 #' @return a sorted data.table consisting of the columns p, c and n (and .id if allow_partial = TRUE)
 #' @export

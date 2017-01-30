@@ -6,7 +6,6 @@
 #' @param remove_ext Extension behind column names to remove a regex string (f.e. '_cv', '.x', etc.)
 #' @param as_character Shoudl table cells be coerced to character? (Necessary for insert_empty_line)
 #'
-#' @import foreach
 #' @export
 rstack_table <- function(line1,
                          line2,

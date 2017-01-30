@@ -3,7 +3,11 @@
 #' @section Foo functions:
 #' The foo functions ...
 #'
-#' @import assertthat magrittr data.table dplyr dtplyr bit64 foreach openxlsx stringi xtable
+#' @import assertthat
+#' @import dtplyr
+#' @importFrom magrittr %>%
+#' @importFrom foreach foreach %do% %dopar%
+#' @importFrom data.table data.table as.data.table
 #' @docType package
 #' @name hammr
 NULL

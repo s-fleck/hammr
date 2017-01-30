@@ -40,7 +40,6 @@ print_tex <- function(dat, ...){
 #' @param ... Additoinal arguments passed on to \code{\link{print.xtable}}
 #'
 #' @return
-#' @import xtable data.table foreach
 #' @export
 #'
 #' @examples
