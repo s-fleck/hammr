@@ -48,7 +48,7 @@ sqlgen_create_table <- function(
       col_types <- col_types[!is.na(col_types)]
     }
 
-    if(is.null(coll_options)){
+    if(is.null(col_options)){
       col_options <- rep('', length(col_names))
     }
       col_options[is.na(col_options)] <- ''
