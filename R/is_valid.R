@@ -14,6 +14,7 @@ is_valid <- function(x, ...) {
 }
 
 
+
 #' @export
 #' @rdname is_valid
 assert_valid <- function(dat, ...){
@@ -25,8 +26,8 @@ assert_valid <- function(dat, ...){
   } else {
     stop(assert_valid_error(dat))
   }
-
 }
+
 
 
 assert_valid_error  <- function(obj) {
@@ -38,4 +39,3 @@ assert_valid_error  <- function(obj) {
   condition(c('assert_valid_error', 'error'),
             message = msg)
 }
-
