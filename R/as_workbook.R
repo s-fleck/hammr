@@ -1,9 +1,18 @@
+#' As Workbook
+#'
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 as_workbook <- function(...){
+  assert_that(requireNamespace("openxlsx"))
   UseMethod('as_workbook')
 }
 
 
-#' Title
+#' As Workbook
 #'
 #' @param dat
 #' @param stack_method
