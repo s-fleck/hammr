@@ -40,6 +40,3 @@ save_xlsx.default <- function(dat, outfile, overwrite = FALSE){
   wb <- as_workbook(dat)
   openxlsx::saveWorkbook(wb, outfile, overwrite)
 }
-
-
-
