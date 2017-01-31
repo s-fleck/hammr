@@ -12,6 +12,12 @@ as_workbook <- function(...){
 }
 
 
+as_workbook.default <- function(dat){
+  wb <- openxlsx::createWorkbook()
+  wb <- write_worksheet(dat, wb, sheet = 1)
+  return(wb)
+}
+
 #' As Workbook
 #'
 #' @param dat
@@ -96,3 +102,4 @@ save_xlsx.StackTable <- function(dat,
 
   openxlsx::saveWorkbook(wb, outfile, overwrite = overwrite)
 }
+
