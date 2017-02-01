@@ -113,3 +113,35 @@ load_rda <- function(infile){
   env[[nm]]
 }
 
+
+
+#' Launch explorer
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#' @rdname launchers
+#'
+#' @examples
+explorer <- function(x){
+  dn <- dirname(x)
+  shell(sprintf("explorer %s", dn), intern=TRUE, wait = FALSE)
+}
+
+
+
+#' Launch excel
+#'
+#' @param x
+#'
+#' @param excel_path
+#' @rdname launchers
+#'
+#' @export
+excel <- function(
+  x,
+  excel_path = '"C:/Program Files (x86)/Microsoft Office/Office14/EXCEL.EXE"'
+){
+  shell(paste(excel_path, x), intern=TRUE, wait = FALSE)
+}
