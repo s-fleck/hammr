@@ -9,7 +9,6 @@
 #' @rdname is_valid
 is_valid <- function(x, ...) {
   UseMethod("is_valid")
-
   print('test')
 }
 
@@ -18,7 +17,6 @@ is_valid <- function(x, ...) {
 #' @export
 #' @rdname is_valid
 assert_valid <- function(dat, ...){
-
   v <- is_valid(dat)
 
   if(v){

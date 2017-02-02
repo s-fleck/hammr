@@ -10,3 +10,4 @@ Imports: assertthat, magrittr, data.table, dplyr, dtplyr, bit64, foreach, openxl
 Suggests: lintr, testthat
 LazyData: TRUE
 RoxygenNote: 5.0.1
+Encoding: UTF-8

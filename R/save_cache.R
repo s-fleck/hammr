@@ -54,6 +54,7 @@ load_cache <- function(..., pkg = '.', subdir, envir = globalenv()){
   pkg       <- devtools::as.package(pkg)
   pkg_dir   <- system.file(package = pkg$package)
   cache_dir <- file.path(pkg_dir, 'inst', 'cache')
+  cache_dir <- gsub('/inst/inst', '/inst', cache_dir)  # dirty fix for devtools shennanigans
 
   if(!missing(subdir)){
     cache_dir <- file.path(cache_dir, subdir)
