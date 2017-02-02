@@ -145,3 +145,19 @@ excel <- function(
 ){
   shell(paste(excel_path, x), intern=TRUE, wait = FALSE)
 }
+
+
+dirty_reload <- function(){
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
+}
+
+
+reload_tatool <- function(){
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
+}
+
+reload_hammr<- function(){
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
+}
