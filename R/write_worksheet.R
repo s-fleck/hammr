@@ -44,7 +44,7 @@ write_worksheet.default <- function(
   start_row = 1L,
   ...
 ){
-  openxlsx::writeData(wb = wb, sheet = sheet, x = dat, ...)
+  openxlsx::writeData(wb = wb, sheet = sheet, x = dat, startRow = start_row)
 }
 
 
