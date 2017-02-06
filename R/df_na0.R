@@ -13,8 +13,13 @@ df_na0 <- function(dat){
 #' @export
 df_na0.data.table <- function(dat){
   dat <- data.table::copy(dat)
-  for (j in seq_along(dat)){
-    set(dat, which(is.nan(dat[[j]]) | is.na(dat[[j]]) ), j, 0)
+  for (j in seq_along(dat)) {
+    data.table::set(
+      dat,
+      which(is.nan(dat[[j]]) |
+            is.na(dat[[j]])  ),
+      j,
+      0)
   }
   return(dat)
 }
@@ -24,4 +29,3 @@ df_na0.data.frame <- function(dat){
   dat[is.na(dat)] <- 0
   return(dat)
 }
-
