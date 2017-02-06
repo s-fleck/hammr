@@ -161,3 +161,37 @@ reload_tatool <- function(){
 reload_hammr<- function(){
   try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
 }
+
+
+
+
+#' Change factor levels according to named character vector
+#'
+#' This is just a (to me) slightly more convenient interface to
+#' forcats::fct_recode.
+#'
+#' @param x
+#' @param rec
+#'
+#' @return
+#' @export
+#'
+#' @examples
+fct_recode2 <- function(x, rec){
+  assert_that(is.vector(x))
+  assert_that(is.vector(rec))
+  assert_that(identical(
+    length(names(rec)),
+    length(rec)
+  ))
+
+
+  args <- vector('list', length(rec))
+  for(i in seq_along(args)){
+    args[[i]] <- rec[i]
+  }
+  args <- c(list(as.character(x)), args)
+
+  do.call(forcats::fct_recode, args)
+}
+
