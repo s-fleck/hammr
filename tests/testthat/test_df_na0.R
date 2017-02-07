@@ -2,7 +2,7 @@ context("df_na0")
 
 
 test_that("df_na0 works as expected", {
-  tdat <- data.table(
+  tdat <- data.table::data.table(
     x = c(1, NA, 0),
     y = c(1, NaN, 2)
   )
@@ -18,7 +18,14 @@ test_that("df_na0 works as expected", {
     r1$y[[2]], 0
   )
 
+
+  # Results for .data.frame and .data.table method must match
   expect_identical(
     as.data.frame(r1), r2
   )
+
+#   tdat2 <- data.table::data.table(
+#     x = as.factor(c(1, NA, 0)),
+#     y = as.factor(c(1, NaN, 2))
+#   )
 })
