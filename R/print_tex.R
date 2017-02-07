@@ -12,7 +12,7 @@ print_tex <- function(dat, ...){
 }
 
 
-#' print a Stack_table as latex
+#' print a Mash_table as latex
 #'
 #' Stacked rows are sepparated by \code{\\newline}, therefor this only works
 #' correctly for columns that have an 'X' column type (see documentation of
@@ -43,9 +43,9 @@ print_tex <- function(dat, ...){
 #' @export
 #'
 #' @examples
-print_tex.Stack_table <- function(dat,
-                                  stack_method = 'row',
-                                  insert_blank_row = (stack_method == 'row'),
+print_tex.Mash_table <- function(dat,
+                                  mash_method = 'row',
+                                  insert_blank_row = (mash_method == 'row'),
                                   .align = paste0('lX',
                                                   paste(rep('X',
                                                             ncol(dat[[1]]) - 1),
@@ -59,16 +59,16 @@ print_tex.Stack_table <- function(dat,
                                   ...){
 
   # Preconditions
-  stack_method %assert_class% 'character'
+  mash_method %assert_class% 'character'
   insert_blank_row %assert_class% 'logical'
-  assert_that(is.scalar(stack_method))
+  assert_that(is.scalar(mash_method))
   assert_that(is.scalar(insert_blank_row))
 
 
   # Stacking
-  res <- switch(stack_method,
-                'row' = stack_rows_tex(dat, insert_blank_row = FALSE),
-                'col' = stack_cols_tex(dat))
+  res <- switch(mash_method,
+                'row' = mash_rows_tex(dat, insert_blank_row = FALSE),
+                'col' = mash_cols_tex(dat))
 
   # format latex
   xtable::xtable(
