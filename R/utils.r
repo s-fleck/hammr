@@ -154,6 +154,10 @@ dirty_reload <- function(){
 }
 
 
+reload_gvtool <- function(){
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
+}
+
 reload_tatool <- function(){
   try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
 }
