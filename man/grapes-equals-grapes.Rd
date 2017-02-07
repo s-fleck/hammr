@@ -13,4 +13,3 @@ Works like ==, just that it treats NAs like normal values:
 NA %==% NA returns TRUE instead of NA
   1  %==% NA returns FALSE instead of NA
 }
-

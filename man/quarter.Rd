@@ -22,4 +22,3 @@ A custom data type for Year-Quarter
 quarter(2013, 3)
 quarter('2013-Q3')
 }
-

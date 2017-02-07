@@ -17,4 +17,3 @@ a value column, a from and a to column}
 \description{
 Key_value range
 }
-

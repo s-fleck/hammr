@@ -18,4 +18,3 @@ https://gist.github.com/sckott/4632735
 vec <- c("a","b","d","e","f","g","h")
 chop(vec, 3)
 }
-

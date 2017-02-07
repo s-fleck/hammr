@@ -13,4 +13,3 @@ lapply_by_class(x, fun, classes, ...)
 Same as \code{\link{lapply}}, just that it only applies fun to elements of a specified
 class.
 }
-

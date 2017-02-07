@@ -16,4 +16,3 @@ previous, current and next node.
 \details{
 \code{\link{sort_edge_pairs.default}} and \code{\link{sort_edge_pairs.data.table}}
 }
-

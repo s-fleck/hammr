@@ -15,4 +15,3 @@ Rounds the values in the numeric columns of a data.frame to the specified number
 \seealso{
 signif
 }
-

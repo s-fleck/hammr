@@ -23,4 +23,3 @@ all_identical(c(1,2,3))
 all_identical(c(1,1,1))
 
 }
-

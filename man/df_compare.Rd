@@ -66,4 +66,3 @@ df_compare(dat1, dat2, `*`)
 df_compare(dat1, dat2, fun = function(x, y) paste0(x, '/', y))
 df_compare(dat1, dat2, fun = function(x, y) paste0(x, '/', y), coltypes = 'factor')
 }
-

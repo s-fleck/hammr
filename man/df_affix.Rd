@@ -2,9 +2,9 @@
 % Please edit documentation in R/df_affix.R
 \name{df_affix}
 \alias{df_affix}
-\alias{df_braces}
-\alias{df_brackets}
 \alias{df_parenthesis}
+\alias{df_brackets}
+\alias{df_braces}
 \title{Paste a suffix and/or prefix to each column of a data.frame}
 \usage{
 df_affix(dat, prefix, suffix)
@@ -40,4 +40,3 @@ df_parenthesis(dat)
 df_brackets(dat)
 
 }
-

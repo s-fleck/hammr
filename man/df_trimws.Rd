@@ -17,4 +17,3 @@ a data.frame
 \description{
 Remove whitespace from all character (and factor) columns of a data.frame
 }
-

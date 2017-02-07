@@ -17,4 +17,3 @@ a character vector of the n most frequent elements
 \description{
 Get the n most frequent values of a vector
 }
-

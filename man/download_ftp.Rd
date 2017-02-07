@@ -26,4 +26,3 @@ download_ftp(.file, .outdir = ".", .creds = NULL, .server,
 Calls command line FTP client, only tested on windows, you should probably
 rather use the RCurl package for this task
 }
-

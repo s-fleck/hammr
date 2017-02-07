@@ -22,4 +22,3 @@ Chop up a string by position
 str_chop('123456789a', c(1,4,6,9,100))
 
 }
-

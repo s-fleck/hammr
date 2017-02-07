@@ -18,4 +18,3 @@ within_kv_range(key, value, kv_range, kv_range_keycol)
 \description{
 Check if a value is within a key-value range
 }
-

@@ -12,4 +12,3 @@ a list
 \description{
 Return a list of usefull regex patterns
 }
-

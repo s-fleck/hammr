@@ -14,4 +14,3 @@ sqlgen_create_table(table_name, col_names, col_types, col_options = NULL,
 Creates SQL CREATE TABLE statements from a vector of column names and
 a vector of column types
 }
-

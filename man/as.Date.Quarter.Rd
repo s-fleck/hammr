@@ -9,4 +9,3 @@
 \description{
 as.Date method for Quarter
 }
-

@@ -20,4 +20,3 @@ An object of the same type increment by inc
 \description{
 Function to increment objects
 }
-

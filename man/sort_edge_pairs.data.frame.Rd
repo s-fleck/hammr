@@ -19,4 +19,3 @@
 \description{
 If the data frame row ids do not form a consecutive path, an error is thrown
 }
-

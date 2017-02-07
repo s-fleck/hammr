@@ -19,4 +19,3 @@ if \code{identical}, ensure that the names of dat and classes are identical}
 \description{
 Compares the column classes of a data.frame with
 }
-

@@ -20,7 +20,7 @@ Load object from hard disk chache (of a package)
 
 Loads an R object from a chache dir in the current package
 }
+
 \seealso{
 \code{\link{save_cache}}.
 }
-

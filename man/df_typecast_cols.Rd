@@ -29,4 +29,3 @@ res <- typecast_cols(dat, list(foo = 'numeric',
 
 str(dat)
 }
-

@@ -39,4 +39,3 @@ df_format(tdf,
 \seealso{
 df_format_num
 }
-

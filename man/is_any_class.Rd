@@ -24,4 +24,3 @@ class(x) <- c('data.frame', 'test')
 is_class(x, 'test')
 
 }
-

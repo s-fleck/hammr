@@ -18,7 +18,7 @@ Load object from hard disk chache
 
 Loads an R object from a test_data dir in the current package
 }
+
 \seealso{
 \code{\link{save_cache}}.
 }
-

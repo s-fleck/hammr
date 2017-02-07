@@ -19,4 +19,3 @@ Drops columns of a data.frame if they exists. The main functional difference
 to other ways to drop columns in R is that it will not throw an error of
 the columns is not present in the data.frame.
 }
-

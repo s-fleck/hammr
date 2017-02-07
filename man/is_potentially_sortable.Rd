@@ -13,4 +13,3 @@ TRUE if there is a chance that the edge pairs could be sorted
 FALSE gurantees that not all edge pairs are sortable (but TRUE does
 not gurantee that they are)
 }
-

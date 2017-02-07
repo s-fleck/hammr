@@ -12,4 +12,3 @@ Rounds all numeric columns in a data.frame
 \seealso{
 round
 }
-

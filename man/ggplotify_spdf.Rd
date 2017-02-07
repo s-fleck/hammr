@@ -17,4 +17,3 @@ a data.frame
 \description{
 Prepare SPDF for ggplot2
 }
-

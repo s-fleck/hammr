@@ -2,7 +2,7 @@
 % Please edit documentation in R/df_na0.R
 \name{df_na0}
 \alias{df_na0}
-\title{Title}
+\title{Set NA values to Zero (0)}
 \usage{
 df_na0(dat)
 }
@@ -10,6 +10,8 @@ df_na0(dat)
 \item{dat}{}
 }
 \description{
-Title
+Replaces all \code{NA}s and \code{NAN}s in a \code{data.frame} or
+\code{data.table} with \code{0}. This will fail if \code{0} is not a valid
+value for all columns in \code{dat} (which can happen, for example, for
+factor columns)
 }
-

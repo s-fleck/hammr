@@ -12,4 +12,3 @@ prepare(dat, ...)
 \description{
 Metafunction to prepare data sets after reading them in
 }
-

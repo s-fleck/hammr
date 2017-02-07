@@ -12,4 +12,3 @@ info(dat)
 \description{
 Display info about an R object with attributes
 }
-

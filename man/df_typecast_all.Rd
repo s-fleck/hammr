@@ -33,4 +33,3 @@ y <- typecast_all(df, 'factor', 'numeric')
 str(x)
 str(y)
 }
-

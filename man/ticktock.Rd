@@ -3,6 +3,8 @@
 \name{tick}
 \alias{tick}
 \alias{tock}
+\alias{tock}
+\alias{tick}
 \title{Tick-Tock timer}
 \usage{
 tick()
@@ -24,4 +26,3 @@ tock()
 # [1] "Tock: 2015-10-28 15:45:17  - Diff:  4.1 secs"
 
 }
-

@@ -20,4 +20,3 @@ For details refer to the documentation of \code{\link{format}}
 \seealso{
 df_format
 }
-

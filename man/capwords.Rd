@@ -12,4 +12,3 @@ capwords(s, strict = FALSE)
 \description{
 For ?toupper documentation
 }
-

@@ -25,4 +25,3 @@ a sorted data.table consisting of the columns p, c and n (and .id if allow_parti
 Sorts a finite number of directed edge-pairs defined by
 previous, current and next node.
 }
-

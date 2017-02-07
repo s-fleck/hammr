@@ -17,4 +17,3 @@ TRUE / FALSE
 \description{
 Check if a value looks like integer
 }
-

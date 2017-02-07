@@ -22,4 +22,3 @@ a condition object
 A constructur function for conditions, taken rom
 http://adv-r.had.co.nz/beyond-exception-handling.html
 }
-

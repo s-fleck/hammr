@@ -12,4 +12,3 @@ print_tex(dat, ...)
 \description{
 Title
 }
-

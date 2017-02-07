@@ -14,4 +14,3 @@ quarter_as_date(y, q)
 \description{
 Shorthand function for converting year - qaurter date to
 }
-
