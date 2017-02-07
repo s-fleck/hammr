@@ -1,4 +1,9 @@
-#' Title
+#' Set NA values to Zero (0)
+#'
+#' Replaces all \code{NA}s and \code{NAN}s in a \code{data.frame} or
+#' \code{data.table} with \code{0}. This will fail if \code{0} is not a valid
+#' value for all columns in \code{dat} (which can happen, for example, for
+#' factor columns)
 #'
 #' @param dat
 #'
