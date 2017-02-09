@@ -72,7 +72,7 @@ sort_edge_pairs.default <- function(x, c, n, allow_partial = FALSE){
             nrow(nxt) %identical% 1L,
             nrow(prv) %identical% 1L)){
 
-            res <- rbindlist(list(prv, cur, nxt))
+            res <- data.table::rbindlist(list(prv, cur, nxt))
 
             if(allow_partial){
               res[, .id := 1L]
@@ -85,7 +85,7 @@ sort_edge_pairs.default <- function(x, c, n, allow_partial = FALSE){
           nrow(nxt) %identical% 1L,
           nrow(prv) %identical% 1L)){
 
-          res <- rbindlist(list(prv, cur, nxt))
+          res <- data.table::rbindlist(list(prv, cur, nxt))
           if(allow_partial){
             res[, .id := 1L]
           }
@@ -97,7 +97,7 @@ sort_edge_pairs.default <- function(x, c, n, allow_partial = FALSE){
         if(nrow_dat %identical% 2L & all(
           nrow(nxt) %identical% 0L,
           nrow(prv) %identical% 0L)){
-             res <- rbindlist(list(cur, dat), idcol = ifelse(allow_partial, TRUE, NULL))
+             res <- data.table::rbindlist(list(cur, dat), idcol = ifelse(allow_partial, TRUE, NULL))
              return(res)
         }
 
