@@ -182,7 +182,7 @@ reload_hammr<- function(){
 #'
 #' @examples
 fct_recode2 <- function(x, rec){
-  assert_that(is.vector(x))
+  assert_that(is.vector(x) || is.factor(x))
   assert_that(is.vector(rec))
   assert_that(identical(
     length(names(rec)),
