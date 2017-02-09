@@ -27,20 +27,20 @@
 
 human_numbers <- function(x = NULL, smbl ="", shorts = c('k', 'm', 'b')){
   humanity <- function(y){
-
     if (!is.na(y)){
-
       b <- plyr::round_any(abs(y) / 1000000000, 0.1)
       m <- plyr::round_any(abs(y) / 1000000, 0.1)
       k <- plyr::round_any(abs(y) / 1000, 0.1)
 
-      if ( y >= 0 ){
+      if (y >= 0){
         y_is_positive <- ""
       } else {
         y_is_positive <- "-"
       }
 
-      if  ( m < 1){
+      if (k < 1){
+        paste(y_is_positive, smbl,  abs(y), sep = "")
+      } else if (m < 1){
         paste (y_is_positive, smbl,  k , shorts[1], sep = "")
       } else if (b < 1){
         paste (y_is_positive, smbl, m , shorts[2], sep = "")
