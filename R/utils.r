@@ -147,28 +147,6 @@ excel <- function(
 }
 
 
-dirty_reload <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
-}
-
-
-reload_gvtool <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
-}
-
-reload_tatool <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
-}
-
-reload_hammr<- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
-}
-
-
-
-
 #' Change factor levels according to named character vector
 #'
 #' This is just a (to me) slightly more convenient interface to
@@ -198,4 +176,57 @@ fct_recode2 <- function(x, rec){
 
   do.call(forcats::fct_recode, args)
 }
+
+
+
+# Dirty -------------------------------------------------------------------
+
+dirty_reload <- function(){
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
+}
+
+
+reload_gvtool <- function(){
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
+}
+
+reload_tatool <- function(){
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
+}
+
+reload_hammr<- function(){
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
+}
+
+
+install_gv <- function(creds = NULL){
+  if (is.null(creds)) {
+    creds <- ui_credentials()
+  }
+
+  requireNamespace("devtools")
+  requireNamespace("httr")
+  requireNamespace("RCurl")
+  httr::set_config(httr::config(ssl_verifypeer = 0L))
+
+  repositories <- c(
+    's_fleck/testthis',
+    's_fleck/gvtool',
+    's_fleck/gvroad',
+    's_fleck/gvrail'
+  )
+
+  for(repository in repositories){
+    devtools::install_bitbucket(
+      repository,
+      username = creds$user,
+      password = creds$pw)
+  }
+}
+
+
+
+
 
