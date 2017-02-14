@@ -11,8 +11,13 @@ credentials_db <- function(dat){
 
 
 #' @export
-ui_credentials <- function(){
+ui_credentials <- function(msg = NULL){
   res <- list()
+
+
+  if(!is.null(msg)){
+    cat(msg, '\n\n')
+  }
 
   res$user  <- readline("User:")
   res$pw    <- readline("Passwort:")
@@ -22,8 +27,13 @@ ui_credentials <- function(){
 
 
 #' @export
-ui_credentials_db <- function(){
+ui_credentials_db <- function(msg = NULL){
   res <- list()
+
+
+  if(!is.null(msg)){
+    cat(msg, '\n\n')
+  }
 
   res$user    <- readline("User:")
   res$pw      <- readline("Passwort:")

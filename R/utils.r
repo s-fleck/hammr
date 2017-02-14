@@ -203,7 +203,8 @@ reload_hammr<- function(){
 
 install_gv <- function(creds = NULL){
   if (is.null(creds)) {
-    creds <- ui_credentials()
+    creds <- ui_credentials(
+      'Please your bitbucket username and password')
   }
 
   requireNamespace("devtools")
@@ -213,6 +214,7 @@ install_gv <- function(creds = NULL){
 
   repositories <- c(
     's_fleck/testthis',
+    's_fleck/tatool',
     's_fleck/gvtool',
     's_fleck/gvroad',
     's_fleck/gvrail'
