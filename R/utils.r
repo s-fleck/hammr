@@ -224,11 +224,8 @@ install_gv <- function(creds = NULL){
     devtools::install_bitbucket(
       repository,
       username = creds$user,
-      password = creds$pw)
+      password = creds$pw,
+      upgrade = FALSE
+      )
   }
 }
-
-
-
-
-
