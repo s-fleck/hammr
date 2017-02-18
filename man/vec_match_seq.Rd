@@ -9,6 +9,11 @@ vec_match_seq(sequence, target)
 
 sequence \%seq_in\% target
 }
+\arguments{
+\item{target}{target vector for sequence matching}
+
+\item{seq}{sequence to be matched}
+}
 \description{
 \code{vec_match_seq} returns a vector of the positions of the matches of
 a sequence inside a longer vector. The index coresponds to the where the

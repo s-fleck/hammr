@@ -13,14 +13,10 @@ Imports:
     data.table,
     dplyr,
     dtplyr,
-    bit64,
-    foreach,
-    openxlsx,
-    stringi,
-    xtable
+    stringi
 Suggests:
     lintr,
     testthat
 LazyData: TRUE
-RoxygenNote: 6.0.0
+RoxygenNote: 6.0.1
 Encoding: UTF-8

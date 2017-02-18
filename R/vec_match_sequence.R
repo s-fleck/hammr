@@ -6,8 +6,8 @@
 #'
 #' `%seq_in%` returns a logical vector of the matching described above
 #'
-#' @seq sequence to be matched
-#' @target   target vector for sequence matching
+#' @param seq sequence to be matched
+#' @param target   target vector for sequence matching
 #'
 #' @rdname vec_match_seq
 #' @export
@@ -29,23 +29,20 @@ vec_match_seq <- function(sequence, target){
     all(purrr::map_lgl(seq_along(tmp), function(x) tmp[[x]][[x]]))
   }
 
-  matches    <- purrr::map(target, `==`, sequence)
+  equal_or_both_na <- function(a, b){
+    res <- a == b  | is.na(a) & is.na(b)
+    res[is.na(a) & !is.na(b)] <- FALSE
+    res
+  }
+
+  matches    <- purrr::map(target, equal_or_both_na, sequence)
   iterations <- 1:(length(target) - length(sequence) + 1)
   matches    <- purrr::map(iterations, group_matches,
                            matches, sequence, target)
 
   res <- purrr::at_depth(matches, 1, add_elements)
 
-  fill <- (length(res)+1):length(target)
+  fill <- (length(res) + 1):length(target)
   res[fill] <- FALSE
   unlist(res)
 }
-
-
-
-#' @export
-match_vector <- function(a, b){
-  warning('Deprecated. use match_sequence_to_vector instead.')
-  b %seq_in% a
-}
-

@@ -45,27 +45,10 @@ condition <- function(subclass, message, call = sys.call(-1), ...) {
 }
 
 
-ftp_530_creds_error<- function(text) {
-  msg <- 'FTP login error:' %_% text
-
-  condition(c('ftp_530_creds_error', 'error'),
-            message = msg)
-}
-
 
 fun_arg_error <- function(text){
-  msg <- 'Function argument error:' %_% text
+  msg <- paste('Function argument error:', text)
 
   condition(c('fun_arg_error', 'error'),
             message = msg)
 }
-
-
-ftp_not_all_files_transferred_error <- function(text){
-  msg <- 'Not all files transferred:' %_% text
-
-  condition(c('ftp_not_all_files_transferred_error', 'error'),
-            message = msg)
-
-}
-

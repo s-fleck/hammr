@@ -16,7 +16,10 @@ all_with_warning <- function(dat){
     return(TRUE)
   } else {
     failed      <- dat[as.logical(lapply(dat, identical, FALSE))]
-    warn        <- 'FALSE, but should be TRUE:\n' %_% paste(names(failed), collapse = ', ')
+    warn        <- paste(
+      'FALSE, but should be TRUE:\n',
+      paste(names(failed), collapse = ', ')
+    )
     warning(warn)
     return(FALSE)
   }

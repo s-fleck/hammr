@@ -2,7 +2,7 @@
 % Please edit documentation in R/save_test.R
 \name{save_test}
 \alias{save_test}
-\title{Save object to hard disk chache}
+\title{Save object to test directory}
 \usage{
 save_test(..., pkg = ".", subdir)
 }
@@ -14,7 +14,7 @@ save_test(..., pkg = ".", subdir)
 \item{package}{the current package}
 }
 \description{
-Save object to hard disk chache
+Save object to test directory
 }
 \section{Side effects}{
 
