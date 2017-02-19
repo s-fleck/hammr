@@ -5,15 +5,19 @@
 \alias{human_gbp,}
 \alias{human_usd,}
 \alias{human_euro,}
-\alias{human_num}
+\alias{human_num,}
+\alias{human_num_de,}
+\alias{human_si}
 \alias{human_gbp}
 \alias{human_usd}
 \alias{human_euro}
 \alias{human_num}
 \alias{human_num_de}
+\alias{human_si}
 \title{Human Numbers}
 \usage{
-human_numbers(x = NULL, smbl = "", shorts = c("k", "m", "b"))
+human_numbers(x, symbol = "", pots = c(k = 1000, m = 1e+06, b = 1e+09),
+  big_mark = ",")
 
 human_gbp(x)
 
@@ -24,32 +28,40 @@ human_euro(x)
 human_num(x)
 
 human_num_de(x)
+
+human_si(x)
 }
 \arguments{
-\item{x}{a numeric vector to format,}
+\item{x}{a numeric vector}
 
-\item{smbl}{a symbol you'd like to prefix your numbers by}
+\item{symbol}{a prefix symbol, useful for currencies}
+
+\item{pots}{A named numeric vector of rounding levels and associated shorthand}
 }
 \value{
 a character vector the same length as the input vector
 }
 \description{
-Source: https://github.com/1R151-1/R/blob/master/ggplot2_formatter.r
+Format numbers so they're legible for humans. Use this in ggplot for labels
+where you might use the comma or percent functions from the Scales package.
 }
 \details{
-Format numbers so they're legible for humans
-Use this in ggplot for labels where you might use the comma or percent functions from the
-Scales package.
+Comes with convenience functions for currencies, SI symbols and and german
+axis labels.
 
-Checks whether numbers are positive or negative.
-Allows up to 1 significant figure
-sapply used for element-wise application of the humanity function as a vector may include
-numbers where billions, millions or thousands are appropriate.
+Inspired by: https://github.com/1R151-1/R/blob/master/ggplot2_formatter.r
 }
 \examples{
 human_numbers(c(1000000 , 1500000, 10000000000))
 human_numbers(c(1.200000e+05, -2.154660e+05, 2.387790e+05, 4.343500e+04 ,5.648675e+12), "$")
-ggplot2 + scale_y_continuous(labels = human_numbers)
-ggplot2 + scale_x_continuous(labels = human_numbers)
-ggplot2 + scale_x_continuous(labels = human_gbp)
+
+
+x <- data.frame(
+  x = letters[sample(1:5, 1000, replace = TRUE)],
+  y = c(runif(1000, min = -1e12, max = 1e12))
+)
+
+p <- ggplot(x, aes(x = x, y = y)) + geom_point()
+p + scale_y_continuous(labels = human_num)
+p + scale_y_continuous(labels = human_euro)
 }
