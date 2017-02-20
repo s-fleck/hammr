@@ -22,6 +22,7 @@ devtools::install_github("eddelbuettel/digest")
 devtools::install_github("jeroenooms/jsonlite")
 devtools::install_github("DerekYves/placement")
 devtools::install_github("rich-iannone/DiagrammeR")
+devtools::install_github("hrbrmstr/ggalt")
 
 devtools::install_bitbucket('s_fleck/testthis')
 
