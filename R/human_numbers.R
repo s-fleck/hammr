@@ -87,6 +87,8 @@ human_numbers <- function(
       return(NA_character_)
     } else if (y == 0){
       return(paste0(symbol, '0'))
+    } else if (data.table::between(y, 0, 1)){
+      return(as.character(signif(y, 2)))
     } else {
       humanize(y, pots, symbol)
     }

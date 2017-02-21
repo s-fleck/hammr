@@ -23,5 +23,16 @@ test_that("human_numbers works as expected", {
     human_numbers(x, symbol = '$', big_mark = "'"),
     c("-$1k", "$0", "$0", NA, "$10m", "$1b", "$1'000b", "$1'000'000b")
   )
+
+
+  # Deal with numbers between 0 and 1
+    x2 <- c(0, 0.1, 0.9, 100000000, NA)
+
+    expect_identical(
+      human_num(x2),
+      c("0", "0.1", "0.9", "100m", NA)
+    )
+
+
 })
 
