@@ -1,23 +1,10 @@
-#' Display info about an R object with attributes
-#'
-#' @param dat an R object
 #' @export
-info <- function(dat){
-
-  msg <- attr(dat, 'info')
-  if(!is.null(msg)) cat(msg)
+all_unique <- function(x){
+  length(x) %identical% length(unique(x))
 }
 
 
-#' Return a list of usefull regex patterns
-#'
-#' @return a list
-#' @export
-rexpat <- function(){
-  list(
-    valid_urs = '[Z,R,K,S,U,L,F,G]\\d{3}[A-Z]\\d{3}.'
-  )
-}
+
 
 #' @export
 as_readr_col <- function(dat){
@@ -229,3 +216,6 @@ install_gv <- function(creds = NULL){
       )
   }
 }
+
+
+
