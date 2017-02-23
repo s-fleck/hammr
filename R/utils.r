@@ -216,6 +216,3 @@ install_gv <- function(creds = NULL){
       )
   }
 }
-
-
-

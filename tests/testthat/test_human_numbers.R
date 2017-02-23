@@ -32,7 +32,4 @@ test_that("human_numbers works as expected", {
       human_num(x2),
       c("0", "0.1", "0.9", "100m", NA)
     )
-
-
 })
-
