@@ -62,6 +62,10 @@ human_numbers <- function(
       prefix <- symbol
     }
 
+    if(y < min(pots)){
+      return(paste(prefix, y))
+    }
+
     # Format / Round
     for(i in rev(seq_along(pots))){
       res <- rounder(abs(y) / pots[[i]])
@@ -80,6 +84,8 @@ human_numbers <- function(
         ))
       }
     }
+
+    stop('something went wrong')
   }
 
   humanity  <- function(y, pots, symbol){
