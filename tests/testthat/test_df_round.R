@@ -2,6 +2,8 @@ context("df_round")
 
 
 test_that("df_round works as expected", {
+  #* @testing df_round
+  #* @testing df_signif
 
   tdat <- data.frame(
     x = c(0.1234567, 0.3, 23456.01),
