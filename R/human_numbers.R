@@ -62,7 +62,7 @@ human_numbers <- function(
       prefix <- symbol
     }
 
-    if(y < min(pots)){
+    if(abs(y) < min(pots)){
       return(paste(prefix, y))
     }
 
