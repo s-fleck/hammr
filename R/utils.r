@@ -216,3 +216,11 @@ install_gv <- function(creds = NULL){
       )
   }
 }
+
+
+#' @export
+equal_or_both_na <- function(a, b){
+  res <- a == b  | is.na(a) & is.na(b)
+  res[is.na(a) & !is.na(b)] <- FALSE
+  res
+}

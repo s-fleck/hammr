@@ -29,11 +29,6 @@ vec_match_seq <- function(sequence, target){
     all(purrr::map_lgl(seq_along(tmp), function(x) tmp[[x]][[x]]))
   }
 
-  equal_or_both_na <- function(a, b){
-    res <- a == b  | is.na(a) & is.na(b)
-    res[is.na(a) & !is.na(b)] <- FALSE
-    res
-  }
 
   matches    <- purrr::map(target, equal_or_both_na, sequence)
   iterations <- 1:(length(target) - length(sequence) + 1)
