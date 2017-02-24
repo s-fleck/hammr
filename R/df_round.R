@@ -11,7 +11,13 @@
 #'
 #' @examples
 df_round <- function(dat, digits = 0){
-  dplyr::mutate_if(dat, is.numeric, round, digits = digits)
+  numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
+
+  for(i in numcols){
+    dat[[i]] <- round(dat[[i]], digits = digits)
+  }
+
+  return(dat)
 }
 
 
@@ -28,7 +34,13 @@ df_round <- function(dat, digits = 0){
 #'
 #' @examples
 df_signif<- function(dat, digits = 0){
-  dplyr::mutate_if(dat, is.numeric, signif, digits = digits)
+  numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
+
+  for(i in numcols){
+    dat[[i]] <- signif(dat[[i]], digits = digits)
+  }
+
+  return(dat)
 }
 
 
