@@ -10,3 +10,4 @@ cache
 *.tex
 *.html
 .directory
+*.Rd
