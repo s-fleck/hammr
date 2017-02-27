@@ -11,6 +11,7 @@
 #'
 #' @examples
 df_round <- function(dat, digits = 0){
+  assert_that(is.number(digits))
   numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
 
   for(i in numcols){
@@ -34,6 +35,7 @@ df_round <- function(dat, digits = 0){
 #'
 #' @examples
 df_signif<- function(dat, digits = 0){
+  assert_that(is.number(digits))
   numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
 
   for(i in numcols){
