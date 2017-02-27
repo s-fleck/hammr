@@ -6,25 +6,34 @@ dirty_reload <- function(){
   try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
 }
 
+reload_helper <- function(x){
+  basepath <- file.path('P:', 'Verkehr', 'Projekte', 'Fleck', 'R')
+
+  if(!dir.exists(basepath)){
+    basepath <- file.path('~', 'proj', 'R')
+  }
+
+  try(devtools::load_all(file.path(basepath, x)))
+}
 
 reload_gvtool <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
+  reload_helper('gvtool')
 }
 
 reload_tatool <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
+  reload_helper('tatool')
 }
 
 reload_hammr <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
+  reload_helper('hammr')
 }
 
 reload_gvroad <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvroad'))
+  reload_helper('gvroad')
 }
 
 reload_gvrail <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvrail'))
+  reload_helper('gvrail')
 }
 
 
