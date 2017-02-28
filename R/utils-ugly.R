@@ -6,6 +6,32 @@ dirty_reload <- function(){
   try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
 }
 
+
+reinstall_helper <- function(x){
+  basepath <- file.path('P:', 'Verkehr', 'Projekte', 'Fleck', 'R')
+
+  if(!dir.exists(basepath)){
+    basepath <- file.path('~', 'proj', 'R')
+  }
+
+  try(devtools::install(file.path(basepath, x)))
+}
+
+
+reinstall_gvroad <- function(){
+  reinstall_helper('gvroad')
+}
+
+
+reinstall_tatool <- function(){
+  reinstall_helper('tatool')
+}
+
+reinstall_gvtool <- function(){
+  reinstall_helper('gvtool')
+}
+
+
 reload_helper <- function(x){
   basepath <- file.path('P:', 'Verkehr', 'Projekte', 'Fleck', 'R')
 
@@ -34,6 +60,10 @@ reload_gvroad <- function(){
 
 reload_gvrail <- function(){
   reload_helper('gvrail')
+}
+
+reload_gvout <- function(){
+  reload_helper('gvout')
 }
 
 
