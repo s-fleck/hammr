@@ -22,6 +22,8 @@ df_round <- function(dat, digits = 0){
 }
 
 
+
+
 #' Round columns of a data frame to a specified number of significant digits.
 #'
 #' Rounds the values in the numeric columns of a data.frame to the specified number of significant digits.
@@ -44,6 +46,3 @@ df_signif<- function(dat, digits = 0){
 
   return(dat)
 }
-
-
-
