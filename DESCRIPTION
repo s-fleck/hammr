@@ -1,7 +1,7 @@
 Package: hammr
 Type: Package
 Title: Hammr - A Personal utility functions package
-Version: 0.0.3
+Version: 0.0.4
 Author: Stefan Fleck
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
 Description: Personal utility functions package. Use at own risk. Generally
