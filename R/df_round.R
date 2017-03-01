@@ -11,7 +11,8 @@
 #'
 #' @examples
 df_round <- function(dat, digits = 0){
-  numcols <- names(dat)[lapply(dat, class) == 'numeric']
+  assert_that(is.number(digits))
+  numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
 
   for(i in numcols){
     dat[[i]] <- round(dat[[i]], digits = digits)
@@ -19,6 +20,8 @@ df_round <- function(dat, digits = 0){
 
   return(dat)
 }
+
+
 
 
 #' Round columns of a data frame to a specified number of significant digits.
@@ -34,7 +37,8 @@ df_round <- function(dat, digits = 0){
 #'
 #' @examples
 df_signif<- function(dat, digits = 0){
-  numcols <- names(dat)[lapply(dat, class) %in% c('numeric', 'integer')]
+  assert_that(is.number(digits))
+  numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
 
   for(i in numcols){
     dat[[i]] <- signif(dat[[i]], digits = digits)
@@ -42,5 +46,3 @@ df_signif<- function(dat, digits = 0){
 
   return(dat)
 }
-
-

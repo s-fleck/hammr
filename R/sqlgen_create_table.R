@@ -27,8 +27,10 @@ sqlgen_create_table <- function(
       is.na(col_names) == is.na(col_types)
     ))
 
-    assert_that(is.null(col_options) |
-                length(col_options %identical% length(col_names)))
+    assert_that(
+      is.null(col_options) ||
+      length(col_options %identical% length(col_names))
+    )
 
     table_name %assert_class% 'character'
     col_names  %assert_class% 'character'
@@ -37,7 +39,7 @@ sqlgen_create_table <- function(
 
 
   # process input
-    empty_cols <- is.na(col_names) & is.na(col_types)
+    empty_cols <- is.na(col_names) && is.na(col_types)
     col_names  <- col_names[!empty_cols]
     col_types  <- col_types[!empty_cols]
 
@@ -103,10 +105,14 @@ check_sql_types_db2 <- function(col_types){
     'TIME',
     'TIMESTAMP')
 
-  res <- foreach(col_type = col_types) %do% {
-    any(stringi::stri_detect(col_type, regex = valid_col_types))
+  res <- vector('list', length(col_types))
+  names(res) <- col_types
+
+  for(col_type in col_types){
+    res[[col_type]] <- any(
+      stringi::stri_detect(col_type, regex = valid_col_types)
+    )
   }
 
-  names(res) <- col_types
   all_with_warning(res)
 }

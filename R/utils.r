@@ -1,23 +1,113 @@
-#' Display info about an R object with attributes
-#'
-#' @param dat an R object
 #' @export
-info <- function(dat){
-
-  msg <- attr(dat, 'info')
-  if(!is.null(msg)) cat(msg)
+equal_or_both_na <- function(a, b){
+  res <- a == b  | is.na(a) & is.na(b)
+  res[is.na(a) & !is.na(b)] <- FALSE
+  res
 }
 
 
-#' Return a list of usefull regex patterns
-#'
-#' @return a list
+
+
 #' @export
-rexpat <- function(){
-  list(
-    valid_urs = '[Z,R,K,S,U,L,F,G]\\d{3}[A-Z]\\d{3}.'
-  )
+all_with_warning <- function(dat){
+  dat <- as.list(dat)
+  dat %assert_class% 'list'
+  assert_that(unlist(unique(lapply(dat, class))) %identical% 'logical')
+
+  datl <- as.logical(dat)
+  if(any(is.na(datl))){
+    warning("Treating NAs as 'FALSE'")
+  }
+
+  dat[which(is.na(datl))] <- FALSE
+  datl[is.na(datl)]       <- FALSE
+
+  if(all(datl)){
+    return(TRUE)
+  } else {
+    failed      <- dat[as.logical(lapply(dat, identical, FALSE))]
+    warn        <- paste(
+      'FALSE, but should be TRUE:\n',
+      paste(names(failed), collapse = ', ')
+    )
+    warning(warn)
+    return(FALSE)
+  }
 }
+
+
+
+
+#' Test if all elements of a vector are identical
+#'
+#' @param x any object that can be handled by \code{unique} (usually a vector or
+#'   list)
+#' @param empty_value Value to return if function is called on a vector of
+#'   length 0
+#'
+#' @return TRUE/FALSE
+#' @export
+#'
+#' @examples
+#'
+#' all_identical(c(1,2,3))
+#' all_identical(c(1,1,1))
+#'
+
+all_identical <- function(x, empty_value = FALSE) {
+  # Check inputs
+  if(length(x) <= 1L){
+    if(identical(length(x), 1L)){
+      warning("'x' consists of only one element")
+      return(TRUE)
+    } else if (identical(length(x), 0L)){
+      if(is.null(x)){
+        warning("'x' is NULL")
+      } else {
+        warning("'x' is an empty vector")
+      }
+      return(empty_value)
+    }
+  } else {
+    identical(length(unique(x)), 1L)
+  }
+}
+
+
+
+
+#' Test if all elements of a vector are unique
+#'
+#' @inheritParams all_identical
+#'
+#' @return TRUE/FALSE
+#' @export
+#'
+#' @examples
+#'
+#' all_unique(c(1,2,3))
+#' all_unique(c(1,1,1))
+#'
+all_unique <- function(x, empty_value = FALSE){
+  if(length(x) <= 1L){
+    if(identical(length(x), 1L)){
+      warning("'x' consists of only one element")
+      return(TRUE)
+    } else if (identical(length(x), 0L)){
+      if(is.null(x)){
+        warning("'x' is NULL")
+      } else {
+        warning("'x' is an empty vector")
+      }
+      return(empty_value)
+    }
+  } else {
+    identical(length(unique(x)), length(x))
+  }
+}
+
+
+
 
 #' @export
 as_readr_col <- function(dat){
@@ -40,12 +130,13 @@ as_readr_col.list <- function(dat){
 
 
 
+
 #' Capitalize words
 #'
 #' For ?toupper documentation
 #'
-#' @param s
-#' @param strict
+#' @param s a character vector
+#' @param strict enforce lowercase characters after first (camelCase becomes Camelcase)
 #'
 #' @return
 #' @export
@@ -65,6 +156,17 @@ capwords <- function(s, strict = FALSE) {
 }
 
 
+
+
+#' Unqiue single element
+#'
+#' Returns unique(x) if all elements of x are identical, raises an error if
+#' not all elements of x are identical.
+#'
+#' @param x any object that can be handled by \code{unique} (usually a vector or
+#'   list)
+#'
+#' @return A scalar of the same type as x
 #' @export
 unique_single <- function(x){
   res <- unique(x)
@@ -76,6 +178,19 @@ unique_single <- function(x){
 }
 
 
+
+
+
+#' Basename without file extension
+#'
+#' \describe{
+#'   \item{basename_sans_ext}{\code{"myscript.R"} --> \code{"myscript"}}
+#' }
+#'
+#' @param x A filename / file path
+#'
+#' @return a character vector
+#' @seealso \code{\link{basename}}
 #' @export
 basename_sans_ext <- function(x){
   res <- x %>%
@@ -87,8 +202,18 @@ basename_sans_ext <- function(x){
 }
 
 
+
+
+
+#' Extract file extenstion
+#'
+#' \describe{
+#'   \item{extract_file_ext}{\code{"myscript.R"} --> \code{"R"}}
+#' }
+#'
 #' @export
-extract_file_extension <- function(x){
+#' @rdname basename_sans_ext
+extract_file_ext <- function(x){
   res <- x %>%
     basename() %>%
     strsplit(., '.', fixed = TRUE) %>%
@@ -97,21 +222,30 @@ extract_file_extension <- function(x){
 }
 
 
-#' Title
+#' Load an rda file and return the content
+#'
+#' Warning: Will not work as expected for rda files that contain several
+#' objects.
 #'
 #' http://stackoverflow.com/questions/5577221/how-can-i-load-an-object-into-a-variable-name-that-i-specify-from-an-r-data-file
 #'
-#' @param infile
+#' @param infile path to an rda file
 #'
-#' @return
+#' @return The first object in infile.rda
 #' @export
-#'
-#' @examples
 load_rda <- function(infile){
   env <- new.env()
   nm <- load(infile, env)[1]
+  if(length(env) > 1){
+    warning(sprintf(
+      '%s contains more than one object. Returning only the first: %s',
+      infile,
+      nm
+    ))
+  }
   env[[nm]]
 }
+
 
 
 
@@ -131,6 +265,7 @@ explorer <- function(x){
 
 
 
+
 #' Launch excel
 #'
 #' @param x
@@ -145,6 +280,8 @@ excel <- function(
 ){
   shell(paste(excel_path, x), intern = FALSE, wait = FALSE)
 }
+
+
 
 
 #' Change factor levels according to named character vector
@@ -175,57 +312,4 @@ fct_recode2 <- function(x, rec){
   args <- c(list(as.character(x)), args)
 
   do.call(forcats::fct_recode, args)
-}
-
-
-
-# Dirty -------------------------------------------------------------------
-
-dirty_reload <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
-}
-
-
-reload_gvtool <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
-}
-
-reload_tatool <- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
-}
-
-reload_hammr<- function(){
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
-}
-
-
-install_gv <- function(creds = NULL){
-  if (is.null(creds)) {
-    creds <- ui_credentials(
-      'Please your bitbucket username and password')
-  }
-
-  requireNamespace("devtools")
-  requireNamespace("httr")
-  requireNamespace("RCurl")
-  httr::set_config(httr::config(ssl_verifypeer = 0L))
-
-  repositories <- c(
-    's_fleck/testthis',
-    's_fleck/tatool',
-    's_fleck/gvtool',
-    's_fleck/gvroad',
-    's_fleck/gvrail'
-  )
-
-  for(repository in repositories){
-    devtools::install_bitbucket(
-      repository,
-      username = creds$user,
-      password = creds$pw,
-      upgrade = FALSE
-      )
-  }
 }

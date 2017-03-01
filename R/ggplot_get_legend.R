@@ -13,9 +13,3 @@ get_legend <- function(dat) {
   legend <- tmp$grobs[[leg]]
   return(legend)
 }
-
-
-g_legend <- function(dat){
-  warning('Deprecated. use get_legend instead.')
-  get_legend(dat)
-}

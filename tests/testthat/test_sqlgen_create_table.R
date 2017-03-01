@@ -40,7 +40,10 @@ test_that("check_sql_types_db2 works.", {
 
 test_that("sqlgen_create_table works.", {
   expect_silent(sqlgen_create_table('testtable', cn1[1:3], ct1[1:3]))
-  expect_silent(sqlgen_create_table('testtable', cn4, ct4))
+  expect_warning(
+    sqlgen_create_table('testtable', cn4, ct4),
+    'Skipping col defintions where col_type is NA'
+  )
 
   expect_warning(
     expect_error(
