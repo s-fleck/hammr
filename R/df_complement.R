@@ -11,6 +11,7 @@
 #' @examples
 df_complement <- function(dat, values, col, sort = FALSE){
   assert_that(is.scalar(col))
+  assert_that(is.vector(values) || is.factor(values))
 
   dd <- data.table::copy(dat)
 
@@ -26,5 +27,10 @@ df_complement <- function(dat, values, col, sort = FALSE){
   names(all_values) <- col
   all_values <- as.data.frame(all_values)
 
-  merge(dat, as.data.frame(all_values), by = col, all = TRUE)
+  merge(
+    as.data.frame(dd),
+    as.data.frame(all_values),
+    by = col,
+    all = TRUE
+  )
 }
