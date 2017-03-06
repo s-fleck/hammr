@@ -55,22 +55,32 @@ all_with_warning <- function(dat){
 #'
 
 all_identical <- function(x, empty_value = FALSE) {
+  assert_that(length(empty_value) <= 1)
+
   # Check inputs
   if(length(x) <= 1L){
     if(identical(length(x), 1L)){
       warning("'x' consists of only one element")
-      return(TRUE)
+      res <- TRUE
     } else if (identical(length(x), 0L)){
       if(is.null(x)){
         warning("'x' is NULL")
       } else {
         warning("'x' is an empty vector")
       }
-      return(empty_value)
+      res <- empty_value
     }
   } else {
-    identical(length(unique(x)), 1L)
+    res <- identical(length(unique(x)), 1L)
   }
+
+  assert_that(
+    identical(res, TRUE) ||
+    identical(res, FALSE) ||
+    identical(res, empty_value)
+  )
+
+  return(res)
 }
 
 
@@ -89,21 +99,31 @@ all_identical <- function(x, empty_value = FALSE) {
 #' all_unique(c(1,1,1))
 #'
 all_unique <- function(x, empty_value = FALSE){
+  assert_that(length(empty_value) <= 1)
+
   if(length(x) <= 1L){
     if(identical(length(x), 1L)){
       warning("'x' consists of only one element")
-      return(TRUE)
+      res <- TRUE
     } else if (identical(length(x), 0L)){
       if(is.null(x)){
         warning("'x' is NULL")
       } else {
         warning("'x' is an empty vector")
       }
-      return(empty_value)
+      res <- empty_value
     }
   } else {
-    identical(length(unique(x)), length(x))
+    res <- identical(length(unique(x)), length(x))
   }
+
+  assert_that(
+    identical(res, TRUE) ||
+    identical(res, FALSE) ||
+    identical(res, empty_value)
+  )
+
+  return(res)
 }
 
 
@@ -220,6 +240,9 @@ extract_file_ext <- function(x){
     unlist() %>%
     magrittr::extract(length(.) - 1)
 }
+
+
+
 
 
 #' Load an rda file and return the content
