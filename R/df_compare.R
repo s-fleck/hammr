@@ -40,7 +40,6 @@
 #' df_compare(dat1, dat2, `*`)
 #' df_compare(dat1, dat2, fun = function(x, y) paste0(x, '/', y))
 #' df_compare(dat1, dat2, fun = function(x, y) paste0(x, '/', y), coltypes = 'factor')
-
 df_compare <- function(dat1, dat2, fun, coltypes, ...){
   UseMethod('df_compare')
 }
@@ -50,7 +49,6 @@ df_compare <- function(dat1, dat2, fun, coltypes, ...){
 
 #' @export
 df_compare.data.table <- function(dat1, dat2, fun, coltypes = 'numeric', ...){
-
   d1  <- as.data.frame(dat1)
   d2  <- as.data.frame(dat2)
   res <- df_compare(d1, d2, fun = fun, coltypes = coltypes, ...)
@@ -82,12 +80,16 @@ df_compare.data.frame <- function(dat1, dat2, fun, coltypes = 'numeric', ...){
 }
 
 
+
+
 #' \code{df_ndiff} subtracts dat2 from dat1 (only integer and numeric columns by default)
 #' @rdname df_compare
 #' @export
 df_ndiff <- function(dat1, dat2, coltypes = c('integer', 'numeric'), ...){
   df_compare(dat1, dat2, fun = `-`, coltypes = coltypes, ...)
 }
+
+
 
 
 #' \code{df_pdiff} returns the fractional difference between dat1 and dat2.
@@ -99,6 +101,8 @@ df_ndiff <- function(dat1, dat2, coltypes = c('integer', 'numeric'), ...){
 df_pdiff <- function(dat1, dat2, coltypes = c('integer', 'numeric'), percent = FALSE, ...){
   df_compare(dat1, dat2, fun = pdiff, coltypes = coltypes, percent = percent, ...)
 }
+
+
 
 
 pdiff <- function(x, y, percent){
