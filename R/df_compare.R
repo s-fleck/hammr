@@ -46,6 +46,9 @@ df_compare <- function(dat1, dat2, fun, coltypes, ...){
 }
 
 
+
+
+#' @export
 df_compare.data.table <- function(dat1, dat2, fun, coltypes = 'numeric', ...){
 
   d1  <- as.data.frame(dat1)
@@ -56,14 +59,17 @@ df_compare.data.table <- function(dat1, dat2, fun, coltypes = 'numeric', ...){
 }
 
 
+
+
+#' @export
 df_compare.data.frame <- function(dat1, dat2, fun, coltypes = 'numeric', ...){
   assert_that(nrow(dat1)  %identical% nrow(dat2))
   assert_that(ncol(dat1)  %identical% ncol(dat2))
   assert_that(names(dat1) %identical% names(dat2))
 
   # identify numeric columns
-  numcols     <- names(dat1)[lapply(dat1, class) %in% coltypes]
-  numcols_chk <- names(dat2)[lapply(dat2, class) %in% coltypes]
+  numcols     <- which(unlist(lapply(dat1, class) %in% coltypes))
+  numcols_chk <- which(unlist(lapply(dat2, class) %in% coltypes))
   assert_that(numcols %identical% numcols_chk)
 
   # Apply the function columnwise
