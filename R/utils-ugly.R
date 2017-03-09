@@ -3,7 +3,7 @@
 dirty_reload <- function(){
   try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/hammr'))
   try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/gvtool'))
-  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatool'))
+  try(devtools::load_all('P:/Verkehr/Projekte/Fleck/R/tatoo'))
 }
 
 
@@ -23,12 +23,16 @@ reinstall_gvroad <- function(){
 }
 
 
-reinstall_tatool <- function(){
-  reinstall_helper('tatool')
+reinstall_tatoo <- function(){
+  reinstall_helper('tatoo')
 }
 
 reinstall_gvtool <- function(){
   reinstall_helper('gvtool')
+}
+
+reinstall_hammr <- function(){
+  reinstall_helper('hammr')
 }
 
 
@@ -46,8 +50,8 @@ reload_gvtool <- function(){
   reload_helper('gvtool')
 }
 
-reload_tatool <- function(){
-  reload_helper('tatool')
+reload_tatoo <- function(){
+  reload_helper('tatoo')
 }
 
 reload_hammr <- function(){
@@ -80,7 +84,7 @@ install_gv <- function(creds = NULL){
 
   repositories <- c(
     's_fleck/testthis',
-    's_fleck/tatool',
+    's_fleck/tatoo',
     's_fleck/gvtool',
     's_fleck/gvroad',
     's_fleck/gvrail'
