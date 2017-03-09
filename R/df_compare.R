@@ -106,7 +106,7 @@ df_pdiff <- function(dat1, dat2, coltypes = c('integer', 'numeric'), percent = F
 
 
 pdiff <- function(x, y, percent){
-  res <- (x-y)/(x)
+  res <- (x-y)/(y)
   if(percent) {
     return(res * 100)
   } else{
