@@ -117,5 +117,10 @@ df_complement <- function(
       }
     }
 
-  return(dd)
+
+  if(is.data.table(dat)){
+    return(dd)
+  } else {
+    return(as.data.frame(dd))
+  }
 }
