@@ -66,7 +66,8 @@
 #'
 df_complement <- function(
   dat,
-  complement
+  complement,
+  fill = NA
 ){
   # Pre-conditions
     assert_that(hammr::all_unique(names(dat), silent = TRUE))
@@ -88,7 +89,7 @@ df_complement <- function(
     col    <- names(complement)
     notcol <- names(dd)[!names(dd) %in% col]
     newcol <- dd[1]
-    newcol[, (notcol) := NA]
+    newcol[, (notcol) := fill]
 
     extract_values <- function(comp, i){
       as.character(comp[[i]])
