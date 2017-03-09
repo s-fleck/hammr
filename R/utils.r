@@ -98,21 +98,28 @@ all_identical <- function(x, empty_value = FALSE) {
 #' all_unique(c(1,2,3))
 #' all_unique(c(1,1,1))
 #'
-all_unique <- function(x, empty_value = FALSE){
+all_unique <- function(x, empty_value = FALSE, silent = FALSE){
   assert_that(length(empty_value) <= 1)
+
 
   if(length(x) <= 1L){
     if(identical(length(x), 1L)){
-      warning("'x' consists of only one element")
       res <- TRUE
+      if(!silent) warning("'x' consists of only one element")
+
+
     } else if (identical(length(x), 0L)){
-      if(is.null(x)){
-        warning("'x' is NULL")
-      } else {
-        warning("'x' is an empty vector")
-      }
       res <- empty_value
+      if(!silent){
+        if(is.null(x)){
+          warning("'x' is NULL")
+        } else {
+          warning("'x' is an empty vector")
+        }
+      }
     }
+
+
   } else {
     res <- identical(length(unique(x)), length(x))
   }
