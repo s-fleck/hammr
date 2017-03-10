@@ -1,7 +1,7 @@
 Package: hammr
 Type: Package
 Title: Hammr - Various utility functions
-Version: 0.0.4
+Version: 0.0.5
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: Personal utility functions package. Use at own risk. Generally
