@@ -11,26 +11,33 @@
 #' @export
 #'
 #' @examples
-df_na0 <- function(dat){
+df_na0 <- function(dat, inf0){
   UseMethod('df_na0')
 }
 
 #' @export
-df_na0.data.table <- function(dat){
+df_na0.data.table <- function(dat, inf = FALSE){
   dat <- data.table::copy(dat)
+
+  if(!inf){
+    selector <- function(x) which(is.na(x) | is.nan(x))
+  } else {
+    selector <- function(x) which(is.na(x) | is.nan(x) | is.infinite(x))
+  }
+
   for (j in seq_along(dat)) {
-    data.table::set(
-      dat,
-      which(is.nan(dat[[j]]) |
-            is.na(dat[[j]])  ),
-      j,
-      0)
+    data.table::set(dat, selector(dat[[j]]), j, 0)
   }
   return(dat)
 }
 
 #' @export
-df_na0.data.frame <- function(dat){
+df_na0.data.frame <- function(dat, inf = FALSE){
   dat[is.na(dat)] <- 0
+
+  if(inf){
+    dat[is.infinite(dat)] <- 0
+  }
+
   return(dat)
 }
