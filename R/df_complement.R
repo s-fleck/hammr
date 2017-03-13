@@ -119,7 +119,7 @@ df_complement <- function(
     }
 
 
-  if(is.data.table(dat)){
+  if(data.table::is.data.table(dat)){
     return(dd)
   } else {
     return(as.data.frame(dd))
