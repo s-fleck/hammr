@@ -31,6 +31,7 @@ quarter <- function(y, q) {
 
     q   <- as.character(q)
     res <- paste0(y, '-Q', q )
+    res[grep('NA', res)] <- NA
   }
 
   class(res) <- c('Quarter', 'character')
@@ -126,6 +127,4 @@ quarter_from_month <- function(x){
 
   return(res$q)
 }
-
-
 

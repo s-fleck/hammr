@@ -26,12 +26,12 @@ increment.Quarter <- function(x, inc){
 
   res$q <- res$q + inc
 
-  while(any(res$q > 4)){
+  while(any(res$q > 4, na.rm = TRUE)){
     res$y[res$q > 4] <- res$y[res$q > 4] + 1
     res$q[res$q > 4] <- res$q[res$q > 4] - 4
   }
 
-  while(any(res$q < 1)){
+  while(any(res$q < 1, na.rm = TRUE)){
     res$y[res$q < 1] <- res$y[res$q < 1] - 1
     res$q[res$q < 1] <- res$q[res$q < 1] + 4
   }
