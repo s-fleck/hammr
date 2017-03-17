@@ -31,9 +31,7 @@
 #' p <- ggplot(x, aes(x = x, y = y)) + geom_point()
 #' p + scale_y_continuous(labels = human_num)
 #' p + scale_y_continuous(labels = human_euro)
-
-
-
+#'
 human_numbers <- function(
   x,
   symbol   = "",
@@ -102,6 +100,8 @@ human_numbers <- function(
 
   vapply(x, humanity, FUN.VALUE = character('1'), pots, symbol)
 }
+
+
 
 
 #' @rdname human_numbers

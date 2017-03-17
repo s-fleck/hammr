@@ -53,7 +53,6 @@ all_with_warning <- function(dat){
 #' all_identical(c(1,2,3))
 #' all_identical(c(1,1,1))
 #'
-
 all_identical <- function(x, empty_value = FALSE) {
   assert_that(length(empty_value) <= 1)
 
@@ -207,7 +206,6 @@ unique_single <- function(x){
 
 
 
-
 #' Basename without file extension
 #'
 #' \describe{
@@ -231,7 +229,6 @@ basename_sans_ext <- function(x){
 
 
 
-
 #' Extract file extenstion
 #'
 #' \describe{
@@ -247,7 +244,6 @@ extract_file_ext <- function(x){
     unlist() %>%
     magrittr::extract(length(.) - 1)
 }
-
 
 
 

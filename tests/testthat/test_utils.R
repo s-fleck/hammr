@@ -6,6 +6,8 @@ test_that("unique_single works", {
 })
 
 
+
+
 test_that("unique_single works", {
   x <- c(1, 2, 3, NA, 4, 5, NA)
   y <- c(1, 2, 3, NA, 7, 8, 9)
@@ -15,6 +17,7 @@ test_that("unique_single works", {
     c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
   )
 })
+
 
 
 
