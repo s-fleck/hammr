@@ -21,11 +21,11 @@
 #'
 #' str(dat)
 
-df_typecast_cols <-  function(dat, conv = list()){
+df_typecast_cols <-  function(dat, conv = list(), silent = FALSE){
 
   conv2 <- conv[names(conv) %in% names(dat)]
 
-  if(length(conv2) < length(conv)) {
+  if((length(conv2) < length(conv)) && !silent) {
     missing_cols <- names(conv)[!names(conv) %in% names(conv2)]
     warning(defined_column_is_missing_warning(missing_cols))
   }
@@ -44,14 +44,14 @@ df_typecast_cols <-  function(dat, conv = list()){
       dat[[i]] <- tryCatch(
         f(dat[[i]]),
         warning = function(w) {
-          warning(typecast_produces_na_warning(i,
-                                               class(dat[[i]]),
-                                               toclass,
-                                               w$message))
+          warning(typecast_produces_na_warning(
+            i,
+            class(dat[[i]]),
+            toclass,
+            w$message))
           suppressWarnings(f(dat[[i]]))
         }
       )
-
     }
   }
 
