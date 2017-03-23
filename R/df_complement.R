@@ -67,11 +67,16 @@
 df_complement <- function(
   dat,
   complement,
+  colnames = NULL,
   fill = NA
 ){
   # Pre-conditions
     assert_that(hammr::all_unique(names(dat), silent = TRUE))
     assert_that(hammr::all_unique(names(complement), silent = TRUE))
+    assert_that(
+      is.null(colnames) ||
+      (is.character(colnames) && all_unique(colnames))
+    )
 
     assert_that(is.list(complement))
     assert_that(all(names(complement) %in% names(dat)))
@@ -124,4 +129,84 @@ df_complement <- function(
   } else {
     return(as.data.frame(dd))
   }
+}
+
+
+
+
+#' @export
+df_complement2 <- function(
+  df1,
+  df2,
+  complement_cols,
+  fill = NA
+){
+  # Pre-conditions
+    assert_that(hammr::all_unique(names(df1), silent = TRUE))
+    assert_that(hammr::all_unique(names(df2), silent = TRUE))
+    assert_that(
+      is.character(complement_cols) &&
+      all_unique(complement_cols)   &&
+      length(complement_cols) > 0
+    )
+
+  # add missing rows
+    c1 <- df2 %>%
+      dplyr::select_(.dots = complement_cols) %>%
+      as.list()
+
+    c2 <- df1 %>%
+      dplyr::select_(.dots = complement_cols) %>%
+      as.list()
+
+    res <- list(
+      df1 = df_complement(df1, complement = c1),
+      df2 = df_complement(df2, complement = c2)
+    )
+
+
+  # Add missing cols
+    missing_cols_df1 <- setdiff(names(res$df2), names(res$df1))
+    missing_cols_df2 <- setdiff(names(res$df1), names(res$df2))
+
+    for(col in missing_cols_df1){
+      res$df1[[col]] <- fill
+    }
+
+    for(col in missing_cols_df2){
+     res$df2[[col]] <- fill
+    }
+
+
+  # If factor levels are not identical, convert column to character
+    for(el in complement_cols){
+      if(!identical(levels(res$df1[[el]]), res$df2[[el]])){
+        res$df1[[el]] <- as.character(res$df1[[el]])
+        res$df2[[el]] <- as.character(res$df2[[el]])
+      }
+    }
+
+
+  data.table::setcolorder(res$df2, names(res$df1))
+
+
+  # Post-conditions
+    rescc1 <- res$df1 %>%
+      dplyr::select_(.dots = complement_cols)
+    rescc2 <- res$df1 %>%
+      dplyr::select_(.dots = complement_cols)
+
+    assert_that(rescc1 %identical% unique(rescc1))
+    assert_that(rescc2 %identical% unique(rescc2))
+
+
+    assert_that(identical(
+      nrow(res$df1), nrow(res$df2)
+    ))
+
+    assert_that(identical(
+      names(res$df1), names(res$df2)
+    ))
+
+  unname(res)
 }
