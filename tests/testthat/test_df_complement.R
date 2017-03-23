@@ -1,20 +1,23 @@
 context("df_complement")
 
 
-df1 <- data.frame(
-  g1 = letters[c(1, 2, 2, 2, 2, 3, 4, 5, 6, 1)],
-  g2 = LETTERS[c(1, 2, 3, 4, 5, 5, 5, 2, 1, 1)],
-  da = 1:10
-)
-
-df2 <- data.frame(
-  g1 = letters[c(1, 2, 3, 6, 7)],
-  g2 = LETTERS[c(1, 2, 2, 2, 7)],
-  da = 6:10
-)
-
-
 test_that("df_complement works as expected", {
+
+  df1 <- data.frame(
+    g1 = letters[c(1, 2, 2, 2, 2, 3, 4, 5, 6, 1)],
+    g2 = LETTERS[c(1, 2, 3, 4, 5, 5, 5, 2, 1, 1)],
+    da = 1:10
+  )
+
+  df2 <- data.frame(
+    g1 = letters[c(1, 2, 3, 6, 7)],
+    g2 = LETTERS[c(1, 2, 2, 2, 7)],
+    da = 6:10,
+    du = 100:104
+  )
+
+
+
   res <- df_complement(df1, list(g1 = df2$g1))
 
   r2 <- df_complement(
@@ -48,4 +51,47 @@ test_that("df_complement works as expected", {
   expect_true(
     all(grps %in% paste(r2$g1, r2$g2))
   )
+})
+
+
+
+
+test_that("df_complement2 works as expected", {
+  df1 <- data.frame(
+    g1 = letters[c(1, 2, 2, 2, 2, 3, 4, 5, 6, 1)],
+    g2 = LETTERS[c(1, 2, 3, 4, 5, 5, 5, 2, 1, 1)],
+    da = 1:10
+  )
+
+  df2 <- data.frame(
+    g1 = letters[c(1, 2, 3, 6, 7)],
+    g2 = LETTERS[c(1, 2, 2, 2, 7)],
+    da = 6:10,
+    du = 100:104
+  )
+
+  df3 <- data.frame(
+    g1 = letters[c(1, 2, 3, 6, 7)],
+    g2 = LETTERS[c(1, 2, 4, 2, 7)],
+    da = 6:10,
+    du = 100:104,
+    di = 1,
+    dr = "a"
+  )
+
+
+  expect_error(
+    df_complement2(df1, df2, c('g1', 'g2')),
+    '`%identical%`(x = rescc1, y = unique(rescc1)) is not TRUE'
+  )
+
+  expect_silent(
+    res <- df_complement2(df2, df3, c('g1', 'g2'))
+  )
+
+
+
+
+
+
 })
