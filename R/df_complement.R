@@ -12,6 +12,8 @@
 #'   \code{complement} must have the same length.
 #' @return a \code{data.frame} containing all rows from \code{dat} and extra
 #'   rows for all values of \code{complement}
+#'
+#' @family data.frame tools
 #' @export
 #'
 #' @examples
@@ -52,8 +54,8 @@
 #' df_complement(
 #'   df2,
 #'   list(
-#'     g1 = df$g1,
-#'     g2 = df$g2
+#'     g1 = df1$g1,
+#'     g2 = df1$g2
 #'   )
 #' )
 #'

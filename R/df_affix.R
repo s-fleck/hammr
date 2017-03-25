@@ -5,8 +5,11 @@
 #' @param suffix
 #'
 #' @return a \code{data.frame} (with only character columns)
-#' @export
+#'
+#' @family data.frame tools
 #' @rdname df_affix
+#'
+#' @export
 #'
 #' @examples
 #' dat <- data.frame(

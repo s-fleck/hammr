@@ -8,9 +8,9 @@
 #' @examples
 #'
 #' str_nobreak(
-#'   blubb
+#'   "blubb,
 #'   bar,
-#'   foo'
+#'   foo"
 #' )
 #'
 str_nobreak <- function(x){

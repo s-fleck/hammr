@@ -4,6 +4,8 @@
 #' @param process_factors wheter or not factor labels should also be processed
 #'
 #' @return a data.frame
+#'
+#' @family data.frame tools
 #' @export
 df_trimws = function(dat, process_factors = FALSE){
   dat %assert_class% 'data.frame'

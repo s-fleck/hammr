@@ -1,22 +1,22 @@
 #' Drop columns of a data.frame
 #'
-#' Drops columns of a data.frame if they exists. The main functional difference
-#' to other ways to drop columns in R is that it will not throw an error of
-#' the columns is not present in the data.frame.
+#' The main functional difference to other ways to drop columns in R is that it
+#' will not throw an error if the columns is not present in the data.frame if
+#' allow_partial == TRUE.
 #'
 #' @param dat a data.frame
-#' @param drop (character vector) names of the columns to be droped
-#' @param allow_partial (logical vector) If set to FALSE an error will be thrown
-#'        if not all \code{drop} columns are present in \code{dat}
+#' @param drop a character vector. Names of the columns to be droped
+#' @param allow_partial logical. If set to FALSE an error will be thrown
+#'   if not all \code{drop} columns are present in \code{dat}.
 #'
-#' @return
+#' @return A data.frame without the columns specified in drop
+#'
+#' @family data.frame tools
 #' @export
-#'
-#' @examples
 df_drop_cols <- function(dat, drop, allow_partial = TRUE){
-  dat %assert_class% 'data.frame'
-  allow_partial %assert_class% 'logical'
-  assert_that(is.scalar(allow_partial))
+  assert_that(is.data.frame(dat))
+  assert_that(is.character(drop))
+  assert_that(is.flag(allow_partial))
 
   if(allow_partial){
     drop <- drop[drop %in% names(dat)]

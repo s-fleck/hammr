@@ -6,18 +6,25 @@
 #' @param dat a data.frame
 #' @param conv a list of the form list(COLNAME = 'coltype')
 #'
+#' @family data.frame tools
 #' @return a data.frame with typecasted columns
 #' @export
-#' @import bit64
 #'
 #' @examples
-#' dat <- data.frame(foo = c('5', '6', '5'),
-#'                   bar = factor(c('a', 'b', 'c')),
-#'                   stringsAsFactors = FALSE)
+#'
+#' dat <- data.frame(
+#'   foo = c('5', '6', '5'),
+#'   bar = factor(c('a', 'b', 'c')),
+#'   stringsAsFactors = FALSE
+#' )
+#'
 #' str(dat)
 #'
-#' res <- typecast_cols(dat, list(foo = 'numeric',
-#'                               bar = 'character'))
+#' res <- df_typecast_cols(
+#'   dat,
+#'   list(foo = 'numeric', bar = 'character')
+#' )
+#'
 #'
 #' str(dat)
 
@@ -44,19 +51,22 @@ df_typecast_cols <-  function(dat, conv = list()){
       dat[[i]] <- tryCatch(
         f(dat[[i]]),
         warning = function(w) {
-          warning(typecast_produces_na_warning(i,
-                                               class(dat[[i]]),
-                                               toclass,
-                                               w$message))
+          warning(typecast_produces_na_warning(
+            i,
+            class(dat[[i]]),
+            toclass,
+            w$message
+          ))
           suppressWarnings(f(dat[[i]]))
         }
       )
 
     }
   }
-
   return(dat)
 }
+
+
 
 
 #' Typecast all columns of a data.frame of a specific type
@@ -68,9 +78,11 @@ df_typecast_cols <-  function(dat, conv = list()){
 #' @param from column type to cast
 #' @param to target column type
 #'
-#' @return a data frame with all columns of class from converted to class to
+#' @return a data frame with all columns of class `from` converted to class `to`
+#'
+#' @md
+#' @family data.frame tools
 #' @export
-#' @import bit64
 #'
 #' @examples
 #'
@@ -79,8 +91,8 @@ df_typecast_cols <-  function(dat, conv = list()){
 #'
 #' str(df)
 #'
-#' x <- typecast_all(df, 'factor', 'character')
-#' y <- typecast_all(df, 'factor', 'numeric')
+#' x <- df_typecast_all(df, 'factor', 'character')
+#' y <- df_typecast_all(df, 'factor', 'numeric')
 #'
 #' str(x)
 #' str(y)
@@ -128,16 +140,17 @@ cfun <- function(x){
   msg <- paste('Input must be any of "numeric", integer", "factor"',
                '"character", "POSIXct", "integer64", "Date", but is', x)
 
-  res <- switch(x,
-                'logical'   = as.logical,
-                'integer'   = as.integer2,
-                'integer64' = as.integer642,
-                'factor'    = as.factor,
-                'numeric'   = as.numeric2,
-                'character' = as.character,
-                'POSIXct'   = as.POSIXct,
-                'Date'      = as.Date,
-                stop(msg)
+  res <- switch(
+    x,
+    'logical'   = as.logical,
+    'integer'   = as.integer2,
+    'integer64' = as.integer642,
+    'factor'    = as.factor,
+    'numeric'   = as.numeric2,
+    'character' = as.character,
+    'POSIXct'   = as.POSIXct,
+    'Date'      = as.Date,
+    stop(msg)
   )
   return(res)
 }

@@ -9,9 +9,11 @@
 #' @param ... Key value pairst of the form classname = list(parameters to \code{format}) (see examples)
 #'
 #' @return a formatted data.frame
-#' @export
+#'
+#' @family data.frame tools
 #' @rdname df_format
-#' @seealso df_format_num
+#'
+#' @export
 #'
 #' @examples
 #'
@@ -43,7 +45,7 @@ df_format <- function(dat, num_format, date_format, dtime_format, col_format){
 #' @param integer_as_numeric Logical. Should integer columns be formatted the same way as numeric columns?
 #' @param ... Params passed on to \code{format}
 #'
-#' @seealso df_format
+#' @family data.frame tools
 #'
 #' @export
 df_format_num <- function(dat, integer_as_numeric = TRUE, ...){

@@ -18,7 +18,7 @@
 #' @examples
 #'
 #' x = data.frame()
-#' is.class(x, 'data.frame')
+#' is_class(x, 'data.frame')
 is_class <- function(dat, class){
   class %in% class(dat)
 }
@@ -148,7 +148,7 @@ assertthat::on_failure(is_col_classes) <- function(call, env){
 #'
 #' x = data.frame()
 #' class(x) <- c('data.frame', 'test')
-#' is_class(x, 'test')
+#' is_any_class(x, c('sometthing', 'test'))
 #'
 is_any_class <- function(dat, choices){
   any(choices %in% class(dat))
