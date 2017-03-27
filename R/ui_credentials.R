@@ -1,3 +1,11 @@
+#' Title
+#'
+#' @param dat
+#'
+#' @return
+#' @export
+#'
+#' @examples
 credentials <- function(dat){
   class(dat) <- c('Credentials', 'list')
   return(dat)
