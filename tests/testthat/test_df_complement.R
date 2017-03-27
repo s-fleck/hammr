@@ -22,8 +22,9 @@ test_that("df_complement works as expected", {
 
   r2 <- df_complement(
     df2,
-    list('g1' = df1$g1,
-         'g2' = df1$g2)
+    list(
+      'g1' = df1$g1,
+      'g2' = df1$g2)
   )
 
   tres <- data.table(
@@ -35,7 +36,8 @@ test_that("df_complement works as expected", {
       c(1L, 2L, 2L, 2L, 3L, 4L, 5L, 6L, 6L, 6L, 2L, 1L),
       .Label = c("A", "B", "G", "C", "D", "E"),
       class = "factor"),
-    da  =c(6L, 7L, 8L, 9L, 10L, NA, NA, NA, NA, NA, NA, NA)
+    da  =c(6L, 7L, 8L, 9L, 10L, NA, NA, NA, NA, NA, NA, NA),
+    du = c(100L, 101L, 102L, 103L, 104L, NA, NA, NA, NA, NA, NA, NA)
   )
 
   expect_identical(
@@ -82,16 +84,10 @@ test_that("df_complement2 works as expected", {
 
   expect_error(
     df_complement2(df1, df2, c('g1', 'g2')),
-    '`%identical%`(x = rescc1, y = unique(rescc1)) is not TRUE'
+    'is not TRUE'
   )
 
   expect_silent(
     res <- df_complement2(df2, df3, c('g1', 'g2'))
   )
-
-
-
-
-
-
 })
