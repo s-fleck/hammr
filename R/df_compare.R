@@ -1,3 +1,5 @@
+# compare -----------------------------------------------------------------
+
 #' Compare columns of two data frames
 #'
 #' Combines the columns indicated by \code{coltypes} using the function \code{fun}.
@@ -7,12 +9,14 @@
 #'
 #' @param dat1 a data.frame
 #' @param dat2 a data.frame that has the same number of rows, column names and column types as dat1
-#' @param fun a comparison function ()
+#' @param fun a comparison function
 #' @param coltypes types of the columns of which to apply fun
 #' @param ... arguments passed on to fun
 #' @rdname df_compare
 #'
 #' @return a data.frame
+#'
+#' @family data.frame tools
 #' @export
 #'
 #' @examples
@@ -81,8 +85,63 @@ df_compare.data.frame <- function(dat1, dat2, fun, coltypes = 'numeric', ...){
 
 
 
+# compare by --------------------------------------------------------------
 
-#' \code{df_ndiff} subtracts dat2 from dat1 (only integer and numeric columns by default)
+#' @param by specifications of the columns used for merging. See [merge()]
+#' @inheritParams df_compare
+#'
+#' @md
+#' @rdname df_compare
+#' @export
+df_compare_by <- function(dat1, dat2, fun, coltypes, by, ...){
+  UseMethod('df_compare_by')
+}
+
+
+
+
+#' @export
+df_compare_by.data.table <- function(
+  dat1,
+  dat2,
+  by,
+  fun,
+  coltypes = 'numeric',
+  ...
+){
+  d1 <- merge(dat1, dat2[, by], by = by, all = TRUE)
+  d2 <- merge(dat2, dat1[, by], by = by, all = TRUE)
+
+  res <- df_compare(d1, d2, fun = fun, coltypes = coltypes, ...)
+
+  as.data.table(res)
+}
+
+
+
+#' @export
+df_compare_by.data.frame <- function(
+  dat1,
+  dat2,
+  by,
+  fun,
+  coltypes = 'numeric',
+  ...
+){
+  d1 <- merge(dat1, dat2[, by], by = by, all = TRUE)
+  d2 <- merge(dat2, dat1[, by], by = by, all = TRUE)
+
+  res <- df_compare(d1, d2, fun = fun, coltypes = coltypes, ...)
+
+  res
+}
+
+
+
+
+# Utils (exported) --------------------------------------------------------
+
+#' \code{df_ndiff} subtracts the numeric columns of dat2 from dat1
 #' @rdname df_compare
 #' @export
 df_ndiff <- function(dat1, dat2, coltypes = c('integer', 'numeric'), ...){
@@ -92,10 +151,10 @@ df_ndiff <- function(dat1, dat2, coltypes = c('integer', 'numeric'), ...){
 
 
 
-#' \code{df_pdiff} returns the fractional difference between dat1 and dat2.
-#' The formula used is (dat1-dat2)/dat1.
+#' \code{df_pdiff} returns the fractional difference between numeric columns of
+#'   dat1 and dat2.
+#' The formula used is (dat1-dat2)/dat2.
 #'
-#' @param percent (only df_pdiff) If TRUE, return the difference in percent rather than as a fraction (so 10 instead of 0.1)
 #' @rdname df_compare
 #' @export
 df_pdiff <- function(dat1, dat2, coltypes = c('integer', 'numeric'), percent = FALSE, ...){
@@ -104,6 +163,8 @@ df_pdiff <- function(dat1, dat2, coltypes = c('integer', 'numeric'), percent = F
 
 
 
+
+# Utils -------------------------------------------------------------------
 
 pdiff <- function(x, y, percent){
   res <- (x-y)/(y)

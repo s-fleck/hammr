@@ -22,7 +22,7 @@
 #' human_numbers(c(1000000 , 1500000, 10000000000))
 #' human_numbers(c(1.200000e+05, -2.154660e+05, 2.387790e+05, 4.343500e+04 ,5.648675e+12), "$")
 #'
-#'
+#' \dontrun{
 #' x <- data.frame(
 #'   x = letters[sample(1:5, 1000, replace = TRUE)],
 #'   y = c(runif(1000, min = -1e12, max = 1e12))
@@ -31,9 +31,7 @@
 #' p <- ggplot(x, aes(x = x, y = y)) + geom_point()
 #' p + scale_y_continuous(labels = human_num)
 #' p + scale_y_continuous(labels = human_euro)
-
-
-
+#' }
 human_numbers <- function(
   x,
   symbol   = "",
@@ -102,6 +100,8 @@ human_numbers <- function(
 
   vapply(x, humanity, FUN.VALUE = character('1'), pots, symbol)
 }
+
+
 
 
 #' @rdname human_numbers

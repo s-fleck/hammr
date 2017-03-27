@@ -94,6 +94,6 @@ test_that('Custom type conversion functions work', {
   y <- factor('99')
 
   expect_identical(as.integer2(y), 99L)
-  expect_identical(as.integer642(y), as.integer64(99L))
+  expect_identical(as.integer642(y), bit64::as.integer64(99L))
 })
 

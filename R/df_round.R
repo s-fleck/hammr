@@ -1,17 +1,21 @@
 #' Round columns of a data frame.
 #'
-#' Rounds all numeric columns in a data.frame
+#' `round` rounds the values in its first argument to the specified number of
+#' decimal places.
 #'
-#' @param dat
-#' @param digits
-#' @seealso round
+#' @param dat a data.frame
+#' @inheritParams base::round
 #'
-#' @return
+#' @return a data.frame
+#'
+#' @md
+#' @family data.frame tools
+#' @seealso [round()], [signif()]
 #' @export
-#'
-#' @examples
 df_round <- function(dat, digits = 0){
+  assert_that(is.data.frame(dat))
   assert_that(is.number(digits))
+
   numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
 
   for(i in numcols){
@@ -24,20 +28,17 @@ df_round <- function(dat, digits = 0){
 
 
 
-#' Round columns of a data frame to a specified number of significant digits.
+
+#' `signif` rounds the values in the numeric columns of a data.frame to the
+#' specified number of significant digits.
 #'
-#' Rounds the values in the numeric columns of a data.frame to the specified number of significant digits.
-#'
-#' @param dat
-#' @param digits
-#'
-#' @return
+#' @md
+#' @rdname df_round
 #' @export
-#' @seealso signif
-#'
-#' @examples
 df_signif<- function(dat, digits = 0){
+  assert_that(is.data.frame(dat))
   assert_that(is.number(digits))
+
   numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
 
   for(i in numcols){

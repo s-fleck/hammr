@@ -1,13 +1,13 @@
 #' Split up a vector into equal sized chunks
 #'
-#' https://gist.github.com/sckott/4632735
+#' \url{https://gist.github.com/sckott/4632735}
 #'
 #' @param input An input vector.
 #' @param by The length of the resulting vectors.
 #' @export
 #' @examples
 #' vec <- c("a","b","d","e","f","g","h")
-#' chop(vec, 3)
+#' vec_chop(vec, 3)
 vec_chop <- function(x, interval){
   splt                 <- rep(FALSE, interval)
   splt[1]              <- TRUE

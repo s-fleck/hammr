@@ -1,22 +1,27 @@
 #' Set NA values to Zero (0)
 #'
-#' Replaces all \code{NA}s and \code{NAN}s in a \code{data.frame} or
-#' \code{data.table} with \code{0}. This will fail if \code{0} is not a valid
-#' value for all columns in \code{dat} (which can happen, for example, for
+#' Replaces all `NA`s and `NAN`s in a data.frame or
+#' data.table with `0`. This will fail if `0` is not a valid
+#' value for all columns in `dat` (which can happen, for example, for
 #' factor columns)
 #'
-#' @param dat
+#' @param dat a data.frame or data.table
+#' @param inf logical. if `TRUE`, `inf` values are treated like `NAs`
 #'
-#' @return
+#' @return A data.frame with all NAs replaced by 0
+#'
+#' @md
+#' @family data.frame tools
 #' @export
-#'
-#' @examples
-df_na0 <- function(dat, inf0){
+df_na0 <- function(dat, inf){
   UseMethod('df_na0')
 }
 
+
+
 #' @export
 df_na0.data.table <- function(dat, inf = FALSE){
+  assert_that(is.flag(inf))
   dat <- data.table::copy(dat)
 
   if(!inf){
@@ -31,8 +36,14 @@ df_na0.data.table <- function(dat, inf = FALSE){
   return(dat)
 }
 
+
+
+
+
 #' @export
 df_na0.data.frame <- function(dat, inf = FALSE){
+  assert_that(is.flag(inf))
+
   dat[is.na(dat)] <- 0
 
   if(inf){

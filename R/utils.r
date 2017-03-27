@@ -53,7 +53,6 @@ all_with_warning <- function(dat){
 #' all_identical(c(1,2,3))
 #' all_identical(c(1,1,1))
 #'
-
 all_identical <- function(x, empty_value = FALSE) {
   assert_that(length(empty_value) <= 1)
 
@@ -207,7 +206,6 @@ unique_single <- function(x){
 
 
 
-
 #' Basename without file extension
 #'
 #' \describe{
@@ -231,7 +229,6 @@ basename_sans_ext <- function(x){
 
 
 
-
 #' Extract file extenstion
 #'
 #' \describe{
@@ -247,7 +244,6 @@ extract_file_ext <- function(x){
     unlist() %>%
     magrittr::extract(length(.) - 1)
 }
-
 
 
 
@@ -343,3 +339,41 @@ fct_recode2 <- function(x, rec){
 
   do.call(forcats::fct_recode, args)
 }
+
+
+
+
+#' Print code to recreate a data.frame
+#'
+#' Usefull for creating examples
+#'
+#' @param dat a data.frame
+#' @param factors_as_character logical. convert factors to characters (leads
+#'   to simpler text representation of the data.frame)
+#'
+#' @return dat (invisibly)
+#' @export
+dfput <- function(dat, factors_as_character = TRUE){
+  assert_that(is.data.frame(dat))
+
+  cat('data.frame(\n')
+
+  for(i in seq_along(dat)){
+    value <- ifelse(
+      is.factor(dat[[i]]) && factors_as_character,
+      capture.output(dput(as.character(dat[[i]]))),
+      capture.output(dput(dat[[i]]))
+    )
+
+    cat(sprintf('  %s = %s', names(dat)[[i]], value))
+    if(i != ncol(dat)){
+      cat(',')
+    }
+    cat('\n')
+  }
+  cat(')')
+
+  invisible(dat)
+}
+
+
