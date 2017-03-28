@@ -13,11 +13,11 @@ Imports:
     data.table,
     dplyr,
     dtplyr,
-    stringi,
-    bit64
+    stringi
 Suggests:
     lintr,
-    testthat
+    testthat,
+    bit64
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Encoding: UTF-8
