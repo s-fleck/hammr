@@ -28,11 +28,11 @@
 #'
 #' str(dat)
 
-df_typecast_cols <-  function(dat, conv = list()){
+df_typecast_cols <-  function(dat, conv = list(), silent = FALSE){
 
   conv2 <- conv[names(conv) %in% names(dat)]
 
-  if(length(conv2) < length(conv)) {
+  if((length(conv2) < length(conv)) && !silent) {
     missing_cols <- names(conv)[!names(conv) %in% names(conv2)]
     warning(defined_column_is_missing_warning(missing_cols))
   }
@@ -60,7 +60,6 @@ df_typecast_cols <-  function(dat, conv = list()){
           suppressWarnings(f(dat[[i]]))
         }
       )
-
     }
   }
   return(dat)

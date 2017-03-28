@@ -2,10 +2,14 @@
 #'
 #' @param x ...
 #' @param na_value What should NAs be treated es (should be TRUE, FALSE or NA)
+#' @param scalar allow only scalars (vectors of length 1)
 #'
 #' @return TRUE / FALSE
 #' @export
-looks_like_integer <- function(x, na_value = FALSE){
+looks_like_integer <- function(x, na_value = FALSE, scalar = FALSE){
+  if(scalar && !is.scalar(x)){
+    return(FALSE)
+  }
 
   suppressWarnings(
     res <- as.numeric(as.character(x)) %% 1 == 0
