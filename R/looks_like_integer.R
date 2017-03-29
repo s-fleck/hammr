@@ -6,7 +6,11 @@
 #'
 #' @return TRUE / FALSE
 #' @export
-looks_like_integer <- function(x, na_value = FALSE, scalar = FALSE){
+looks_like_integer <- function(
+  x,
+  na_value = FALSE,
+  scalar = FALSE
+){
   if(scalar && !is.scalar(x)){
     return(FALSE)
   }
@@ -14,10 +18,10 @@ looks_like_integer <- function(x, na_value = FALSE, scalar = FALSE){
   suppressWarnings(
     res <- as.numeric(as.character(x)) %% 1 == 0
   )
+  res[is.na(res)] <- FALSE
 
   res[x == '']    <- na_value
   res[is.na(x)]   <- na_value
-  res[is.na(res)] <- FALSE
 
   return(res)
 }

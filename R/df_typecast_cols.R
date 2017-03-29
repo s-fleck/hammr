@@ -157,4 +157,10 @@ cfun <- function(x){
 
 as.numeric2   <- function(x) as.numeric(as.character(x))
 as.integer2   <- function(x) as.integer(as.character(x))
-as.integer642 <- function(x) bit64::as.integer64(as.character(x))
+as.integer642 <- function(x) {
+  if(requireNamespace('bit64')){
+    bit64::as.integer64(as.character(x))
+  } else {
+   stop('Requires the package bit64')
+  }
+}
