@@ -8,30 +8,78 @@ equal_or_both_na <- function(a, b){
 
 
 
+#' Are all values TRUE? Warn if not.
+#'
+#' Checks if all values of a vector or list are `TRUE`, throws a an warning if
+#' not.
+#'
+#' @param x anything that can be coerced to a list of only `logical`` values
+#'   with [as.list()]
+#' @param na_value value to replace NAs with (allowed values are `TRUE`,
+#'   `FALSE`, `NA`)
+#' @param silent `logical`. If `TRUE` no warning is thrown.
+#'
+#' @return `logical` or `NA`. If `FALSE` or `NA` are returned, a warning will be
+#'   thrown containing the names (if `x` is named) or indices of the values that
+#'   are not `TRUE`. In addition, the indices of those values will be attached
+#'   as an attribute to the returned logical scalar (see examples)
+#'
+#' @md
+#' @seealso [all()]
 #' @export
-all_with_warning <- function(dat){
-  dat <- as.list(dat)
-  dat %assert_class% 'list'
-  assert_that(unlist(unique(lapply(dat, class))) %identical% 'logical')
+#'
+#' @examples
+#'
+#' x <- list(A = TRUE, B = FALSE)
+#' all_with_warning(x)
+#'
+#' #  [1] FALSE
+#' #  attr(,"failed")
+#' #  [1] 2
+#' #  Warning message:
+#' #  In all_with_warning(x) : Not TRUE: B
+#'
+all_with_warning <- function(
+  x,
+  na_value = FALSE,
+  silent = FALSE
+){
+  assert_that(is.scalar(na_value))
+  assert_that(is.flag(na_value) || is.na(na_value))
+  assert_that(is.flag(silent))
 
-  datl <- as.logical(dat)
-  if(any(is.na(datl))){
-    warning("Treating NAs as 'FALSE'")
-  }
+  x_lst <- as.list(x)
 
-  dat[which(is.na(datl))] <- FALSE
-  datl[is.na(datl)]       <- FALSE
+  assert_that(unique(purrr::map_lgl(x_lst, is.logical)))
 
-  if(all(datl)){
+
+  x_lst[is.na(x_lst)] <- na_value
+  x_vec <- as.logical(x_lst)
+  is_all_true <- all(x_vec)
+
+
+  if(isTRUE(is_all_true)){
     return(TRUE)
+
   } else {
-    failed      <- dat[as.logical(lapply(dat, identical, FALSE))]
-    warn        <- paste(
-      'FALSE, but should be TRUE:\n',
-      paste(names(failed), collapse = ', ')
-    )
-    warning(warn)
-    return(FALSE)
+    failed_idx   <- which(as.logical(lapply(x_lst, function(x) !isTRUE(x))))
+    failed_names <- names(x_lst)[failed_idx]
+
+    # construct warning
+    if(!silent){
+      if(is.null(failed_names)){
+        failed_msg <- failed_idx
+      } else {
+        failed_msg <- failed_names
+      }
+      failed_msg <- paste(failed_msg, collapse = ', ')
+
+      warn        <- sprintf('Not TRUE: %s', failed_msg)
+      warning(warn)
+    }
+
+    attr(is_all_true, 'failed') <- failed_idx
+    return(is_all_true)
   }
 }
 
@@ -75,8 +123,8 @@ all_identical <- function(x, empty_value = FALSE) {
 
   assert_that(
     identical(res, TRUE) ||
-    identical(res, FALSE) ||
-    identical(res, empty_value)
+      identical(res, FALSE) ||
+      identical(res, empty_value)
   )
 
   return(res)
@@ -125,8 +173,8 @@ all_unique <- function(x, empty_value = FALSE, silent = FALSE){
 
   assert_that(
     identical(res, TRUE) ||
-    identical(res, FALSE) ||
-    identical(res, empty_value)
+      identical(res, FALSE) ||
+      identical(res, empty_value)
   )
 
   return(res)
@@ -138,7 +186,7 @@ all_unique <- function(x, empty_value = FALSE, silent = FALSE){
 #' @export
 as_readr_col <- function(dat){
   UseMethod('as_readr_col')
-  }
+}
 
 #' @export
 as_readr_col.character <- function(dat){
