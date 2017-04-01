@@ -1,5 +1,6 @@
-context('df_compare')
+context('df_compute')
 
+#* @testing df_compute
 
 dat1 <- data.frame(
   a = c('alpha', 'beta', 'ceta'),
@@ -29,7 +30,7 @@ dt1 <- data.table::as.data.table(dat1)
 dt2 <- data.table::as.data.table(dat2)
 
 
-test_that("df_compare works", {
+test_that("df_compute works", {
 
   expect_error(df_ndiff(dat1, dat3))
   expect_error(df_ndiff(dat1, dat2[ ,-1]))
@@ -68,3 +69,49 @@ test_that("df_compare works", {
 
 
 })
+
+
+context("df_compute with id_vars")
+
+test_that("df_compute with id_vars", {
+  dat1 <- data.frame(
+    a  = c('alpha', 'beta', 'ceta'),
+    a2 = c('a', 'b', 'c'),
+    b  = c(10,-10, 90),
+    c  = c(1L, 3L, 5L),
+    d  = factor(c('al', 'dl', 'zl')),
+    stringsAsFactors = FALSE
+  )
+
+  dat2 <- data.frame(
+    a = c('ceta', 'alpha', 'beta'),
+    a2  = c('c', 'a', 'b'),
+    b  = c(10, 20, 100),
+    c  = c(2L, 1L, 0L),
+    d  = factor(c('bl', 'ul', 'dl')),
+    stringsAsFactors = FALSE
+  )
+
+  eres <- data.frame(
+    a = c("alpha", "beta", "ceta"),
+    a2 = c("a", "b", "c"),
+    b = c(-10, -110, 80),
+    c = c(1L, 3L, 5L),
+    d = factor(c("al", "dl", "zl")),
+    stringsAsFactors = FALSE
+  )
+
+  tres <- df_compute(
+    dat1,
+    dat2,
+    id_vars = c('a', 'a2'),
+    fun = `-`
+  )
+
+  expect_identical(
+    eres, tres
+  )
+
+
+})
+
