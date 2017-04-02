@@ -1,10 +1,13 @@
 #' Remove linebreaks and multiple spaces from string
 #'
 #' @param x a character vector.
+#' @param replace_linebreak a scalar character to replace linebreaks with
 #'
-#' @return a character vector without linebreaks
+#' @return a character vector without linebreaks or multiple spaces
 #' @export
 #'
+#' @md
+#' @family string tools
 #' @examples
 #'
 #' str_nobreak(
@@ -13,7 +16,8 @@
 #'   foo"
 #' )
 #'
-str_nobreak <- function(x){
-  y <- gsub("\r?\n|\r", " ", x)
+str_nobreak <- function(x, replace_linebreak = " "){
+  assert_that(purrr::is_scalar_character(replace_linebreak))
+  y <- gsub("\r?\n|\r", replace_linebreak, x)
   gsub('[ ]{2,}', ' ', y)
 }

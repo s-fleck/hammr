@@ -4,6 +4,8 @@
 #'
 #' @param input An input vector.
 #' @param by The length of the resulting vectors.
+#'
+#' @family vector tools
 #' @export
 #' @examples
 #' vec <- c("a","b","d","e","f","g","h")

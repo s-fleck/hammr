@@ -3,10 +3,13 @@
 #' Creates SQL CREATE TABLE statements from a vector of column names and
 #' a vector of column types
 #'
-#' @param table_name
-#' @param col_names
-#' @param col_types
-#' @param dialect
+#' @param table_name name of target sql table
+#' @param col_names column names of target sql table
+#' @param col_types column types of target sql table
+#' @param dialect optional: checks if input is valid for target SQL dialect.
+#'   Currenlty the only supported value is `"db2"`.
+#' @param col_options column options of target sql table (for example `NOT
+#'   NULL`)
 #'
 #' @return
 #' @export
@@ -77,9 +80,10 @@ check_sql_types <- function(col_types, dialect){
 
   dialect <- tolower(dialect)
 
-  switch(dialect,
-         'db2' = check_sql_types_db2(col_types))
-
+  switch(
+    dialect,
+    'db2' = check_sql_types_db2(col_types)
+  )
 }
 
 
@@ -103,7 +107,8 @@ check_sql_types_db2 <- function(col_types){
     'BLOB\\([1-9][0:9]{0,2}\\)',
     'DATE',
     'TIME',
-    'TIMESTAMP')
+    'TIMESTAMP'
+  )
 
   res <- vector('list', length(col_types))
   names(res) <- col_types

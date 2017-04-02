@@ -64,10 +64,7 @@ test_that("df_compute works", {
   expect_identical(res3$c, c(-1L, 2L, 5L))
   expect_identical(res3$d, dat1$d)
 
-
   df_pdiff(dat2, dat1)
-
-
 })
 
 
