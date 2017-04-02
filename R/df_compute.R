@@ -8,12 +8,12 @@
 #' preset functions are provided that make use of `df_compute`.
 #'
 #' @param dat1 a data.frame
-#' @param dat2 a data.frame that has the same number of rows and columns, as well
-#'   as the same column types and name as `dat1`.
+#' @param dat2 a data.frame that has the same number of rows and columns, as
+#'   well as the same column types and name as `dat1`.
 #' @param fun a function that will be executed with each column of `dat1` and
 #'   `dat2` whose type matches `coltypes` as first and second argument. The
-#'   result of this function must be a vector of length
-#'   `nrow(dat1) == nrow(dat2)`.
+#'   result of this function must be a vector of length `nrow(dat1) ==
+#'   nrow(dat2)`.
 #' @param coltypes types of the columns of which to apply fun
 #' @param id_vars A vector of colnames. If provided, ensures that the rows of
 #'   both `dat1` and `dat2` are in the correct order. The columns in `id_vars`
@@ -53,6 +53,7 @@
 #' df_compute(dat1, dat2, `*`)
 #' df_compute(dat1, dat2, fun = function(x, y) paste0(x, '/', y))
 #' df_compute(dat1, dat2, fun = function(x, y) paste0(x, '/', y), coltypes = 'factor')
+#'
 df_compute <- function(
   dat1,
   dat2,
