@@ -22,9 +22,9 @@
 str_chop <- function(x, breaks){
   res <- vector()
 
-  res[1] <- stringr::str_sub(x, breaks[1], breaks[2])
+  res[1] <- stringi::stri_sub(x, breaks[1], breaks[2])
   for(i in 3:length(breaks)){
-    res[[i-1]] <- stringr::str_sub(x, breaks[i-1]+1, breaks[i])
+    res[[i-1]] <- stringi::stri_sub(x, breaks[i-1]+1, breaks[i])
   }
 
   return(res)
