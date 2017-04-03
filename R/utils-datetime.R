@@ -22,8 +22,8 @@ get_year <- function(x) {
 #' @export
 get_quarter <- function(x) {
   res <- x %>%
-    get_month %>%
-    as.data.frame %>%
+    get_month() %>%
+    as.data.frame() %>%
     tidyr::separate('.', '-', into = c('y', 'm')) %>%
     dplyr::mutate(m = as.integer(m))
 
