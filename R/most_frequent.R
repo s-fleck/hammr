@@ -1,7 +1,7 @@
 #' Get the n most frequent values of a vector
 #'
 #' @param x A vector
-#' @param x
+#' @param n number of most frequent elements to get
 #'
 #' @return a character vector of the n most frequent elements
 #' @export

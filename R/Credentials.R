@@ -1,11 +1,3 @@
-#' Title
-#'
-#' @param dat
-#'
-#' @return
-#' @export
-#'
-#' @examples
 credentials <- function(dat){
   class(dat) <- c('Credentials', 'list')
   return(dat)
@@ -18,6 +10,10 @@ credentials_db <- function(dat){
 }
 
 
+#' Console user input for login credentials
+#'
+#' @param msg Message to be displayed when asking for credentials
+#'
 #' @export
 ui_credentials <- function(msg = NULL){
   res <- list()
@@ -33,7 +29,7 @@ ui_credentials <- function(msg = NULL){
   credentials(res)
 }
 
-
+#' @rdname ui_credentials
 #' @export
 ui_credentials_db <- function(msg = NULL){
   res <- list()

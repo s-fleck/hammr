@@ -6,8 +6,10 @@
 #'
 #' `%seq_in%` returns a logical vector of the matching described above
 #'
-#' @param seq sequence to be matched
+#' @param sequence sequence to be matched
 #' @param target   target vector for sequence matching
+#'
+#' @family vector tools
 #'
 #' @rdname vec_match_seq
 #' @export

@@ -12,7 +12,7 @@ tdf <- data.frame(
 test_that("lapply_by_class works.", {
 
   parenthesise <- function(x) paste0('(', trimws(x) , ')')
-  res <- lapply_by_class(tdf, parenthesise, 'character')
+  res <- lapply_if_class(tdf, parenthesise, 'character')
 
   expect_identical(res$a, c("(alpha)", "(beta)", "(ceta)"))
   expect_identical(res$b, tdf$b)

@@ -1,4 +1,4 @@
-#' Complement a data.frame
+#' Complement a data.frame based on vectors
 #'
 #' Adds empty rows to a \code{data.frame} based values in an id column or a
 #' combination of id columns. The intended use of this function is to ensure
@@ -10,6 +10,9 @@
 #'   "value2", ...), col2 = c(1, 2, ...)), ...}. The names of \code{complement}
 #'   must correspond to column names of \code{dat}, and all list elements of
 #'   \code{complement} must have the same length.
+#' @param fill Value to fill newly created rows with.
+#'
+#'
 #' @return a \code{data.frame} containing all rows from \code{dat} and extra
 #'   rows for all values of \code{complement}
 #'
@@ -69,16 +72,11 @@
 df_complement <- function(
   dat,
   complement,
-  colnames = NULL,
   fill = NA
 ){
   # Pre-conditions
     assert_that(hammr::all_unique(names(dat), silent = TRUE))
     assert_that(hammr::all_unique(names(complement), silent = TRUE))
-    assert_that(
-      is.null(colnames) ||
-      (is.character(colnames) && all_unique(colnames))
-    )
 
     assert_that(is.list(complement))
     assert_that(all(names(complement) %in% names(dat)))
@@ -136,6 +134,13 @@ df_complement <- function(
 
 
 
+#' Complement a data.frame based on a different data.frame
+#'
+#' @param df1 a data.frame
+#' @param df2 a data.frame
+#' @param complement_cols columns to base the complementation on
+#' @param fill value to fill newly created rows with
+#'
 #' @export
 df_complement2 <- function(
   df1,

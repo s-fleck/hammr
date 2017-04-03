@@ -135,6 +135,7 @@ all_identical <- function(x, empty_value = FALSE) {
 #' Test if all elements of a vector are unique
 #'
 #' @inheritParams all_identical
+#' @silent logical. Suppress Warnings
 #'
 #' @return TRUE/FALSE
 #'
@@ -149,7 +150,7 @@ all_identical <- function(x, empty_value = FALSE) {
 #'
 all_unique <- function(x, empty_value = FALSE, silent = FALSE){
   assert_that(length(empty_value) <= 1)
-
+  assert_that(is.flag(silent))
 
   if(length(x) <= 1L){
     if(identical(length(x), 1L)){
@@ -329,9 +330,10 @@ read_rda <- function(infile){
 
 #' Launch explorer
 #'
-#' @param x
+#' Launch windows explorer at target path `x`.
 #'
-#' @return
+#' @param x Path to a directory or file
+#'
 #' @export
 #' @rdname launchers
 #'
@@ -345,6 +347,8 @@ explorer <- function(x){
 
 
 #' Launch excel
+#'
+#' Launch microsoft excel explorer at target path `x`.
 #'
 #' @param x
 #'
@@ -364,18 +368,22 @@ excel <- function(
 
 #' Change factor levels according to named character vector
 #'
-#' This is just a (to me) slightly more convenient interface to
-#' forcats::fct_recode.
+#' This is an alternative interface to [forcats::fct_recode()], that takes
+#' a named character vector as input (as opposed to a sequence of length 1
+#' character vectors).
 #'
-#' @param x
-#' @param rec
+#' @param f A factor.
+#' @param rec A named character vectors where the name gives the new level, and
+#'   the value gives the old level. Levels not otherwise mentioned will be left
+#'   as is.
 #'
 #' @return
+#' @seealso [forcats::fct_recode()]
 #' @export
 #'
 #' @examples
-fct_recode2 <- function(x, rec){
-  assert_that(is.vector(x) || is.factor(x))
+fct_recode2 <- function(f, rec){
+  assert_that(is.vector(f) || is.factor(x))
   assert_that(is.vector(rec))
   assert_that(identical(
     length(names(rec)),

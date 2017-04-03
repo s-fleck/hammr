@@ -1,13 +1,14 @@
 #' Paste a suffix and/or prefix to each column of a data.frame
 #'
 #' @param dat a data.frame
-#' @param prefix to be pasted before each elemtn
-#' @param suffix
+#' @param prefix to be pasted before each element of `dat`
+#' @param suffix to be pasted after each element of `dat`
 #'
 #' @return a \code{data.frame} (with only character columns)
 #'
 #' @family data.frame tools
 #' @rdname df_affix
+#' @md
 #'
 #' @export
 #'

@@ -12,7 +12,7 @@
 #'
 #' @return a reordered vector
 #' @export
-#' @import assertthat
+#' @family vector tools
 #'
 #' @examples
 #'
@@ -34,7 +34,6 @@ prioritise <- prioritize
 #' @export
 #'
 prioritize.character <- function(x, high = character(), low = character()){
-
   low_not_x  <- low[!low %in% x]
   high_not_x <- high[!high %in% x]
 
