@@ -135,7 +135,7 @@ all_identical <- function(x, empty_value = FALSE) {
 #' Test if all elements of a vector are unique
 #'
 #' @inheritParams all_identical
-#' @silent logical. Suppress Warnings
+#' @param silent logical. Suppress Warnings
 #'
 #' @return TRUE/FALSE
 #'
@@ -221,6 +221,13 @@ as_readr_col.list <- function(dat){
 #' @export
 #'
 #' @examples
+#'
+#' capwords('foo bar fizzBuzz')
+#' # [1] "Foo Bar FizzBuzz"
+#'
+#' capwords('foo bar fizzBuzz', strict = TRUE)
+#' # [1] "Foo Bar Fizzbuzz"
+#'
 capwords <- function(s, strict = FALSE) {
   cap <- function(s){
     s_upper <- toupper(substring(s, 1, 1))
@@ -337,7 +344,6 @@ read_rda <- function(infile){
 #' @export
 #' @rdname launchers
 #'
-#' @examples
 explorer <- function(x){
   dn <- dirname(x)
   shell(sprintf("explorer %s", dn), intern = FALSE, wait = FALSE)
@@ -350,12 +356,10 @@ explorer <- function(x){
 #'
 #' Launch microsoft excel explorer at target path `x`.
 #'
-#' @param x
-#'
-#' @param excel_path
+#' @param x Path to an excel file
+#' @param excel_path path to `EXCEL.EXE`
 #' @rdname launchers
 #'
-#' @export
 excel <- function(
   x,
   excel_path = '"C:/Program Files (x86)/Microsoft Office/Office14/EXCEL.EXE"'
@@ -377,12 +381,20 @@ excel <- function(
 #'   the value gives the old level. Levels not otherwise mentioned will be left
 #'   as is.
 #'
-#' @return
+#' @return a factor vector with recoded levels
 #' @seealso [forcats::fct_recode()]
 #' @export
 #'
 #' @examples
+#'
+#' x <- factor(c("apple", "bear", "banana", "dear"))
+#' fct_recode2(x, c(fruit = "apple", fruit = "banana"))
+#'
+#' # [1] fruit bear  fruit dear
+#' # Levels: fruit bear dear
+#'
 fct_recode2 <- function(f, rec){
+  assert_that(requireNamespace('forcats'))
   assert_that(is.vector(f) || is.factor(x))
   assert_that(is.vector(rec))
   assert_that(identical(

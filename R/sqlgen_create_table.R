@@ -6,15 +6,25 @@
 #' @param table_name name of target sql table
 #' @param col_names column names of target sql table
 #' @param col_types column types of target sql table
-#' @param dialect optional: checks if input is valid for target SQL dialect.
-#'   Currenlty the only supported value is `"db2"`.
 #' @param col_options column options of target sql table (for example `NOT
 #'   NULL`)
+#' @param dialect optional: checks if input is valid for target SQL dialect.
+#'   Currenlty the only supported value is `"db2"`.
 #'
-#' @return
+#' @return a `CREATE TABLE` statement as a text string
 #' @export
 #'
 #' @examples
+#' #'
+#' sqlgen_create_table(
+#'   "example.table",
+#'   c("numbers", "animals"),
+#'   c("integer", "varchar(8)"),
+#'   c("NOT NULL", "")
+#' )
+#'
+#' # [1] "CREATE TABLE example.table (numbers INTEGER NOT NULL, animals VARCHAR(x))"
+#'
 sqlgen_create_table <- function(
   table_name,
   col_names,
@@ -64,7 +74,7 @@ sqlgen_create_table <- function(
 
 
   cols <- paste0(
-    paste0(col_names, ' ', col_types, ' ', col_options),
+    trimws(paste0(col_names, ' ', col_types, ' ', col_options)),
     collapse = ', '
   )
 

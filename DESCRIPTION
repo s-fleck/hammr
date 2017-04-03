@@ -17,7 +17,9 @@ Imports:
 Suggests:
     lintr,
     testthat,
-    bit64
+    bit64,
+    lintr,
+    forcats
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Encoding: UTF-8
