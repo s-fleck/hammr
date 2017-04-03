@@ -8,6 +8,7 @@ equal_or_both_na <- function(a, b){
 
 
 
+
 #' Are all values TRUE? Warn if not.
 #'
 #' Checks if all values of a vector or list are `TRUE`, throws a an warning if
@@ -88,12 +89,14 @@ all_with_warning <- function(
 
 #' Test if all elements of a vector are identical
 #'
-#' @param x any object that can be handled by \code{unique} (usually a vector or
+#' @param x any object that can be handled by [unique()] (usually a vector or
 #'   list)
 #' @param empty_value Value to return if function is called on a vector of
-#'   length 0
+#'   length 0 (e.g. `NULL`, `numeric()`, ...)
 #'
-#' @return TRUE/FALSE
+#' @md
+#' @family special equality checks
+#' @return `TRUE/FALSE`
 #' @export
 #'
 #' @examples
@@ -121,11 +124,7 @@ all_identical <- function(x, empty_value = FALSE) {
     res <- identical(length(unique(x)), 1L)
   }
 
-  assert_that(
-    identical(res, TRUE) ||
-      identical(res, FALSE) ||
-      identical(res, empty_value)
-  )
+  assert_that(is.flag(res) || identical(res, empty_value))
 
   return(res)
 }
@@ -138,12 +137,15 @@ all_identical <- function(x, empty_value = FALSE) {
 #' @inheritParams all_identical
 #'
 #' @return TRUE/FALSE
+#'
+#' @md
+#' @family special equality checks
 #' @export
 #'
 #' @examples
 #'
-#' all_unique(c(1,2,3))
-#' all_unique(c(1,1,1))
+#' all_identical(c(1,2,3))
+#' all_identical(c(1,1,1))
 #'
 all_unique <- function(x, empty_value = FALSE, silent = FALSE){
   assert_that(length(empty_value) <= 1)
@@ -207,12 +209,14 @@ as_readr_col.list <- function(dat){
 
 #' Capitalize words
 #'
-#' For ?toupper documentation
+#' Coppied from the documentation of [toupper()]
 #'
 #' @param s a character vector
 #' @param strict enforce lowercase characters after first (camelCase becomes Camelcase)
 #'
-#' @return
+#' @return a character vector with capitalized words
+#'
+#' @md
 #' @export
 #'
 #' @examples
@@ -224,23 +228,26 @@ capwords <- function(s, strict = FALSE) {
     paste(s_upper, s_lower, sep = "", collapse = " " )
   }
 
-  sapply(strsplit(s, split = " "),
-         cap,
-         USE.NAMES = !is.null(names(s)))
+  sapply(
+    strsplit(s, split = " "),
+    cap,
+    USE.NAMES = !is.null(names(s))
+  )
 }
 
 
 
 
-#' Unqiue single element
+#' Unique single element
 #'
-#' Returns unique(x) if all elements of x are identical, raises an error if
-#' not all elements of x are identical.
+#' Returns `unique(x)` if all elements of `x`` are identical, throws an error if
+#' not.
 #'
-#' @param x any object that can be handled by \code{unique} (usually a vector or
-#'   list)
+#' @inheritParams all_identical
 #'
-#' @return A scalar of the same type as x
+#' @md
+#' @family special equality checks
+#' @return A scalar of the same type as `x`
 #' @export
 unique_single <- function(x){
   res <- unique(x)
@@ -296,18 +303,15 @@ extract_file_ext <- function(x){
 
 
 
-#' Load an rda file and return the content
+#' Read first object of an rda file
 #'
-#' Warning: Will not work as expected for rda files that contain several
-#' objects.
-#'
-#' http://stackoverflow.com/questions/5577221/how-can-i-load-an-object-into-a-variable-name-that-i-specify-from-an-r-data-file
+#' \url{http://stackoverflow.com/questions/5577221/how-can-i-load-an-object-into-a-variable-name-that-i-specify-from-an-r-data-file}
 #'
 #' @param infile path to an rda file
 #'
 #' @return The first object in infile.rda
 #' @export
-load_rda <- function(infile){
+read_rda <- function(infile){
   env <- new.env()
   nm <- load(infile, env)[1]
   if(length(env) > 1){
