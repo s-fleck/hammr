@@ -395,7 +395,7 @@ excel <- function(
 #'
 fct_recode2 <- function(f, rec){
   assert_that(requireNamespace('forcats'))
-  assert_that(is.vector(f) || is.factor(x))
+  assert_that(is.vector(f) || is.factor(f))
   assert_that(is.vector(rec))
   assert_that(identical(
     length(names(rec)),
@@ -407,7 +407,7 @@ fct_recode2 <- function(f, rec){
   for(i in seq_along(args)){
     args[[i]] <- rec[i]
   }
-  args <- c(list(as.character(x)), args)
+  args <- c(list(as.character(f)), args)
 
   do.call(forcats::fct_recode, args)
 }
