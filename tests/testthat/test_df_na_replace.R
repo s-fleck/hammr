@@ -1,0 +1,61 @@
+context("df_na0")
+
+
+test_that("df_na_replace works as expected", {
+  #* @testing df_na_replace
+  #* @testing df_na_replace.data.frame
+  #* @testing df_na_replace.data.table
+  #* @testing df_na0
+
+
+  tdat <- data.table::data.table(
+    character = c('1', 'NA', NA),
+    numeric = c(1, NA, 0),
+    integer = c(1L, NaN, 2L),
+    factor  = factor(c('a', 'NA', NA))
+  )
+
+  expect_warning(
+    r1 <- df_na0(tdat),
+    'is outside the levels range'
+  )
+
+  expect_warning(
+    r2 <- df_na0(as.data.frame(tdat)),
+    'invalid factor level'
+  )
+
+  # Results for .data.frame and .data.table method must match
+  expect_identical(
+    as.data.frame(r1), r2
+  )
+
+  eres12 <- data.frame(
+    character = c("1", "NA", "0"),
+    numeric = c(1, 0, 0),
+    integer = c(1, 0, 2),
+    factor = factor(c("a", "NA", NA)),
+    stringsAsFactors = FALSE
+  )
+
+  expect_identical(r1, data.table::as.data.table(eres12))
+  expect_identical(r2, eres12)
+
+
+
+  r3 <- df_na_replace(tdat, '')
+  r4 <- df_na_replace(as.data.frame(tdat), '')
+
+  eres34 <- data.frame(
+    character = c("1", "NA", ""),
+    numeric = c("1", "", "0"),
+    integer = c("1", "", "2"),
+    factor = c("a", "NA", ""),
+    stringsAsFactors = FALSE
+  )
+
+  expect_identical(r3, data.table::as.data.table(eres34))
+  expect_identical(r4, eres34)
+
+
+})
