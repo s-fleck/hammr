@@ -153,7 +153,7 @@ df_complement2 <- function(
     assert_that(hammr::all_unique(names(df2), silent = TRUE))
     assert_that(
       is.character(complement_cols) &&
-      all_unique(complement_cols)   &&
+      all_unique(complement_cols, silent = TRUE)   &&
       length(complement_cols) > 0
     )
 
@@ -194,7 +194,9 @@ df_complement2 <- function(
     }
 
 
-  data.table::setcolorder(res$df2, names(res$df1))
+
+  # Sort outgoing data.frames
+    data.table::setcolorder(res$df2, names(res$df1))
 
 
   # Post-conditions
