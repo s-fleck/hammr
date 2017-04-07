@@ -52,7 +52,7 @@ save_test <- function(..., pkg = '.', subdir){
 #'
 #' @seealso \code{\link{save_cache}}.
 #' @export
-load_test <- function(..., pkg = '.', subdir, envir = globalenv()){
+read_test <- function(..., pkg = '.', subdir, envir = globalenv()){
   pkg       <- devtools::as.package(pkg)
   pkg_dir   <- base::system.file(package = pkg$package)
   cache_dir <- file.path(pkg_dir, 'tests', 'testthat', 'test_data')
@@ -66,7 +66,11 @@ load_test <- function(..., pkg = '.', subdir, envir = globalenv()){
   to_load     <- eval(substitute(alist(...)))
   obj         <- vapply(to_load, as.character, character(1))
 
-  path      <- paste0(file.path(cache_dir, obj), '.rds')
+  path <- file.path(cache_dir, obj)
+
+  if(!grepl('.*\\.rds$', path)){
+    path <- paste0(path, '.rds')
+  }
 
   readRDS(path)
 }
