@@ -8,5 +8,5 @@
 #' @importFrom data.table data.table as.data.table
 #' @docType package
 #' @name hammr
-NULL
+"_PACKAGE"
 
