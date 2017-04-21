@@ -1,3 +1,5 @@
+# Ctor --------------------------------------------------------------------
+
 #' A custom data type for Year-Quarter
 #'
 #' @param y year or a character string of a format like this: 2013-Q1
@@ -23,6 +25,9 @@ date_yq <- function(y, q) {
 }
 
 
+
+# as_data_yq --------------------------------------------------------------
+
 as_date_yq <- function(x){
   UseMethod('as_date_yq')
 }
@@ -42,6 +47,11 @@ as_date_yq.Date <- function(x){
 }
 
 
+
+# as.Date -----------------------------------------------------------------
+
+
+
 as.Date.date_yq <- function(x){
   y <- x %/% 10
   m <- c(1, 4, 7, 10)[x %% 10]
@@ -49,35 +59,83 @@ as.Date.date_yq <- function(x){
 }
 
 
+# Format ------------------------------------------------------------------
+
+#' Format a date_yq object
+#'
+#' @param x a [date_yq] object
+#' @param format A scalar character, valid values are: `"iso"`, `"short"`, and `"shorter"`
+#'
+#' @return A character vector
+#'
+#' @md
+#' @export
+#' @examples
+#'
+#' x <- date_yq(2015, 3)
+#'
+#' format(x, format = "iso")
+#' # [1] "2015-Q3"
+#'
+#' format(x, format = "short")
+#' # [1] "2015.3"
+#'
+#' format(x, format = "shorter")
+#' # [1] "15.3"
+#'
 format.date_yq <- function(
   x,
   format = 'iso'
 ){
   switch(
     tolower(format),
-    "iso"    = date_yq_to_iso(x),
-    "short"   = date_yq_to_short(x),
-    "shorter" = date_yq_to_shorter(x),
+    "iso"     = format_date_yq_iso(x),
+    "short"   = format_date_yq_short(x),
+    "shorter" = format_date_yq_shorter(x),
     stop('wrong format specified')
   )
 }
 
-
-date_yq_to_iso <- function(x){
+format_date_yq_iso <- function(x){
   y <- x %/% 10
   q <- x %% 10
   sprintf("%s-Q%s", y, q)
 }
 
-date_yq_to_short <- function(x){
+format_date_yq_short <- function(x){
   y <- x %/% 10
   q <- x %% 10
   sprintf("%s.%s", y, q)
 }
 
-date_yq_to_shorter <- function(x){
+format_date_yq_shorter <- function(x){
   y <- (x %/% 10) %% 100
   q <- x %% 10
   sprintf("%s.%s", y, q)
+}
+
+
+# Utils -------------------------------------------------------------------
+
+#' Format Year-Quarter
+#'
+#' A wrapper around [as_date_yq()] and [format.date_yq()].
+#'
+#' @param x Any class that can be handled by [as_date_yq()]
+#' @inheritParams format.date_yq
+#'
+#' @return A character vector
+#'
+#' @md
+#' @export
+#' @examples
+#'
+#' format_yq(20151)
+#' format_yq(20151, format = 'short')
+#' format_yq(20151, format = 'shorter')
+#'
+format_yq <- function(x, format = 'iso'){
+  res <- as_date_yq(x)
+  format(res, format = format)
 }
 
