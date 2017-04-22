@@ -252,53 +252,6 @@ capwords <- function(s, strict = FALSE) {
 
 
 
-
-
-
-
-
-#' Basename without file extension
-#'
-#' \describe{
-#'   \item{basename_sans_ext}{\code{"myscript.R"} --> \code{"myscript"}}
-#' }
-#'
-#' @param x A filename / file path
-#'
-#' @return a character vector
-#' @seealso \code{\link{basename}}
-#' @export
-basename_sans_ext <- function(x){
-  res <- x %>%
-    basename() %>%
-    strsplit(., '.', fixed = TRUE) %>%
-    unlist() %>%
-    magrittr::extract(1:(length(.) - 1)) %>%
-    paste(collapse = '.')
-}
-
-
-
-
-#' Extract file extenstion
-#'
-#' \describe{
-#'   \item{extract_file_ext}{\code{"myscript.R"} --> \code{"R"}}
-#' }
-#'
-#' @export
-#' @rdname basename_sans_ext
-extract_file_ext <- function(x){
-  res <- x %>%
-    basename() %>%
-    strsplit(., '.', fixed = TRUE) %>%
-    unlist() %>%
-    magrittr::extract(length(.) - 1)
-}
-
-
-
-
 #' Read first object of an rda file
 #'
 #' \url{http://stackoverflow.com/questions/5577221/how-can-i-load-an-object-into-a-variable-name-that-i-specify-from-an-r-data-file}
