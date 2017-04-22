@@ -1,6 +1,5 @@
 context("Assertions")
 
-testdat <- hammr::quarter('2015-Q1')
 tdat1 <- data.frame(
   x = c('a', 'b', 'c'),
   y = factor(c('r', 'u', 'b')),

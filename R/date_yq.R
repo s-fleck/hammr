@@ -2,7 +2,7 @@
 
 #' A custom data type for Year-Quarter
 #'
-#' @param y year or a character string of a format like this: 2013-Q1
+#' @param y year
 #' @param q quarter (optional)
 #'
 #' @return An object of type Quarter, character
@@ -10,9 +10,8 @@
 #'
 #' @examples
 #'
-#' quarter(2013, 3)
-#' quarter('2013-Q3')
-
+#' date_yq(2013, 3)
+#'
 date_yq <- function(y, q) {
   assert_that(is.numeric(y))
   assert_that(is.numeric(q))
@@ -28,11 +27,21 @@ date_yq <- function(y, q) {
 
 # as_data_yq --------------------------------------------------------------
 
+#' Convert object to date_yq
+#'
+#' @param x any R object
+#'
+#' @md
+#' @return a [date_yq] object
+#' @export
+#'
 as_date_yq <- function(x){
   UseMethod('as_date_yq')
 }
 
 
+
+#' @export
 as_date_yq.numeric <- function(x){
   y <- x %/% 10
   q <- x %% 10
@@ -40,6 +49,9 @@ as_date_yq.numeric <- function(x){
 }
 
 
+
+
+#' @export
 as_date_yq.Date <- function(x){
   y <- lubridate::year(x)
   q <- lubridate::quarter(x)
@@ -50,9 +62,16 @@ as_date_yq.Date <- function(x){
 
 # as.Date -----------------------------------------------------------------
 
-
-
-as.Date.date_yq <- function(x){
+#' Convert date_yq to Date
+#'
+#' @param x a [date_yq] object
+#' @param ... ignored
+#'
+#' @return A [base::Date] object
+#' @md
+#' @export
+#'
+as.Date.date_yq <- function(x, ...){
   y <- x %/% 10
   m <- c(1, 4, 7, 10)[x %% 10]
   lubridate::make_date(y, m, 1L)
@@ -64,7 +83,9 @@ as.Date.date_yq <- function(x){
 #' Format a date_yq object
 #'
 #' @param x a [date_yq] object
-#' @param format A scalar character, valid values are: `"iso"`, `"short"`, and `"shorter"`
+#' @param format A scalar character, valid values are: `"iso"`, `"short"`, and
+#'   `"shorter"`
+#' @param ... ignored
 #'
 #' @return A character vector
 #'
@@ -85,7 +106,8 @@ as.Date.date_yq <- function(x){
 #'
 format.date_yq <- function(
   x,
-  format = 'iso'
+  format = 'iso',
+  ...
 ){
   switch(
     tolower(format),

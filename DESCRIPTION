@@ -10,15 +10,19 @@ License: MIT + file LICENSE
 Imports:
     assertthat,
     magrittr,
+    utils,
+    devtools,
     data.table,
     dplyr,
     dtplyr,
+    purrr,
+    lubridate,
+    readr,
     stringi
 Suggests:
     lintr,
     testthat,
     bit64,
-    lintr,
     forcats
 LazyData: TRUE
 RoxygenNote: 6.0.1

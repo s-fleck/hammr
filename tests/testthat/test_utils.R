@@ -13,7 +13,7 @@ test_that("unique_single works", {
   y <- c(1, 2, 3, NA, 7, 8, 9)
 
   expect_identical(
-    equal_or_both_na(x, y),
+    equal_or_na(x, y),
     c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
   )
 })
@@ -58,7 +58,7 @@ test_that("unique_single works", {
   y <- c(1, 2, 3, NA, 7, 8, 9)
 
   expect_identical(
-    equal_or_both_na(x, y),
+    equal_or_na(x, y),
     c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
   )
 })

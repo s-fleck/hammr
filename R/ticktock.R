@@ -54,5 +54,3 @@ tock = function() {
 
   invisible(tock_diff)
 }
-
-

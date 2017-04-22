@@ -19,7 +19,7 @@
 #' x <- c('d', 'e', 'z', 'y', 'n', 'b', 'c', 'a', 'x')
 #' prioritize(x, c('a', 'b', 'c', 'applepie'), c('x', 'y', 'z'))
 #'
-prioritize <- function (x, ...) {
+prioritize <- function (x, high, low) {
   UseMethod("prioritize", x)
 }
 
@@ -33,7 +33,7 @@ prioritise <- prioritize
 #' @rdname prioritize
 #' @export
 #'
-prioritize.character <- function(x, high = character(), low = character()){
+prioritize.character <- function(x, high = NULL, low = NULL){
   low_not_x  <- low[!low %in% x]
   high_not_x <- high[!high %in% x]
 
@@ -52,7 +52,7 @@ prioritize.character <- function(x, high = character(), low = character()){
 #' @rdname prioritize
 #' @export
 #'
-prioritize.factor <- function(x, high = character(), low = character()){
+prioritize.factor <- function(x, high = NULL, low = NULL){
   ordered <- prioritise(levels(x), high, low)
   res     <- factor(x, levels = ordered)
 

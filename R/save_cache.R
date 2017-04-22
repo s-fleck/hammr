@@ -1,7 +1,7 @@
 #' Save object to hard disk chache (of a package)
 #'
 #' @param ... R objects to save to chache dir, usually /inst/chache
-#' @param package the current package
+#' @param pkg the current package
 #' @param subdir subdirectory of the chache dir to save data to
 #'
 #' @section Side effects:
@@ -42,7 +42,7 @@ save_cache <- function(..., pkg = '.', subdir){
 #'
 #' @param ... R objects to load from cache dir, usually /inst/chache
 #' @param envir target environment
-#' @param package the current package
+#' @inheritParams save_cache
 #'
 #' @section Side effects:
 #' Loads an R object from a chache dir in the current package

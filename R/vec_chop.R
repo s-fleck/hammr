@@ -2,8 +2,8 @@
 #'
 #' \url{https://gist.github.com/sckott/4632735}
 #'
-#' @param input An input vector.
-#' @param by The length of the resulting vectors.
+#' @param x An input vector.
+#' @param interval The length of the resulting vectors.
 #'
 #' @family vector tools
 #' @export

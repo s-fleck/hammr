@@ -6,6 +6,7 @@
 #' if those criteria are violated.
 #'
 #' @param x an R object. See `methods(is_valid)`.
+#' @param ... passed on to methods.
 #'
 #' @return `logical`; whether this object meets pre-defined validity conditions.
 #'   An object returned by `is_valid()` may have an `errors` attribute that is
@@ -24,7 +25,7 @@ is_valid <- function(x, ...) {
 #' @export
 #' @rdname is_valid
 assert_valid <- function(x, ...){
-  res <- is_valid(x)
+  res <- is_valid(x, ...)
   assert_that(is.flag(res))
 
   if(res){

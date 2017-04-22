@@ -32,7 +32,7 @@ vec_match_seq <- function(sequence, target){
   }
 
 
-  matches    <- purrr::map(target, equal_or_both_na, sequence)
+  matches    <- purrr::map(target, equal_or_na, sequence)
   iterations <- 1:(length(target) - length(sequence) + 1)
   matches    <- purrr::map(iterations, group_matches,
                            matches, sequence, target)

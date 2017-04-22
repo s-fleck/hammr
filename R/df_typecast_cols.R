@@ -5,6 +5,7 @@
 #'
 #' @param dat a data.frame
 #' @param conv a list of the form list(COLNAME = 'coltype')
+#' @param silent logical. muffle warnings
 #'
 #' @family data.frame tools
 #' @return a data.frame with typecasted columns

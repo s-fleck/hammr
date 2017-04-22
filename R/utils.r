@@ -1,8 +1,13 @@
+#' Check for equality but treat NAs like normal values
+#'
+#' @param x Any R object that can be handled by `==`
+#' @param y Any R object that can be handled by `==`
+#'
+#' @return a logical vector.
+#'
 #' @export
-equal_or_both_na <- function(a, b){
-  res <- a == b  | is.na(a) & is.na(b)
-  res[is.na(a) & !is.na(b)] <- FALSE
-  res
+equal_or_na <- function(x, y){
+  ((!is.na(x) & !is.na(y)) & (x == y)) | (is.na(x) &  is.na(y))
 }
 
 
@@ -186,23 +191,24 @@ all_unique <- function(x, empty_value = FALSE, silent = FALSE){
 
 
 
+#' Unique single element
+#'
+#' Returns `unique(x)` if all elements of `x`` are identical, throws an error if
+#' not.
+#'
+#' @inheritParams all_identical
+#'
+#' @md
+#' @family special equality checks
+#' @return A scalar of the same type as `x`
 #' @export
-as_readr_col <- function(dat){
-  UseMethod('as_readr_col')
-}
-
-#' @export
-as_readr_col.character <- function(dat){
-  switch(tolower(dat),
-         'character' = readr::col_character(),
-         'integer'   = readr::col_integer(),
-         'numeric'   = readr::col_number())
-}
-
-
-#' @export
-as_readr_col.list <- function(dat){
-  lapply(dat, as_readr_col)
+unique_single <- function(x){
+  res <- unique(x)
+  if(is.scalar(res)){
+    return(res)
+  } else {
+    stop('Not all elements of x are identical')
+  }
 }
 
 
@@ -246,25 +252,7 @@ capwords <- function(s, strict = FALSE) {
 
 
 
-#' Unique single element
-#'
-#' Returns `unique(x)` if all elements of `x`` are identical, throws an error if
-#' not.
-#'
-#' @inheritParams all_identical
-#'
-#' @md
-#' @family special equality checks
-#' @return A scalar of the same type as `x`
-#' @export
-unique_single <- function(x){
-  res <- unique(x)
-  if(is.scalar(res)){
-    return(res)
-  } else {
-    stop('Not all elements of x are identical')
-  }
-}
+
 
 
 
@@ -331,42 +319,6 @@ read_rda <- function(infile){
   }
   env[[nm]]
 }
-
-
-
-
-#' Launch explorer
-#'
-#' Launch windows explorer at target path `x`.
-#'
-#' @param x Path to a directory or file
-#'
-#' @export
-#' @rdname launchers
-#'
-explorer <- function(x){
-  dn <- dirname(x)
-  shell(sprintf("explorer %s", dn), intern = FALSE, wait = FALSE)
-}
-
-
-
-
-#' Launch excel
-#'
-#' Launch microsoft excel explorer at target path `x`.
-#'
-#' @param x Path to an excel file
-#' @param excel_path path to `EXCEL.EXE`
-#' @rdname launchers
-#'
-excel <- function(
-  x,
-  excel_path = '"C:/Program Files (x86)/Microsoft Office/Office14/EXCEL.EXE"'
-){
-  shell(paste(excel_path, x), intern = FALSE, wait = FALSE)
-}
-
 
 
 

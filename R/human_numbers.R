@@ -10,7 +10,9 @@
 #'
 #' @param x a numeric vector
 #' @param symbol a prefix symbol, useful for currencies
-#' @param pots A named numeric vector of rounding levels and associated shorthand
+#' @param pots A named numeric vector of rounding levels and associated
+#'   shorthand
+#' @param big_mark thousands-sepparator mark
 #'
 #' @return a character vector the same length as the input vector
 #'
