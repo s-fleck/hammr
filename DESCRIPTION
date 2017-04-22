@@ -17,10 +17,8 @@ Imports:
     dtplyr,
     purrr,
     lubridate,
-    readr,
     stringi
 Suggests:
-    lintr,
     testthat,
     bit64,
     forcats

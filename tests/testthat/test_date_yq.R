@@ -27,10 +27,16 @@ test_that("date_yq works as expected", {
 })
 
 
-test_that("as_date_yq works"){
+test_that("as_date_yq works", {
+  tdat <- c(-104, -11, 1, 12, 103, 1004, 20001, 212342)
+
   expect_error(as_date_yq(-1))
-  expect_silent(tdat <- as_date_yq(c(-104, -11, 1, 12, 103, 1004, 20001, 212342)))
-}
+  expect_silent(
+    tres <- as_date_yq(tdat)
+  )
+
+  expect_identical(as.integer(tres), as.integer(tdat))
+})
 
 
 
@@ -45,19 +51,13 @@ test_that("format.date_yq works as expected", {
 
   expect_identical(
     format(tdat, "short"),
-    c("0.1", "1.2", "10.3", "100.4", "2000.1", "21234.2")
+    c("-10.4", "-1.1", "0.1", "1.2", "10.3", "100.4", "2000.1", "21234.2")
   )
 
   expect_identical(
     format(tdat, "shorter"),
     c("-10.4", "-1.1", "0.1", "1.2", "10.3", "00.4", "00.1", "34.2")
   )
-
-
-  dput(format(tdat, 'short'))
-
-expect_identical(format(ttdat, 'short'), "2015.2")
-expect_identical(format(tr1, 'shorter'), "15.2")
 
 })
 

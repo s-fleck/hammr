@@ -45,12 +45,9 @@ as_date_yq <- function(x){
 #' @export
 as_date_yq.numeric <- function(x){
   assert_that(all(x > 0 | x <= -11L))
-
-  y <- abs(x) %/% 10 * sign(x)
-  q <- abs(x) %% 10
-  date_yq(y = y, q = q)
+  d <- yqs_matrix_from_numeric(x)
+  date_yq(y = d[, 1] * d[, 3], q = d[, 2])
 }
-
 
 
 
@@ -122,30 +119,21 @@ format.date_yq <- function(
 }
 
 format_date_yq_iso <- function(x){
-  d <- yqs_matrix_from_nueric(x)
-  sprintf("%s-Q%s", d[, 'y'] * d[, 's'], d[, 'q'])
+  d <- yqs_matrix_from_numeric(x)
+  sprintf("%s-Q%s", d[, 1] * d[, 3], d[, 2])
 }
 
 format_date_yq_short <- function(x){
-  d <- yqs_matrix_from_nueric(x)
-  sprintf("%s.%s", d[, 'y'] * d[, 's'], d[, 'q'])
+  d <- yqs_matrix_from_numeric(x)
+  sprintf("%s.%s", d[, 1] * d[, 3], d[, 2])
 }
 
 format_date_yq_shorter <- function(x){
-  d <- yqs_matrix_from_nueric(x)
-  y <- stringi::stri_sub(as.character(d[, 'y']), -2, -1)
-  y <- ifelse(d[, 's'] < 0, paste0('-', y), y)
-  sprintf("%s.%s", y, d[, 'q'])
+  d <- yqs_matrix_from_numeric(x)
+  y <- stringi::stri_sub(as.character(d[, 1]), -2, -1)
+  y <- ifelse(d[, 3] < 0, paste0('-', y), y)
+  sprintf("%s.%s", y, d[, 2])
 }
-
-yqs_matrix_from_nueric <- function(x){
-  matrix(
-    c(abs(x) %/% 10, q = abs(x) %% 10, s = sign(x)),
-    ncol = 3,
-    dimnames = list(NULL, c('y', 'q', 's'))
-  )
-}
-
 
 # Utils -------------------------------------------------------------------
 
@@ -171,3 +159,11 @@ format_yq <- function(x, format = 'iso'){
   format(res, format = format)
 }
 
+
+
+yqs_matrix_from_numeric <- function(x){
+  matrix(
+    c(abs(x) %/% 10, q = abs(x) %% 10, s = sign(x)),
+    ncol = 3
+  )
+}
