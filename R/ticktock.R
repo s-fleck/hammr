@@ -1,3 +1,6 @@
+ticktock_cache <-  new.env()
+
+
 #' Tick-Tock timer
 #'
 #' \tabular{ll}{ `tick()` \tab prints the current time and saves it to the
@@ -22,7 +25,8 @@
 #' # [1] "Tock: 2017-04-02 20:03:02 - Diff: 3.2 secs"
 #'
 tick = function() {
-  .tick <<- Sys.time()
+  .tick <- Sys.time()
+  assign('.tick', .tick,  envir = ticktock_cache)
   print(paste('Tick:', .tick))
   invisible(.tick)
 }
@@ -36,6 +40,7 @@ tick = function() {
 #'   difference to `.tick` (invisibly).
 #' @export
 tock = function() {
+  .tick <- get('.tick', envir=ticktock_cache)
   tock_time <- Sys.time()
   tock_diff <- difftime(tock_time, .tick)
 
