@@ -17,6 +17,7 @@ increment <- function(x, inc = 1){
 #' @export
 #' @rdname increment
 increment.date_yq <- function(x, inc){
+  x <- as.integer(x)
   quarters <- x %% 10 + inc %% 4
   q <- quarters %% 4
   y <- quarters %/%4 + inc %/% 4L + x %/% 10

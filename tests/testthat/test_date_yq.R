@@ -58,6 +58,15 @@ test_that("format.date_yq works as expected", {
     format(tdat, "shorter"),
     c("-10.4", "-1.1", "0.1", "1.2", "10.3", "00.4", "00.1", "34.2")
   )
+})
+
+
+test_that("as_date_yq arithmethics works", {
+  tdat <- as_date_yq(c(-104, -11, 1, 12, 103, 1004, 20001, 212342))
+
+  tdat - 1L
+
+
 
 })
 

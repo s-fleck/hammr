@@ -20,7 +20,7 @@ date_yq <- function(y, q) {
   s <- ifelse(sign(y) >= 0, 1L, -1L)
   res <- (as.integer(abs(y)) * 10L + as.integer(q)) * s
 
-  attr(res, 'class') <- c('date_yq', 'integer')
+  attr(res, 'class') <- c('date_yq')
   res
 }
 
@@ -134,6 +134,35 @@ format_date_yq_shorter <- function(x){
   y <- ifelse(d[, 3] < 0, paste0('-', y), y)
   sprintf("%s.%s", y, d[, 2])
 }
+
+`+.date_yq` <- function(x, y){
+  increment(as.integer(x), as.integer(y))
+}
+
+`-.date_yq` <- function(x, y){
+  increment(as.integer(x), as.integer(-y))
+}
+
+`*.date_yq` <- function(x, y){
+  stop('Operation not supported')
+}
+
+`/.date_yq` <- function(x, y){
+  stop('Operation not supported')
+}
+
+`^.date_yq` <- function(x, y){
+  stop('Operation not supported')
+}
+
+`%%.date_yq` <- function(x, y){
+  stop('Operation not supported')
+}
+
+`%/%.date_yq` <- function(x, y){
+  stop('Operation not supported')
+}
+
 
 # Utils -------------------------------------------------------------------
 
