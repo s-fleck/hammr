@@ -72,6 +72,7 @@ as_date_yq.Date <- function(x){
 #' @export
 #'
 as.Date.date_yq <- function(x, ...){
+  x <- as.integer(x)
   y <- x %/% 10
   m <- c(1, 4, 7, 10)[x %% 10]
   lubridate::make_date(y, m, 1L)
