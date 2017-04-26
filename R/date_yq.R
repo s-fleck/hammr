@@ -72,11 +72,52 @@ as_date_yq.Date <- function(x){
 #' @export
 #'
 as.Date.date_yq <- function(x, ...){
-  x <- as.integer(x)
-  y <- x %/% 10
-  m <- c(1, 4, 7, 10)[x %% 10]
+  y <- year(x)
+  m <- c(1, 4, 7, 10)[get_quarter(x)]
   lubridate::make_date(y, m, 1L)
 }
+
+is_date_yq <- function(x){
+  inherits(x, 'date_yq')
+}
+
+
+# accessors ---------------------------------------------------------------
+
+#' @export
+year.date_yq <- function(x){
+  as.integer(x) %/% 10
+}
+
+get_quarter <- function(x){
+  UseMethod('get_quarter')
+}
+
+#' @export
+get_quarter.date_yq <- function(x){
+  as.integer(x) %% 10
+}
+
+
+#' @export
+month.date_yq <- function(x){
+  c(1, 4, 7, 10)[get_quarter(x)]
+}
+
+
+quarter_first <- function(x){
+  UseMethod('quarter_first')
+}
+
+quarter_first.date_yq <- function(x){
+
+}
+
+quarter_last.date_yq <- function(y){
+
+}
+
+
 
 
 # Format ------------------------------------------------------------------
