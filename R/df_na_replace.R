@@ -14,7 +14,7 @@
 #' @export
 #'
 #' @export
-df_na_replace <- function(dat, replace = '', inf = FALSE){
+df_na_replace <- function(dat, replace, inf = FALSE, as_char = FALSE){
   UseMethod('df_na_replace')
 }
 
@@ -22,55 +22,55 @@ df_na_replace <- function(dat, replace = '', inf = FALSE){
 
 
 #' @export
-df_na_replace.data.frame <- function(dat, replace = '', inf = FALSE){
-  assert_that(is.flag(inf))
+df_na_replace.data.frame <- function(
+  dat,
+  replace,
+  inf = FALSE,
+  as_char = FALSE
+){
+  # Precodntions
+    assert_that(is.flag(inf))
 
-  res <- dat
 
-  if(!is.numeric(replace)){
-    res[] <- purrr::map_if(
-      dat,
-      function(x) any(is.na(x)),
-      function(x) as.character(x)
-    )
+  # Logic
+  if(as_char){
+    dat <- na_cols_to_character(dat)
   }
 
+    if(!inf){
+      dat[is.na(dat)] <- replace
+    } else {
+      dat[is.na(dat) | is.infinite(dat)] <- replace
+    }
 
-  res[is.na(dat)] <- replace
-
-  if(inf){
-    res[is.infinite(dat)] <- replace
-  }
-
-  return(res)
+  return(dat)
 }
 
 
 
 
 #' @export
-df_na_replace.data.table <- function(dat, replace = '', inf = FALSE){
+df_na_replace.data.table <- function(
+  dat,
+  replace,
+  inf = FALSE,
+  as_char = FALSE
+){
   assert_that(is.flag(inf))
   res <- data.table::copy(dat)
 
+  if(as_char){
+    res <- na_cols_to_character(res)
+  }
+
   if(!inf){
-    selector <- function(x) is.na(x) | is.nan(x)
+    selector <- function(x) which(is.na(x))
   } else {
-    selector <- function(x) is.na(x) | is.nan(x) | is.infinite(x)
+    selector <- function(x) which(is.na(x) | is.infinite(x))
   }
-
-
-  if(!is.numeric(replace)){
-    res[] <- purrr::map_if(
-      dat,
-      function(x) any(selector(x)),
-      function(x) as.character(x)
-    )
-  }
-
 
   for (j in seq_along(res)) {
-    data.table::set(res, which(selector(dat[[j]])), j, replace)
+    data.table::set(res, selector(dat[[j]]), j, replace)
   }
 
   return(res)
@@ -85,3 +85,22 @@ df_na_replace.data.table <- function(dat, replace = '', inf = FALSE){
 df_na0 <- function(dat, inf = FALSE){
   df_na_replace(dat, replace = 0, inf = inf)
 }
+
+#' @export
+#' @rdname df_na_replace
+df_na_blank <- function(dat, inf = FALSE){
+  df_na_replace(dat, replace = '', inf = inf, as_char = TRUE)
+}
+
+
+
+# utils -------------------------------------------------------------------
+
+na_cols_to_character <- function(dat){
+  dat[] <- purrr::map_if(dat, anyNA, function(x){
+    x[is.nan(x)] <- NA
+    as.character(x)
+  })
+  dat
+}
+
