@@ -14,6 +14,8 @@ increment <- function(x, inc = 1){
 }
 
 
+
+
 #' @export
 #' @rdname increment
 increment.date_yq <- function(x, inc){
