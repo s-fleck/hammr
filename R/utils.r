@@ -316,3 +316,10 @@ fct_recode2 <- function(f, rec){
 
   do.call(forcats::fct_recode, args)
 }
+
+
+
+#' @export
+basename_sans_ext <- function(x){
+  tools::file_path_sans_ext(basename(x))
+}

@@ -17,7 +17,8 @@ Imports:
     dtplyr,
     purrr,
     lubridate,
-    stringi
+    stringi,
+    tools
 Suggests:
     testthat,
     bit64,

@@ -89,6 +89,7 @@ year.date_yq <- function(x){
   as.integer(x) %/% 10
 }
 
+#' @export
 get_quarter <- function(x){
   UseMethod('get_quarter')
 }
@@ -96,6 +97,12 @@ get_quarter <- function(x){
 #' @export
 get_quarter.date_yq <- function(x){
   as.integer(x) %% 10
+}
+
+#' @export
+get_quarter.Date <- function(x){
+  .Deprecated()
+  lurbidate::quarter(x)
 }
 
 
@@ -109,14 +116,19 @@ quarter_first <- function(x){
   UseMethod('quarter_first')
 }
 
-quarter_first.date_yq <- function(x){
 
+#' @export
+first_day_yq <- function(y, q){
+  date_yq(y, q) %>%
+    as.Date()
 }
 
-quarter_last.date_yq <- function(y){
-
+#' @export
+last_day_yq <- function(y, q){
+  date_yq(y, q) %>%
+    as.Date() %>%
+    lubridate::ceiling_date('quarter') - 1L
 }
-
 
 
 
@@ -238,3 +250,6 @@ yqs_matrix_from_numeric <- function(x){
     ncol = 3
   )
 }
+
+
+
