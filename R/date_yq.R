@@ -1,4 +1,4 @@
-# Ctor --------------------------------------------------------------------
+# ctor --------------------------------------------------------------------
 
 #' A custom data type for Year-Quarter
 #'
@@ -112,27 +112,8 @@ month.date_yq <- function(x){
 }
 
 
-quarter_first <- function(x){
-  UseMethod('quarter_first')
-}
 
-
-#' @export
-first_day_yq <- function(y, q){
-  date_yq(y, q) %>%
-    as.Date()
-}
-
-#' @export
-last_day_yq <- function(y, q){
-  date_yq(y, q) %>%
-    as.Date() %>%
-    lubridate::ceiling_date('quarter') - 1L
-}
-
-
-
-# Format ------------------------------------------------------------------
+# format ------------------------------------------------------------------
 
 #' Format a date_yq object
 #'
@@ -189,12 +170,17 @@ format_date_yq_shorter <- function(x){
   sprintf("%s.%s", y, d[, 2])
 }
 
+
+# algebra -----------------------------------------------------------------
+
+
+
 `+.date_yq` <- function(x, y){
-  increment(as.integer(x), as.integer(y))
+  increment(x, as.integer(y))
 }
 
 `-.date_yq` <- function(x, y){
-  increment(as.integer(x), as.integer(-y))
+  increment(x, as.integer(-y))
 }
 
 `*.date_yq` <- function(x, y){
@@ -218,13 +204,15 @@ format_date_yq_shorter <- function(x){
 }
 
 
-# Utils -------------------------------------------------------------------
+# shortcuts ---------------------------------------------------------------
 
-#' Format Year-Quarter
+#' Convenience functions for formatted Year-Quarter output
 #'
-#' A wrapper around [as_date_yq()] and [format.date_yq()].
+#' A wrapper around [date_yq()] and [format.date_yq()].
 #'
 #' @param x Any class that can be handled by [as_date_yq()]
+#' @param y numeric. a year
+#' @param q numeric. a quarter (1-4)
 #' @inheritParams format.date_yq
 #'
 #' @return A character vector
@@ -233,23 +221,46 @@ format_date_yq_shorter <- function(x){
 #' @export
 #' @examples
 #'
-#' format_yq(20151)
-#' format_yq(20151, format = 'short')
-#' format_yq(20151, format = 'shorter')
+#' format_yq(2015, 1)
+#' format_as_yq(20151, format = 'short')
+#' format_as_yq(20151, format = 'shorter')
 #'
-format_yq <- function(x, format = 'iso'){
-  res <- as_date_yq(x)
-  format(res, format = format)
+format_yq <- function(y, q, format = 'iso'){
+  date_yq(y, q) %>%
+    format(res, format = format)
+}
+
+#' @rdname format_yq
+#' @export
+format_as_yq <- function(x, format = 'iso'){
+  as_date_yq(x) %>%
+    format(res, format = format)
 }
 
 
 
+#' @export
+first_day_yq <- function(y, q){
+  date_yq(y, q) %>%
+    as.Date()
+}
+
+#' @export
+last_day_yq <- function(y, q){
+  date_yq(y, q) %>%
+    as.Date() %>%
+    lubridate::ceiling_date('quarter') - 1L
+}
+
+
+
+
+# utils -------------------------------------------------------------------
+
 yqs_matrix_from_numeric <- function(x){
+  x <- unclass(x)
   matrix(
     c(abs(x) %/% 10, q = abs(x) %% 10, s = sign(x)),
     ncol = 3
   )
 }
-
-
-
