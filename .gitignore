@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.Rbuildignore
 bfg-1.12.13.jar
 cache
 *.pdf
