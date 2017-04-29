@@ -3,10 +3,10 @@
 #' Replaces all `NA`s and `NAN`s in a data.frame or data.table with `replace`.
 #'
 #' @param dat a data.frame or data.table
-#' @param replace value to replace `NAs` with. If `replace` is not `numeric`,
-#'   each column where a value will be replaced is automatically converted to
-#'   `character`.
-#' @param inf logical. if `TRUE`, `inf` values are treated like `NAs`
+#' @param as_char logical. if `TRUE`  each column where a value will be
+#'   replaced is automatically converted to `character` (useful when dealing
+#'   with factors).
+#' @inheritParams na_replace
 #'
 #' @return A data.frame with all `NA`s replaced by `replace`
 #' @md
