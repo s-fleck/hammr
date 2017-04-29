@@ -19,12 +19,19 @@ increment <- function(x, inc = 1){
 #' @export
 #' @rdname increment
 increment.date_yq <- function(x, inc){
-  x <- as.integer(x)
-  quarters <- x %% 10 + inc %% 4
-  q <- quarters %% 4
-  y <- quarters %/%4 + inc %/% 4L + x %/% 10
-  y[q == 0L] <- y[q == 0] - 1L
-  q[q == 0L] <- 4L
+  d <- yqs_matrix_from_numeric(x)
+  d[, 2] <- d[, 2] + inc
 
-  date_yq(y, q)
+  y_add <- d[, 2] %/% 4
+  q_new <- d[, 2] %% 4
+
+  sel <- q_new == 0
+  y_add[sel] <- y_add[sel] - 1L
+  q_new[sel] <- 4L
+
+  d[, 1] <- d[, 1] + y_add * d[, 3]
+  d[, 2] <- q_new
+
+
+  date_yq(d[, 1] * d[, 3], d[, 2])
 }

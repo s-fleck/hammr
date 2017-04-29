@@ -15,12 +15,12 @@ test_that("date_yq works as expected", {
 
   expect_identical(
     date_yq(0, 1),
-    structure(1L, class = c("date_yq", "integer"))
+    structure(1L, class = "date_yq")
   )
 
   expect_identical(
     date_yq(-1, 1),
-    structure(-11L, class = c("date_yq", "integer"))
+    structure(-11L, class = "date_yq")
   )
 
   expect_error(date_yq(0, -1))
@@ -62,11 +62,28 @@ test_that("format.date_yq works as expected", {
 
 
 test_that("as_date_yq arithmethics works", {
-  tdat <- as_date_yq(c(-104, -11, 1, 12, 103, 1004, 20001, 212342))
+  #* @testing increment.date_yq
+  tdat <- (as_date_yq(c(-11, -12, -13, -14, 1, 2, 3, 4)))
 
-  tdat - 1L
+  expect_identical(
+    tdat + 1,
+    as_date_yq(c(-12, -13, -14, 1, 2, 3, 4, 11))
+  )
 
+  expect_identical(
+    tdat + 5,
+    as_date_yq(c(2, 3, 4, 11, 12, 13, 14, 21))
+  )
 
+  expect_identical(
+    tdat - 1,
+    as_date_yq(c(-24, -11, -12, -13, -14, 1, 2, 3))
+  )
+
+  expect_identical(
+    tdat - 5,
+    as_date_yq(c(-34, -21, -22, -23, -24, -11, -12, -13))
+  )
 
 })
 
