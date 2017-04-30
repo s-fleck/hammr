@@ -214,44 +214,6 @@ unique_single <- function(x){
 
 
 
-#' Capitalize words
-#'
-#' Coppied from the documentation of [toupper()]
-#'
-#' @param s a character vector
-#' @param strict enforce lowercase characters after first (camelCase becomes Camelcase)
-#'
-#' @return a character vector with capitalized words
-#'
-#' @md
-#' @export
-#'
-#' @examples
-#'
-#' capwords('foo bar fizzBuzz')
-#' # [1] "Foo Bar FizzBuzz"
-#'
-#' capwords('foo bar fizzBuzz', strict = TRUE)
-#' # [1] "Foo Bar Fizzbuzz"
-#'
-capwords <- function(s, strict = FALSE) {
-  cap <- function(s){
-    s_upper <- toupper(substring(s, 1, 1))
-    s_lower <- substring(s, 2)
-    if(strict) s_lower <- tolower(s_lower)
-    paste(s_upper, s_lower, sep = "", collapse = " " )
-  }
-
-  sapply(
-    strsplit(s, split = " "),
-    cap,
-    USE.NAMES = !is.null(names(s))
-  )
-}
-
-
-
-
 #' Read first object of an rda file
 #'
 #' \url{http://stackoverflow.com/questions/5577221/how-can-i-load-an-object-into-a-variable-name-that-i-specify-from-an-r-data-file}

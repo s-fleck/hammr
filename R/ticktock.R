@@ -24,7 +24,7 @@ ticktock_cache <-  new.env()
 #' tock()
 #' # [1] "Tock: 2017-04-02 20:03:02 - Diff: 3.2 secs"
 #'
-tick = function() {
+tick <- function() {
   .tick <- Sys.time()
   assign('.tick', .tick,  envir = ticktock_cache)
   print(paste('Tick:', .tick))
@@ -39,8 +39,8 @@ tick = function() {
 #' @return `tock()` returns a [difftime()] object, containing the time
 #'   difference to `.tick` (invisibly).
 #' @export
-tock = function() {
-  .tick <- get('.tick', envir=ticktock_cache)
+tock <- function() {
+  .tick <- get('.tick', envir = ticktock_cache)
   tock_time <- Sys.time()
   tock_diff <- difftime(tock_time, .tick)
 
@@ -49,7 +49,7 @@ tock = function() {
     tock_time,
     format(
       tock_diff,
-      digits=2))
+      digits = 2))
     )
 
   invisible(tock_diff)

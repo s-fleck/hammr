@@ -1,64 +1,37 @@
-#' Check if object is of a certain class
-#'
-#' These functions are desinged to be used in combination with the assertthat
-#' pacakge
-#'
-#' is_class returns TRUE/FALSE. It comes with a on_failure function and
-#' is designed to be used in conjunction with the assertthat package.
-#' assert_class() and its infix version %assert_class% fail with an error message
+#' Assert that an object has a specifc class
 #'
 #' @param dat any R object
 #' @param class the class to be checked for
 #'
-#' @return is_class returns TRUE/FALSE, assert_class returns TRUE or fails with
-#'         an error message.
+#' @return either `TRUE` or raises an error
 #' @export
-#' @rdname is_class
-#'
+#' @seealso [assertthat::assert_that()]
+#' @md
+#' @rdname assert_class
 #' @examples
 #'
 #' x = data.frame()
-#' is_class(x, 'data.frame')
-is_class <- function(dat, class){
-  class %in% class(dat)
-}
-
-
-on_failure(is_class) <- function(call, env){
-  #print(call)
-  #class = eval(env$class)
-  class = env$class
-  paste("Requires an object of class", class, "as input")
-}
-
-
+#' assert_class(x, 'data.frame')
+#'
 #' @export
-#' @rdname is_class
+#' @rdname assert_class
 assert_class <- function(dat, class){
-  assert_that(is_class(dat = dat, class = class))
+  assert_that(inherits(dat, class))
 }
 
 
 #' @export
-#' @rdname is_class
+#' @rdname assert_class
 `%assert_class%` <- function(dat, class){
   assert_class(dat = dat, class = class)
 }
 
 
-#' @export
-#' @rdname is_class
-`%is_class%` <- function(dat, class){
-  warning('Deprecated. Please user %assert_class% instead.')
-  dat %assert_class% class
-}
 
 
-# is_col_classes ----
-
-#' Check for column classes
+#' Check if the columns of a data.frame
 #'
-#' Compares the column classes of a data.frame with
+#' Check if the columns of a data.frame are of predefined classes.
 #'
 #' @param dat a data.frame or list
 #' @param classes a list of column classes. Its names must match
@@ -107,9 +80,9 @@ assertthat::on_failure(is_col_classes) <- function(call, env){
   wrong   <- character()
 
   for(i in present){
-      col    = i
-      is     = class(dat[[i]])
-      should = classes[[i]]
+      col    <- i
+      is     <- class(dat[[i]])
+      should <- classes[[i]]
 
     if (any(is != should)){
       is_str     <- paste(is, collapse = ', ')
@@ -121,41 +94,16 @@ assertthat::on_failure(is_col_classes) <- function(call, env){
 
   missing <- paste(missing, collapse = ', ')
 
-  msg = character()
+  msg <- character()
 
   if(length(missing) > 0){
-    msg = paste0('Missing from dat: ', missing, '.\n')
+    msg <- paste0('Missing from dat: ', missing, '.\n')
   }
 
   if(length(wrong) > 0){
     wrong <- substr(wrong, 1, nchar(wrong) - 2)
-    msg = paste0(msg, 'Wrong classes: ', wrong)
+    msg <- paste0(msg, 'Wrong classes: ', wrong)
   }
 
   return(msg)
-}
-
-
-#' Check if any of the classes of the object match a certain string
-#'
-#' @param dat the object
-#' @param choices  the class to be checked for
-#'
-#' @return True if any of the object classes are the desired class
-#' @export
-#'
-#' @examples
-#'
-#' x = data.frame()
-#' class(x) <- c('data.frame', 'test')
-#' is_any_class(x, c('sometthing', 'test'))
-#'
-is_any_class <- function(dat, choices){
-  any(choices %in% class(dat))
-}
-
-
-on_failure(is_any_class) <- function(call, env){
-  choices = paste(eval(call$choices), collapse=", ")
-  paste("Input must be an object of any of the following classes:", choices)
 }

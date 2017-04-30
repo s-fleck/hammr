@@ -1,10 +1,11 @@
 #' Check if a value looks like integer
 #'
 #' @param x ...
-#' @param na_value What should NAs be treated es (should be TRUE, FALSE or NA)
-#' @param scalar allow only scalars (vectors of length 1)
+#' @param na_value What should NAs be treated es (should be `TRUE`, `FALSE` or `NA`)
+#' @param scalar allow only scalars (vectors of length `1`)
 #'
-#' @return TRUE / FALSE
+#' @md
+#' @return `TRUE` or `FALSE`
 #' @export
 looks_like_integer <- function(
   x,

@@ -1,4 +1,4 @@
-context('df_affix')
+context('df_sprintf')
 
 testdat <- data.frame(
   a = c(1, 2),
@@ -20,7 +20,6 @@ test_that("df_affix: prefix/postfix data frame values.", {
     stringsAsFactors = FALSE
   )
 
-  expect_identical(df_affix(testdat, 'p', 's'), r1)
+  expect_identical(df_sprintf(testdat, 'p%ss'), r1)
   expect_identical(df_parenthesis(testdat), r2)
-
 })

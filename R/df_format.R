@@ -58,18 +58,26 @@ df_formatC <- function(dat, ...){
 
 df_format_internal <- function(dat, ..., base_formatter = format){
   args <- list(...)
-  classes_present <- names(args)[names(args) %in% unlist(lapply(dat, class))] # The unlist is there to deal with columns with multiple classes (such as POSIX columns)
+
+  # The unlist is there to deal with columns with multiple classes
+  # (such as POSIX columns)
+  classes_present <- names(args)[names(args) %in% unlist(lapply(dat, class))]
 
   if(any(!names(args) %in% classes_present)){
     classes_missing <- setdiff(names(args), classes_present)
-    warning('Format defined for the following classes that are not present in dat: ', paste(classes_missing, collapse = ', '), '.')
+    warning(
+      'Format defined for the following classes that are not present in dat: ',
+      paste(classes_missing, collapse = ', '), '.'
+    )
   }
 
   res <- dat
 
   for(nm in classes_present){
     format_args <- as.list(args[[nm]])
-    formatter   <- function(.x) do.call(base_formatter, args = c(list(x = .x),  format_args))
+    formatter   <- function(.x){
+      do.call(base_formatter, args = c(list(x = .x),  format_args))
+    }
 
     res <- lapply_if_class(res, formatter, nm)
   }

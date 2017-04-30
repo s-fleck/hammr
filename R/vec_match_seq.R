@@ -36,6 +36,7 @@ vec_match_seq <- function(sequence, target){
 
 
 #' @rdname vec_match_seq
+#' @export
 vec_match_seq_lgl <- function(sequence, target){
   res  <- vec_match_seq_internal(sequence, target)
   to_fill <- seq.int((length(res) + 1L), length(target))

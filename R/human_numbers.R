@@ -66,7 +66,7 @@ human_numbers <- function(
       return(paste(prefix, y))
     }
 
-    # Format / Round
+    # Format and Round
     for(i in rev(seq_along(pots))){
       res <- rounder(abs(y) / pots[[i]])
 

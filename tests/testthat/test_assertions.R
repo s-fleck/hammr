@@ -11,7 +11,6 @@ tdat1 <- data.frame(
 test_that("Infix class checking workss.", {
   #* @testing %is_class%
   #* @testing %assert_class%
-  expect_warning('blah' %is_class% 'character')
   expect_silent('blah' %assert_class% 'character')
 })
 

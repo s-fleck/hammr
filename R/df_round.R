@@ -35,7 +35,7 @@ df_round <- function(dat, digits = 0){
 #' @md
 #' @rdname df_round
 #' @export
-df_signif<- function(dat, digits = 0){
+df_signif <- function(dat, digits = 0){
   assert_that(is.data.frame(dat))
   assert_that(is.number(digits))
 

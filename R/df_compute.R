@@ -200,10 +200,14 @@ df_pdiff <- function(
   percent = FALSE,
   ...
 ){
-  df_compute(dat1, dat2, fun = pdiff, coltypes = coltypes, percent = percent, ...)
+  df_compute(
+    dat1, dat2,
+    fun = pdiff,
+    coltypes = coltypes,
+    percent = percent,
+    ...
+  )
 }
-
-
 
 
 
@@ -225,7 +229,7 @@ df_add <- function(
 # Utils -------------------------------------------------------------------
 
 pdiff <- function(x, y, percent){
-  res <- (x-y)/(y)
+  res <- (x - y) / y
   if(percent) {
     return(res * 100)
   } else{

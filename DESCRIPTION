@@ -1,11 +1,13 @@
 Package: hammr
 Type: Package
-Title: Hammr - Various utility functions
-Version: 0.0.7
+Title: Hammr - general utility functions
+Version: 1.0.0
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
-Description: Personal utility functions package. Use at own risk. Generally
-    useful functions will eventually be migrated to their own package.
+Description: This package contains various utility functions and 
+  shortcuts that I use throughout my other packages. Some are useful in a 
+  general way (such as the df_* functions), other were designed for very 
+  specific tasks (such as vec_match_seq and date_yq). Use at your own risk.
 License: MIT + file LICENSE
 Imports:
     assertthat,
@@ -23,7 +25,9 @@ Suggests:
     testthat,
     bit64,
     forcats,
-    ggplot2
+    ggplot2,
+    testthis,
+    tatoo
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Encoding: UTF-8

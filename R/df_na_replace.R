@@ -103,4 +103,3 @@ na_cols_to_character <- function(dat){
   })
   dat
 }
-

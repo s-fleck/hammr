@@ -36,6 +36,10 @@ date_yq <- function(y, q) {
 #' @return a [date_yq] object
 #' @export
 #'
+#' @examples
+#'
+#' as_date_yq(20161)
+#'
 as_date_yq <- function(x){
   UseMethod('as_date_yq')
 }
@@ -84,15 +88,15 @@ is_date_yq <- function(x){
 
 # accessors ---------------------------------------------------------------
 
-#' Get years component of a date_yq.
+#' Get years component of a date_yq
 #'
 #' `year()` is there for consistency with [lubridate], `get_year()` is there
-#' for consistency with other `get_` functions in hammr. `year` should be
-#' prefered for consistency in function naming across packages.
+#' for consistency with other `get_` functions in \pkg{hammr}.
 #'
 #' @param x a [date_yq] object
 #' @family yq getters
 #'
+#' @md
 #' @export
 #' @aliases year
 #'
@@ -109,6 +113,7 @@ get_year <- function(x){
   UseMethod('get_year')
 }
 
+#' @export
 get_year.date_yq <- function(x){
   as.integer(x) %/% 10
 }
@@ -253,32 +258,56 @@ format_date_yq_shorter <- function(x){
 
 # algebra -----------------------------------------------------------------
 
-
-
+#' Date_yq arithmethic operations
+#'
+#' Currently only `+` and `-` are supported, all other basic arithmethic
+#' operations are disabled for date_yq objects.
+#'
+#' @param x a date_yq object
+#' @param y an integer
+#'
+#' @md
+#' @rdname date_yq_arithmetic
+#' @aliases date_yq_arithmetic
+#' @seealso [base::Arithmetic]
+#' @export
 `+.date_yq` <- function(x, y){
   increment(x, as.integer(y))
 }
 
+#' @rdname date_yq_arithmetic
+#' @export
 `-.date_yq` <- function(x, y){
   increment(x, as.integer(-y))
 }
 
+#' @rdname date_yq_arithmetic
+#' @export
 `*.date_yq` <- function(x, y){
   stop('Operation not supported')
 }
 
+#' @rdname date_yq_arithmetic
+#' @export
 `/.date_yq` <- function(x, y){
   stop('Operation not supported')
 }
 
+#' @rdname date_yq_arithmetic
+#' @export
 `^.date_yq` <- function(x, y){
   stop('Operation not supported')
 }
 
+#' @rdname date_yq_arithmetic
+#' @export
 `%%.date_yq` <- function(x, y){
   stop('Operation not supported')
 }
 
+
+#' @rdname date_yq_arithmetic
+#' @export
 `%/%.date_yq` <- function(x, y){
   stop('Operation not supported')
 }
@@ -384,13 +413,6 @@ first_day_of_quarter.default <- function(x){
   lubridate::floor_date(as.Date(x), 'quarter')
 }
 
-
-
-#' @rdname day_of_quarter
-#' @export
-first_day_of_quarter.numeric <- function(x){
-  lubridate::floor_date(as.Date(x), 'quarter')
-}
 
 
 

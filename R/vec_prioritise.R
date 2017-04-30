@@ -1,7 +1,7 @@
 #' Reorder character vector or levels of a factor based on priorities
 #'
-#' Shoves elements of a character or factor vector to the front.
-#' Usefull for reordering factor levels for plotting. Issues
+#' Shoves elements of a character or factor vector to the front or back.
+#' Usefull for reordering factor levels for plotting. Throws
 #' a warning if any elements of high or low are not present in x
 #'
 #' @param x a character of factor vector
@@ -37,8 +37,16 @@ prioritize.character <- function(x, high = NULL, low = NULL){
   low_not_x  <- low[!low %in% x]
   high_not_x <- high[!high %in% x]
 
-  if(!all(low  %in% x)) warning('Not all "low" are present in "x": ', paste(low_not_x, collapse = ' '))
-  if(!all(high %in% x)) warning('Not all "high" are present in "x": ', paste(high_not_x, collapse = ' '))
+  if(!all(low  %in% x)) {
+    warning(
+      'Not all "low" are present in "x": ',
+      paste(low_not_x, collapse = ' '))
+  }
+  if(!all(high %in% x)){
+    warning(
+      'Not all "high" are present in "x": ',
+      paste(high_not_x, collapse = ' '))
+  }
 
   low      <- low[low %in% x]
   high     <- high[high %in% x]

@@ -25,7 +25,7 @@ df_drop_empty_cols <- function(dat){
 df_drop_empty_cols.data.table <- function(dat){
   dat[,
     which(vapply(dat, FUN.VALUE = logical(1), identify_empty_cols)),
-    with=FALSE
+    with = FALSE
   ]
 }
 
