@@ -1,6 +1,6 @@
 #' Split up a vector into equal sized chunks
 #'
-#' \url{https://gist.github.com/sckott/4632735}
+#' From: \url{https://gist.github.com/sckott/4632735}
 #'
 #' @param x An input vector.
 #' @param interval The length of the resulting vectors.
