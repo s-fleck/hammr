@@ -6,8 +6,8 @@
 #' @import assertthat dtplyr
 #' @importFrom magrittr %>%
 #' @importFrom data.table data.table as.data.table ":="
-#' @importFrom lubridate year month
-#' @export year month
+#' @importFrom lubridate year quarter month
+#' @export year quarter month
 #'
 #' @docType package
 #' @name hammr
