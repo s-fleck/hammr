@@ -50,20 +50,12 @@ condition <- function(subclass, message, call = sys.call(-1), ...) {
 
 
 
+
+#' @export
+#' @rdname condition
 error <- function(subclass, message, call = sys.call(-1), ...) {
   structure(
     class = c(subclass, "error", 'condition'),
     list(message = message, call = call, ...)
-  )
-}
-
-
-
-fun_arg_error <- function(text){
-  msg <- paste('Function argument error:', text)
-
-  condition(
-    c('fun_arg_error', 'error'),
-    message = msg
   )
 }
