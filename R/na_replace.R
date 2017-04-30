@@ -3,6 +3,7 @@
 #' @param x An input vector.
 #' @param replace value to replace `NAs` with.
 #' @param inf logical. if `TRUE`, `inf` values are treated like `NAs`
+#' @param ... passed on to methods
 #'
 #' @md
 #' @family vector tools
@@ -15,7 +16,7 @@ na_replace <- function(x, replace, inf = FALSE, ...){
 }
 
 
-
+#' @export
 na_replace.default <- function(x, replace, inf = FALSE, ...){
   if(!inf){
     x[is.na(x)] <- replace
@@ -26,7 +27,7 @@ na_replace.default <- function(x, replace, inf = FALSE, ...){
 }
 
 
-
+#' @export
 na_replace.data.frame <- function(x, replace, inf, ...){
   df_na_replace(x, replace, inf, ...)
 }

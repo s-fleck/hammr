@@ -319,6 +319,10 @@ fct_recode2 <- function(f, rec){
 
 
 
+#' Get filename (without file extension) from path
+#'
+#' @param x a character vector of file paths
+#'
 #' @export
 basename_sans_ext <- function(x){
   tools::file_path_sans_ext(basename(x))
