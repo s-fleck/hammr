@@ -84,12 +84,63 @@ is_date_yq <- function(x){
 
 # accessors ---------------------------------------------------------------
 
+#' Get years component of a date_yq.
+#'
+#' `year()` is there for consistency with [lubridate], `get_year()` is there
+#' for consistency with other `get_` functions in hammr. `year` should be
+#' prefered for consistency in function naming across packages.
+#'
+#' @param x a [date_yq] object
+#' @family yq getters
+#'
 #' @export
-year.date_yq <- function(x){
+#' @aliases year
+#'
+#' @examples
+#'
+#' \dontrun{
+#' x <- date_yq(2016, 2)
+#'
+#' year(x)
+#' get_year(x)
+#' }
+#'
+get_year <- function(x){
+  UseMethod('get_year')
+}
+
+get_year.date_yq <- function(x){
   as.integer(x) %/% 10
 }
 
+
 #' @export
+#' @rdname get_year
+year.date_yq <- function(x){
+  get_year(x)
+}
+
+#' Get quarter component of a date_yq.
+#'
+#' `get_quarter()` extracts the quarter of a [date_yq] object.
+#' [lubridate::quarter()] also works, because \pkg{hammr} exports a method for
+#' [lubridate::month()]. This will have more overhead than using
+#' `get_quarter()`, but should generally be prefered for consistency in
+#' function naming across packages.
+#'
+#' @inheritParams lubridate::year
+#' @seealso [lubridate::quarter()]
+#' @aliases quarter
+#' @family yq getters
+#' @export
+#'
+#' @examples
+#'
+#' x <- date_yq(2016, 2)
+#'
+#' quarter(x)
+#' get_quarter(x)
+#'
 get_quarter <- function(x){
   UseMethod('get_quarter')
 }
@@ -99,17 +150,46 @@ get_quarter.date_yq <- function(x){
   as.integer(x) %% 10
 }
 
+
+#' Get month component of a date_yq
+#'
+#' `get_month()` extracts the month of a date_yq object.
+#' A method for [lubridate::month()] is also exported. This will have
+#' slightly more overhead than using `get_month()`, but should generally be
+#' prefered for consistency in function naming across packages.
+#'
+#' @param x a [date_yq] object.
+#' @inheritParams lubridate::month
+#' @rdname get_month
+#' @aliases month
+#' @seealso [lubridate::month()]
+#' @family yq getters
 #' @export
-get_quarter.Date <- function(x){
-  .Deprecated()
-  lurbidate::quarter(x)
+#'
+#' @examples
+#'
+#' x <- date_yq(2016, 2)
+#'
+#' month(x)
+#' month(x, label = TRUE)
+#' get_month(x)
+#'
+get_month <- function(x){
+  UseMethod('get_month')
 }
 
-
 #' @export
-month.date_yq <- function(x){
+get_month.date_yq <- function(x){
   c(1, 4, 7, 10)[get_quarter(x)]
 }
+
+
+#' @export
+#' @rdname get_month
+month.date_yq <- function(x, label = FALSE, abbr = TRUE){
+  lubridate::month(get_month(x), label = label, abbr = abbr)
+}
+
 
 
 
@@ -238,18 +318,46 @@ format_as_yq <- function(x, format = 'iso'){
 }
 
 
-
+#' Get first / last day of a quarter
+#'
+#' @param x Anything that can be coerced to a date with [base::as.Date()]
+#'
+#' @return a [Date]
+#'
+#' @rdname day_of_quarter
+#' @md
 #' @export
-first_day_yq <- function(y, q){
-  date_yq(y, q) %>%
-    as.Date()
+#' @examples
+#'
+#' first_day_of_quarter('2016-06-04')
+#' last_day_of_quarter('2016-06-04')
+#'
+first_day_of_quarter <- function(x){
+  UseMethod('first_day_of_quarter')
 }
 
+
+
+#' @rdname day_of_quarter
 #' @export
-last_day_yq <- function(y, q){
-  date_yq(y, q) %>%
-    as.Date() %>%
-    lubridate::ceiling_date('quarter') - 1L
+first_day_of_quarter.default <- function(x){
+  lubridate::floor_date(as.Date(x), 'quarter')
+}
+
+
+
+#' @rdname day_of_quarter
+#' @export
+last_day_of_quarter <- function(x){
+  UseMethod('last_day_of_quarter')
+}
+
+
+
+#' @rdname day_of_quarter
+#' @export
+last_day_of_quarter.default <- function(x){
+  lubridate::ceiling_date(as.Date(x), 'quarter') - 1L
 }
 
 
