@@ -286,36 +286,76 @@ format_date_yq_shorter <- function(x){
 
 # shortcuts ---------------------------------------------------------------
 
-#' Convenience functions for formatted Year-Quarter output
+#' Conveniently produce formatted Year-Quarter strings
 #'
-#' A wrapper around [date_yq()] and [format.date_yq()].
+#' @param x,q Two integer (vectors). `q` is optional and the interpretation of
+#'   `x` will depend on whether `q` is supplied or not:
+#'   * if only `x` is supplied, `x` will be passed to [as_date_yq()]
+#'     (e.g. `x = 20161` means first quarter of 2016)
+#'   * if `x` and `q` are supplied, `x` is interpreted as year and `q` as
+#'     quarter.
 #'
-#' @param x Any class that can be handled by [as_date_yq()]
-#' @param y numeric. a year
-#' @param q numeric. a quarter (1-4)
-#' @inheritParams format.date_yq
-#'
-#' @return A character vector
+#' @inherit format.date_yq
 #'
 #' @md
+#' @family yq convenience functions
+#' @seealso [format.date_yq()]
 #' @export
 #' @examples
 #'
 #' format_yq(2015, 1)
-#' format_as_yq(20151, format = 'short')
-#' format_as_yq(20151, format = 'shorter')
+#' format_yq(20151, format = 'short')
+#' format_yq(20151, format = 'shorter')
 #'
-format_yq <- function(y, q, format = 'iso'){
-  date_yq(y, q) %>%
-    format(res, format = format)
+format_yq <- function(x, q = NULL, format = 'iso'){
+  if(is.null(q)){
+    d <- as_date_yq(x)
+  } else {
+    d <- date_yq(x, q)
+  }
+
+  format(d, format = format)
 }
 
-#' @rdname format_yq
+
+#' Conveniently get first/last day of quarter from numbers
+#'
+#' @inheritParams format_yq
+#' @inherit first_day_of_quarter
+#'
+#' @family yq convenience functions
+#' @seealso [first_day_of_quarter()]
 #' @export
-format_as_yq <- function(x, format = 'iso'){
-  as_date_yq(x) %>%
-    format(res, format = format)
+#' @md
+#'
+#' @examples
+#'
+#' first_day_yq(2016, 1)
+#' first_day_yq(20161)
+#'
+first_day_yq <- function(x, q = NULL){
+  if(is.null(q)){
+    d <- as_date_yq(x)
+  } else {
+    d <- date_yq(x, q)
+  }
+
+  first_day_of_quarter(d)
 }
+
+#' @rdname first_day_yq
+#' @export
+last_day_yq <- function(x, q = NULL){
+  if(is.null(q)){
+    d <- as_date_yq(x)
+  } else {
+    d <- date_yq(x, q)
+  }
+
+  last_day_of_quarter(d)
+}
+
+
 
 
 #' Get first / last day of a quarter
@@ -341,6 +381,14 @@ first_day_of_quarter <- function(x){
 #' @rdname day_of_quarter
 #' @export
 first_day_of_quarter.default <- function(x){
+  lubridate::floor_date(as.Date(x), 'quarter')
+}
+
+
+
+#' @rdname day_of_quarter
+#' @export
+first_day_of_quarter.numeric <- function(x){
   lubridate::floor_date(as.Date(x), 'quarter')
 }
 
