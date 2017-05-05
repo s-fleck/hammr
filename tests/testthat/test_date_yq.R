@@ -1,8 +1,11 @@
 context("date_yq")
 
 
-test_that("date_yq works as expected", {
+test_that("date_yq ctor works as expected", {
   expect_silent(tr1 <- date_yq(2015, 2))
+  expect_true(is.na(date_yq(2015, NA)))
+  expect_true(is.na(date_yq(NA, 4)))
+  expect_true(is.na(date_yq(NA, NA)))
 
   expect_identical(as.Date(tr1), as.Date('2015-04-01'))
   expect_identical(as.Date(tr1), as.Date('2015-04-01'))
@@ -24,6 +27,9 @@ test_that("date_yq works as expected", {
   )
 
   expect_error(date_yq(0, -1))
+
+
+
 })
 
 

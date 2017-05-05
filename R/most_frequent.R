@@ -8,10 +8,15 @@
 #' @md
 #' @export
 most_frequent <- function(x, n = 1L){
-  if(n > length(unique(x))){
+  if(n == 1L){
+    # faster
+    ux <- unique(x)
+    return(ux[which.max(tabulate(match(x, ux)))])
+  } else if(n > length(unique(x))) {
     n <- length(unique(x))
     warning('n is more than the count of unique values of x.')
   }
+
   res <- names(sort(table(x), decreasing = TRUE)[seq_len(n)])
   if(class(x) == 'numeric') res <- as.numeric(res)
   if(class(x) == 'integer') res <- as.integer(res)
@@ -19,3 +24,6 @@ most_frequent <- function(x, n = 1L){
 
   return(res)
 }
+
+
+
