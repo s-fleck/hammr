@@ -1,29 +1,27 @@
 #' Get the n most frequent values of a vector
 #'
+#' Warning: does not behave in a defined way if several values with the same
+#' frequency occur in `x`. If you are looking for a true implementation of the
+#' statistical mode, pleasre refer to the [modeest] package.
+#'
 #' @param x A vector
 #' @param n number of most frequent elements to get
 #'
 #' @return a character vector of the `n` most frequent elements
-#'
 #' @md
+#'
 #' @export
-most_frequent <- function(x, n = 1L){
-  if(n == 1L){
-    # faster
-    ux <- unique(x)
-    return(ux[which.max(tabulate(match(x, ux)))])
-  } else if(n > length(unique(x))) {
-    n <- length(unique(x))
-    warning('n is more than the count of unique values of x.')
+most_frequent <- function(x, n = 1L, na.rm = FALSE){
+  if(na.rm){
+    x <- x[!is.na(x)]
   }
 
-  res <- names(sort(table(x), decreasing = TRUE)[seq_len(n)])
-  if(class(x) == 'numeric') res <- as.numeric(res)
-  if(class(x) == 'integer') res <- as.integer(res)
-  if(class(x) == 'logical') res <- as.logical(res)
+  ux    <- unique(x)
+  freqs <- tabulate(match(x, ux))
 
-  return(res)
+  if(n == 1L){
+    return(ux[which.max(freqs)])
+  } else {
+    return(ux[order(freqs, decreasing = TRUE, method = 'radix')][seq.int(n)])
+  }
 }
-
-
-

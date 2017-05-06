@@ -1,4 +1,4 @@
-context('all_identical')
+context('all_are_identical')
 
 testdat <- data.frame(
   a = factor(c(6,5,3,4,5)),
@@ -19,13 +19,13 @@ testdat <- data.frame(
   stringsAsFactors = FALSE
 )
 
-test_that("all_identical works.", {
+test_that("all_are_identical works.", {
   res <- df_trimws(testdat)
 
-  expect_false(all_identical(testdat$a))
-  expect_false(all_identical(testdat$b))
-  expect_false(all_identical(testdat$c))
-  expect_false(all_identical(testdat$d))
-  expect_true(all_identical(testdat$e))
-  expect_true(all_identical(testdat$f))
+  expect_false(all_are_identical(testdat$a))
+  expect_false(all_are_identical(testdat$b))
+  expect_false(all_are_identical(testdat$c))
+  expect_false(all_are_identical(testdat$d))
+  expect_true(all_are_identical(testdat$e))
+  expect_true(all_are_identical(testdat$f))
 })

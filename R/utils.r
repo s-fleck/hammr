@@ -106,10 +106,10 @@ all_with_warning <- function(
 #'
 #' @examples
 #'
-#' all_identical(c(1,2,3))
-#' all_identical(c(1,1,1))
+#' all_are_identical(c(1,2,3))
+#' all_are_identical(c(1,1,1))
 #'
-all_identical <- function(x, empty_value = FALSE) {
+all_are_identical <- function(x, empty_value = FALSE) {
   assert_that(length(empty_value) <= 1)
 
   # Check inputs
@@ -139,7 +139,7 @@ all_identical <- function(x, empty_value = FALSE) {
 
 #' Test if all elements of a vector are unique
 #'
-#' @inheritParams all_identical
+#' @inheritParams all_are_identical
 #' @param silent logical. Suppress Warnings
 #'
 #' @return TRUE/FALSE
@@ -150,10 +150,10 @@ all_identical <- function(x, empty_value = FALSE) {
 #'
 #' @examples
 #'
-#' all_identical(c(1,2,3))
-#' all_identical(c(1,1,1))
+#' all_are_identical(c(1,2,3))
+#' all_are_identical(c(1,1,1))
 #'
-all_unique <- function(x, empty_value = FALSE, silent = FALSE){
+all_are_distinct <- function(x, empty_value = FALSE, silent = FALSE){
   assert_that(length(empty_value) <= 1)
   assert_that(is.flag(silent))
 
@@ -196,7 +196,7 @@ all_unique <- function(x, empty_value = FALSE, silent = FALSE){
 #' Returns `unique(x)` if all elements of `x`` are identical, throws an error if
 #' not.
 #'
-#' @inheritParams all_identical
+#' @inheritParams all_are_identical
 #'
 #' @md
 #' @family special equality checks

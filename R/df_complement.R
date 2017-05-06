@@ -18,6 +18,7 @@
 #'
 #' @family data.frame tools
 #' @export
+#' @md
 #'
 #' @examples
 #'
@@ -75,13 +76,13 @@ df_complement <- function(
   fill = NA
 ){
   # Pre-conditions
-    assert_that(hammr::all_unique(names(dat), silent = TRUE))
-    assert_that(hammr::all_unique(names(complement), silent = TRUE))
+    assert_that(hammr::all_are_distinct(names(dat), silent = TRUE))
+    assert_that(hammr::all_are_distinct(names(complement), silent = TRUE))
 
     assert_that(is.list(complement))
     assert_that(all(names(complement) %in% names(dat)))
 
-    assert_that(suppressWarnings(hammr::all_identical(
+    assert_that(suppressWarnings(hammr::all_are_identical(
       lapply(complement, length))
     ))
 
@@ -134,12 +135,12 @@ df_complement <- function(
 
 
 
-#' Complement a data.frame based on a different data.frame
+#' Complement a data.frame based on another data.frame
 #'
 #' @param df1 a data.frame
 #' @param df2 a data.frame
 #' @param complement_cols columns to base the complementation on
-#' @param fill value to fill newly created rows with
+#' @param fill value to fill newly created rows and columns with
 #'
 #' @export
 df_complement2 <- function(
@@ -149,11 +150,11 @@ df_complement2 <- function(
   fill = NA
 ){
   # Pre-conditions
-    assert_that(hammr::all_unique(names(df1), silent = TRUE))
-    assert_that(hammr::all_unique(names(df2), silent = TRUE))
+    assert_that(hammr::all_are_distinct(names(df1), silent = TRUE))
+    assert_that(hammr::all_are_distinct(names(df2), silent = TRUE))
     assert_that(
       is.character(complement_cols) &&
-      all_unique(complement_cols, silent = TRUE)   &&
+      all_are_distinct(complement_cols, silent = TRUE)   &&
       length(complement_cols) > 0
     )
 

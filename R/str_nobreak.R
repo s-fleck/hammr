@@ -3,7 +3,8 @@
 #' @param x a character vector.
 #' @param replace_linebreak a scalar character to replace linebreaks with
 #'
-#' @return a character vector without linebreaks or multiple spaces
+#' @return a character vector with linebreaks and multiple consecutive spaces
+#'   removed
 #' @export
 #'
 #' @md

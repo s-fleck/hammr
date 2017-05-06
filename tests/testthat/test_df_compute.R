@@ -68,7 +68,6 @@ test_that("df_compute works", {
 })
 
 
-context("df_compute with id_vars")
 
 test_that("df_compute with id_vars", {
   dat1 <- data.frame(
@@ -102,6 +101,7 @@ test_that("df_compute with id_vars", {
     dat1,
     dat2,
     id_vars = c('a', 'a2'),
+    coltypes = 'numeric',
     fun = `-`
   )
 

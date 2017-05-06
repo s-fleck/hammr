@@ -1,7 +1,7 @@
 #' Lapply if class
 #'
-#' Simple wrapper for [lapply()], that just applies `FUN` to elements
-#' of a specified class.
+#' A wrapper for [lapply()], that applies `FUN` only to elements that
+#' inherit from one or several specified classes.
 #'
 #' @param X a vector (atomic or list) or an [expression] object. Other objects
 #'  (including classed objects) will be coerced by [base::as.list()].

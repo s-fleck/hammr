@@ -1,16 +1,18 @@
 #' Check if an object is valid
 #'
-#' `is_valid()` is a gernic used throughout my packages to verify whether an
-#' S3 objects matches certain criteria. `assert_valid()` is a wrapper for
-#' `is_valid()` that raises an error and outputs an informative error message
-#' if those criteria are violated.
+#' `is_valid()` is a generic designed for packet developers. It in itself does
+#' nothing, you have to write your own methods for it. `assert_valid()` is a
+#' wrapper for `is_valid()` that raises an error and outputs an informative
+#' error message if those criteria are violated.
 #'
 #' @param x an R object. See `methods(is_valid)`.
 #' @param ... passed on to methods.
 #'
 #' @return `logical`; whether this object meets pre-defined validity conditions.
 #'   An object returned by `is_valid()` may have an `errors` attribute that is
-#'   a character vector containing all violations of the validity criteria.
+#'   a character vector containing all violations of the validity criteria. If
+#'   such an `errors` attribute exists it is used by `assert_valid` to construct
+#'   an error message.
 #'
 #' @md
 #' @seealso [as_validation()]
@@ -43,9 +45,10 @@ assert_valid <- function(x, ...){
 #' Helper for is_valid output
 #'
 #' This is a helper for construction `is_valid` methods. It takes a list of
-#' logical values, checks if all are true, and attaches an `error` attribute
-#' to the resulting logical value. That error attriute is used by
-#' [assert_valid()] to construct informative error messages.
+#' logical values, checks if all are true, and attaches the name of the `FALSE`
+#' elements as an `error` attribute to the resulting logical value. That error
+#' attribute is in turn used by [assert_valid()] to construct informative error
+#' messages.
 #'
 #' @param x A named list of logical values.
 #'

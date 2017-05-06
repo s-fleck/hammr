@@ -34,11 +34,13 @@ assert_class <- function(dat, class){
 #' Check if the columns of a data.frame are of predefined classes.
 #'
 #' @param dat a data.frame or list
-#' @param classes a list of column classes. Its names must match
-#'        the names of dat exactly (see example)
-#' @param method if \code{all}, ensure that all columns named in \code{classes} are present in \code{dat},
-#'         if \code{any}, ensure that any of the  columns named in \code{classes} are present in \code{dat},
-#'         if \code{identical}, ensure that the names of dat and classes are identical
+#' @param classes a named list of column classes. Its names must match the names
+#'   of dat
+#' @param method if \code{all}, ensure that all columns named in \code{classes}
+#'   are present in \code{dat}, if \code{any}, ensure that any of the  columns
+#'   named in \code{classes} are present in \code{dat}, if \code{identical},
+#'   ensure that the names of dat and classes are identical (and in the same
+#'   order)
 #' @export
 is_col_classes <- function(dat, classes, method = 'identical'){
   classes %assert_class% 'list'
@@ -69,6 +71,8 @@ is_col_classes <- function(dat, classes, method = 'identical'){
 
   all_with_warning(res)
 }
+
+
 
 
 assertthat::on_failure(is_col_classes) <- function(call, env){

@@ -14,7 +14,7 @@
 #'   `dat2` whose type matches `coltypes` as first and second argument. The
 #'   result of this function must be a vector of length `nrow(dat1) ==
 #'   nrow(dat2)`.
-#' @param coltypes types of the columns of which to apply fun
+#' @param coltypes types of the columns of which to apply fun.
 #' @param id_vars A vector of colnames. If provided, ensures that the rows of
 #'   both `dat1` and `dat2` are in the correct order. The columns in `id_vars`
 #'   cannot contain duplicated values.#'
@@ -83,7 +83,7 @@ df_compute.data.table <- function(
   dat1,
   dat2,
   fun,
-  coltypes = 'numeric',
+  coltypes = c('integer', 'numeric'),
   id_vars = NULL,
   ...
 ){
@@ -109,7 +109,7 @@ df_compute.data.frame <- function(
   dat1,
   dat2,
   fun,
-  coltypes = 'numeric',
+  coltypes = c('integer', 'numeric'),
   id_vars = NULL,
   ...
 ){
@@ -152,8 +152,8 @@ assert_valid_id_vars <- function(dat1, dat2, id_vars){
 
   for(var in id_vars){
     assert_that(
-      all_unique(dat1[[var]]) &&
-      all_unique(dat2[[var]])
+      all_are_distinct(dat1[[var]]) &&
+      all_are_distinct(dat2[[var]])
     )
   }
 

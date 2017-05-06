@@ -1,6 +1,7 @@
 #' Print code to recreate a data.frame
 #'
-#' Usefull for creating examples, somewhat cleaner output than dput
+#' Usefull for creating data.frames in code examples, somewhat cleaner output
+#' than dput
 #'
 #' @param factors
 #'   `"full"`: preserve all factor levels, but longest output string,

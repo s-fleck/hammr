@@ -68,32 +68,33 @@ test_that("df_typecast_cols: typecasting by name works.", {
   expect_identical(res$f, factor(testdat$f))
   expect_identical(res$g, c(TRUE, TRUE, TRUE, FALSE, FALSE))
   expect_identical(res$h, c(3L, 4L, 5L, 5L, 5L))
-  expect_identical(res$i, c("2015-01-01", "2015-01-05", "2015-05-04", "2015-12-01", "2015-04-13"))
+  expect_identical(
+    res$i,
+    c("2015-01-01", "2015-01-05", "2015-05-04", "2015-12-01", "2015-04-13")
+  )
 
   tdat <- data.frame(
-    a = c(NA, NA, "-1", "9999", "one", "6", NA, NA, "3", "1", "2", "1", "0", NA, NA, NA, NA, NA, NA, NA)
+    a = c(
+      NA, NA, "-1", "9999", "one", "6", NA, NA, "3", "1", "2", "1", "0", NA,
+      NA, NA, NA, NA, NA, NA
+    )
   )
 
   conv = list(a = 'integer')
   expect_warning(res <- df_typecast_cols(tdat, conv = conv),
                  'NAs introduced by coercion')
 
-  expect_identical(res,
-                   data.frame(a = as.integer(c(NA, NA, -1L, 9999L, NA, 6L, NA,
-                                               NA, 3L, 1L, 2L, 1L, 0L, NA, NA,
-                                               NA, NA, NA, NA, NA))))
+  expect_identical(
+    res,
+    data.frame(
+      a = as.integer(c(
+        NA, NA, -1L, 9999L, NA, 6L, NA,
+        NA, 3L, 1L, 2L, 1L, 0L, NA, NA,
+        NA, NA, NA, NA, NA))
+  ))
 
 
   conv = list(a = 'character', b = 'numeric', c = 'integer')
   expect_warning(res <- df_typecast_cols(tdat, conv = conv),
                  'Not all columns defined in conv are present in')
 })
-
-
-test_that('Custom type conversion functions work', {
-  y <- factor('99')
-
-  expect_identical(as.integer2(y), 99L)
-  expect_identical(as.integer642(y), bit64::as.integer64(99L))
-})
-

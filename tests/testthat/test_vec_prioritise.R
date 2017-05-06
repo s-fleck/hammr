@@ -1,4 +1,4 @@
-context('prioritise')
+context('vec_prioritise')
 
 testdat <- data.frame(
   a = factor(c(6,5,3,4,5)),
@@ -20,13 +20,13 @@ testdat <- data.frame(
 )
 
 
-test_that("prioritize: string prioritizing works.", {
+test_that("vec_prioritize: string prioritizing works.", {
   res <- list()
 
-  expect_warning(prioritize(as.character(testdat$a), 'blubb'))
-  expect_warning(res$a  <- prioritize(as.character(testdat$a), 'blubb'))
-  expect_warning(res$a2 <- prioritize(as.character(testdat$a), 'blubb'))
-  res$b  <- prioritise(as.character(testdat$b), high = c('four', 'three'), low = c('one', 'two'))
+  expect_warning(vec_prioritize(as.character(testdat$a), 'blubb'))
+  expect_warning(res$a  <- vec_prioritize(as.character(testdat$a), 'blubb'))
+  expect_warning(res$a2 <- vec_prioritize(as.character(testdat$a), 'blubb'))
+  res$b  <- vec_prioritise(as.character(testdat$b), high = c('four', 'three'), low = c('one', 'two'))
 
   expect_identical(res$a, as.character(testdat$a))
   expect_identical(res$a, as.character(res$a2))
@@ -34,12 +34,12 @@ test_that("prioritize: string prioritizing works.", {
 })
 
 
-test_that("prioritize: factor prioritizing works.", {
+test_that("vec_prioritize: factor prioritizing works.", {
   res <- list()
 
-  res$b   <- prioritize(testdat$b, high = c('four', 'three'), low = c('one', 'two'))
+  res$b   <- vec_prioritize(testdat$b, high = c('four', 'three'), low = c('one', 'two'))
   expect_warning(
-    res$b2  <- prioritise(testdat$b, high = c('peach', 'car'), low = c('house', ' apple '))
+    res$b2  <- vec_prioritise(testdat$b, high = c('peach', 'car'), low = c('house', ' apple '))
   )
 
   expect_identical(res$b, structure(c(4L, 5L, 2L, 1L, 3L),

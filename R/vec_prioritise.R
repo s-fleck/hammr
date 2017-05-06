@@ -1,8 +1,8 @@
-#' Reorder character vector or levels of a factor based on priorities
+#' Rearrange vector based on priorities
 #'
 #' Shoves elements of a character or factor vector to the front or back.
 #' Usefull for reordering factor levels for plotting. Throws
-#' a warning if any elements of high or low are not present in x
+#' a warning if any elements of `high` or `low` are not present in `x`.
 #'
 #' @param x a character of factor vector
 #' @param high elements to be put to the front
@@ -19,21 +19,21 @@
 #' x <- c('d', 'e', 'z', 'y', 'n', 'b', 'c', 'a', 'x')
 #' prioritize(x, c('a', 'b', 'c', 'applepie'), c('x', 'y', 'z'))
 #'
-prioritize <- function (x, high, low) {
-  UseMethod("prioritize", x)
+vec_prioritize <- function (x, high, low) {
+  UseMethod("vec_prioritize", x)
 }
 
 
 #' @rdname prioritize
 #' @export
 #'
-prioritise <- prioritize
+vec_prioritise <- vec_prioritize
 
 
 #' @rdname prioritize
 #' @export
 #'
-prioritize.character <- function(x, high = NULL, low = NULL){
+vec_prioritize.default <- function(x, high = NULL, low = NULL){
   low_not_x  <- low[!low %in% x]
   high_not_x <- high[!high %in% x]
 
@@ -60,9 +60,8 @@ prioritize.character <- function(x, high = NULL, low = NULL){
 #' @rdname prioritize
 #' @export
 #'
-prioritize.factor <- function(x, high = NULL, low = NULL){
-  ordered <- prioritise(levels(x), high, low)
+vec_prioritize.factor <- function(x, high = NULL, low = NULL){
+  ordered <- vec_prioritize(levels(x), high, low)
   res     <- factor(x, levels = ordered)
-
   return(res)
 }

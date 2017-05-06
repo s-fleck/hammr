@@ -1,4 +1,4 @@
-#' Split up a vector into equal sized chunks
+#' Chop up a vector into equal sized chunks
 #'
 #' From: \url{https://gist.github.com/sckott/4632735}
 #'
@@ -10,7 +10,7 @@
 #' @examples
 #' vec <- c("a","b","d","e","f","g","h")
 #' vec_chop(vec, 3)
-vec_chop <- function(x, interval){
+vec_split_interval <- function(x, interval){
   splt                 <- rep(FALSE, interval)
   splt[1]              <- TRUE
   a <- ceiling(length(x) / length(splt))
