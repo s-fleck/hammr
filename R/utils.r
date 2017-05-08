@@ -191,9 +191,9 @@ all_are_distinct <- function(x, empty_value = FALSE, silent = FALSE){
 
 
 
-#' Unique single element
+#' Convert vector if identical elements to scalar
 #'
-#' Returns `unique(x)` if all elements of `x`` are identical, throws an error if
+#' Returns `unique(x)` if all elements of `x` are identical, throws an error if
 #' not.
 #'
 #' @inheritParams all_are_identical
@@ -202,7 +202,7 @@ all_are_distinct <- function(x, empty_value = FALSE, silent = FALSE){
 #' @family special equality checks
 #' @return A scalar of the same type as `x`
 #' @export
-unique_single <- function(x){
+as_scalar <- function(x){
   res <- unique(x)
   if(is.scalar(res)){
     return(res)
