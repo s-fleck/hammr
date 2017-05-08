@@ -38,6 +38,7 @@ human_numbers <- function(
   x,
   symbol   = "",
   pots     = c('k' = 1e3, 'm' = 1e6, 'b' = 1e9),
+  sep      = '',
   big_mark = ','
 ){
   assert_that(is.numeric(x))
@@ -74,12 +75,14 @@ human_numbers <- function(
         return(paste0(
           prefix,
           res,
+          sep,
           names(pots)[[i]]
         ))
       } else if(abs(res) >= 1e3){
         return(paste0(
           prefix,
           formatter(res, big_mark = big_mark),
+          sep,
           names(pots)[[i]]
         ))
       }
@@ -138,6 +141,7 @@ human_si   <- function(x){
   human_numbers(
     x,
     symbol = "",
+    sep = "",
     pots = c(
       'K' = 1e3,
       'M' = 1e6,
@@ -147,6 +151,27 @@ human_si   <- function(x){
       'E' = 1e18,
       'Z' = 1e21,
       'Y' = 1e24
+    )
+  )
+}
+
+#' @rdname human_numbers
+#' @export
+human_mem <- function(x){
+  human_numbers(
+    x,
+    symbol = "",
+    sep = ' ',
+    pots = c(
+      'B'   = 1,
+      'KiB' = 1014,
+      'MiB' = 1014^2,
+      'GiB' = 1014^3,
+      'TiB' = 1014^4,
+      'PiB' = 1014^5,
+      'EiB' = 1014^6,
+      'ZiB' = 1014^7,
+      'YiB' = 1014^8
     )
   )
 }
