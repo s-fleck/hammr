@@ -5,11 +5,11 @@
 #' @param y year
 #' @param q quarter (optional)
 #'
-#' @return An object of type Quarter, character
+#' @return `date_yq` returns an object of type `date_yq`
 #' @export
+#' @md
 #'
 #' @examples
-#'
 #' date_yq(2013, 3)
 #'
 date_yq <- function(y, q) {
@@ -28,16 +28,26 @@ date_yq <- function(y, q) {
 
 # as_data_yq --------------------------------------------------------------
 
-#' Convert object to date_yq
-#'
 #' @param x any R object
+#' @return `is_date_yq` returns `TRUE` or `FALSE`  depending on whether its
+#'   argument is of type `date_yq` or not.
 #'
-#' @md
-#' @return a [date_yq] object
 #' @export
+#' @md
+#' @rdname date_yq
+is_date_yq <- function(x){
+  inherits(x, 'date_yq')
+}
+
+
+
+
+#' @md
+#' @return `as_date_yq` attempts to coerce its argument to `date_yq` type
+#' @export
+#' @rdname date_yq
 #'
 #' @examples
-#'
 #' as_date_yq(20161)
 #'
 as_date_yq <- function(x){
@@ -91,9 +101,6 @@ as.Date.date_yq <- function(x, ...){
   lubridate::make_date(y, m, 1L)
 }
 
-is_date_yq <- function(x){
-  inherits(x, 'date_yq')
-}
 
 
 # accessors ---------------------------------------------------------------
