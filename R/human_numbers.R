@@ -17,7 +17,6 @@
 #' @return a character vector the same length as the input vector
 #'
 #' @rdname human_numbers
-#' @aliases human_gbp, human_usd, human_euro, human_num, human_num_de, human_si
 #' @export
 #'
 #' @examples
