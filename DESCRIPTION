@@ -1,7 +1,7 @@
 Package: hammr
 Type: Package
 Title: Simple and Convenient Utilities
-Version: 1.0.0.9000
+Version: 1.0.0.9001
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: A collection of tools that encapsulate simple but common tasks
