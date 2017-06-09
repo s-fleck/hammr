@@ -8,7 +8,7 @@
 #' @param high elements to be put to the front
 #' @param low elements to be put to the back
 #'
-#' @rdname prioritize
+#' @rdname vec_prioritise
 #'
 #' @return a reordered vector
 #' @export
@@ -17,23 +17,23 @@
 #' @examples
 #'
 #' x <- c('d', 'e', 'z', 'y', 'n', 'b', 'c', 'a', 'x')
-#' prioritize(x, c('a', 'b', 'c', 'applepie'), c('x', 'y', 'z'))
+#' vec_prioritise(x, c('a', 'b', 'c', 'applepie'), c('x', 'y', 'z'))
 #'
-vec_prioritize <- function (x, high, low) {
-  UseMethod("vec_prioritize", x)
+vec_prioritise <- function (x, high, low) {
+  UseMethod("vec_prioritise", x)
 }
 
 
-#' @rdname prioritize
+#' @rdname vec_prioritise
 #' @export
 #'
-vec_prioritise <- vec_prioritize
+vec_prioritise <- vec_prioritise
 
 
-#' @rdname prioritize
+#' @rdname vec_prioritise
 #' @export
 #'
-vec_prioritize.default <- function(x, high = NULL, low = NULL){
+vec_prioritise.default <- function(x, high = NULL, low = NULL){
   low_not_x  <- low[!low %in% x]
   high_not_x <- high[!high %in% x]
 
@@ -57,11 +57,11 @@ vec_prioritize.default <- function(x, high = NULL, low = NULL){
 }
 
 
-#' @rdname prioritize
+#' @rdname vec_prioritise
 #' @export
 #'
-vec_prioritize.factor <- function(x, high = NULL, low = NULL){
-  ordered <- vec_prioritize(levels(x), high, low)
+vec_prioritise.factor <- function(x, high = NULL, low = NULL){
+  ordered <- vec_prioritise(levels(x), high, low)
   res     <- factor(x, levels = ordered)
   return(res)
 }
