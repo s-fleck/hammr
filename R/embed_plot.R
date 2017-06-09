@@ -32,6 +32,7 @@ embed_plot <- function(x, img, ...){
 
 
 
+#' @export
 embed_plot.function <- function(x, img = TRUE, ...){
   requireNamespace('shiny')
   tf <- paste0(tempfile(), '.png')
@@ -47,6 +48,7 @@ embed_plot.function <- function(x, img = TRUE, ...){
 
 
 
+#' @export
 embed_plot.ggplot <- function(x, img = TRUE, ...){
   requireNamespace('ggplot2')
   tf <- paste0(tempfile(), '.png')
@@ -55,6 +57,3 @@ embed_plot.ggplot <- function(x, img = TRUE, ...){
 
   embed_plot(func, img = img, ...)
 }
-
-
-
