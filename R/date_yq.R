@@ -102,6 +102,21 @@ as.Date.date_yq <- function(x, ...){
 }
 
 
+#' @rdname as.Date.date_yq
+#' @export
+as_date.date_ym <- function(x, ...){
+  as.Date.date_ym(x)
+}
+
+
+#' @rdname as.Date.date_yq
+#' @export
+as_datetime.date_ym <- function(x, ...){
+  lubridate::as_datetime(as.Date(x))
+}
+
+
+
 
 # accessors ---------------------------------------------------------------
 
