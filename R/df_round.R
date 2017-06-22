@@ -12,7 +12,17 @@
 #' @family data.frame tools
 #' @seealso [round()], [signif()]
 #' @export
-df_round <- function(dat, digits = 0){
+df_round <- function(x, digits = 0, ...){
+  UseMethod('df_round')
+}
+
+
+#' @export
+df_round.data.frame <- function(
+  dat,
+  digits = 0,
+  ...
+){
   assert_that(is.data.frame(dat))
   assert_that(is.number(digits))
 
