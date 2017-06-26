@@ -26,7 +26,7 @@ df_round.data.frame <- function(
   assert_that(is.data.frame(dat))
   assert_that(is.number(digits))
 
-  numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
+  numcols <- which(unlist(lapply(dat, is.numeric)))
 
   for(i in numcols){
     dat[[i]] <- round(dat[[i]], digits = digits)
