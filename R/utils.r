@@ -297,8 +297,8 @@ basename_sans_ext <- function(x){
 #' Weighted Median Value
 #'
 #' A simple, memory inefficient implementation of weighted median that only
-#' supports integer weights. See the \package{matrixStats} package for a
-#' proper implementation
+#' supports integer weights. See the \pkg{matrixStats} package for a
+#' better implementation
 #'
 #' @param x a numeric vector
 #' @param w a vector of weights, must be the same length as `x`. if `NULL` the
@@ -320,4 +320,65 @@ weighted_median <- function(x, w = NULL){
 
     return(median(rep(x, w)))
   }
+}
+
+
+
+
+#' Read tab separted table from clipboard
+#'
+#' This is a simple wrapper for `read.table()`, with presets set for tab
+#' separated table cells (such as cells copied from Excel or other spreadhseet
+#' software)
+#'
+#' @param ... passed on to [read_table()]
+#' @inheritParams utils::read.table
+#'
+#' @return a data.frame
+#' @export
+#' @md
+#'
+read_clipboard_tab <- function(header = FALSE, ...){
+  read.table(file = "clipboard", sep="\t", header = header...)
+}
+
+
+
+
+#' Write an R object to the clipboard
+#'
+#' @param x any R object
+#'
+#' @family write_clipboard methods
+#' @return `x` (invisibly)
+#' @md
+#' @export
+#'
+write_clipboard <- function(x, ...){
+  UseMethod('write_clipboard')
+}
+
+
+
+
+#' Write a Data Frame to the clipboard
+#'
+#' @param x a data.frame
+#' @param sep a scalar character. Defaults to `\\t` (Tab) for compatibilty with
+#'   Excel or similar software
+#' @param ... further arguments passed on to [write.table()]
+#' @inheritParams utils::write.table
+#'
+#' @family write_clipboard methods
+#' @inherit write_clipboard return
+#' @export
+#' @md
+write_clipboard.data.frame <- function(
+  x,
+  row.names=FALSE,
+  sep="\t",
+  ...
+){
+  write.table(x, "clipboard", row.names = row.names, sep = "\t", ...)
+  invisible(x)
 }
