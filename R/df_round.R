@@ -12,11 +12,21 @@
 #' @family data.frame tools
 #' @seealso [round()], [signif()]
 #' @export
-df_round <- function(dat, digits = 0){
+df_round <- function(x, digits = 0, ...){
+  UseMethod('df_round')
+}
+
+
+#' @export
+df_round.data.frame <- function(
+  dat,
+  digits = 0,
+  ...
+){
   assert_that(is.data.frame(dat))
   assert_that(is.number(digits))
 
-  numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
+  numcols <- which(unlist(lapply(dat, is.numeric)))
 
   for(i in numcols){
     dat[[i]] <- round(dat[[i]], digits = digits)

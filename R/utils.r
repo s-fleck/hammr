@@ -13,7 +13,6 @@ equal_or_na <- function(x, y){
 
 
 
-
 #' Are all values TRUE? Warn if not.
 #'
 #' Checks if all values of a vector or list are `TRUE`, throws a an warning if
@@ -237,6 +236,7 @@ read_rda <- function(infile){
 
 
 
+
 #' Change factor levels according to named character vector
 #'
 #' This is an alternative interface to [forcats::fct_recode()], that takes
@@ -281,6 +281,7 @@ fct_recode2 <- function(f, rec){
 
 
 
+
 #' Get filename (without file extension) from path
 #'
 #' @param x a character vector of file paths
@@ -288,4 +289,96 @@ fct_recode2 <- function(f, rec){
 #' @export
 basename_sans_ext <- function(x){
   tools::file_path_sans_ext(basename(x))
+}
+
+
+
+
+#' Weighted Median Value
+#'
+#' A simple, memory inefficient implementation of weighted median that only
+#' supports integer weights. See the \pkg{matrixStats} package for a
+#' better implementation
+#'
+#' @param x a numeric vector
+#' @param w a vector of weights, must be the same length as `x`. if `NULL` the
+#'   normal median of `x` is returned.
+#'
+#' @return a numeric or integer scalar
+#' @md
+#' @export
+#'
+weighted_median <- function(x, w = NULL){
+
+  if(is.null(w)){
+    return(median(x))
+
+  } else {
+    assert_that(all(looks_like_integer(w)))
+    assert_that(identical(length(x), length(w)))
+    w <- as.integer(w)
+
+    return(median(rep(x, w)))
+  }
+}
+
+
+
+
+#' Read tab separted table from clipboard
+#'
+#' This is a simple wrapper for `read.table()`, with presets set for tab
+#' separated table cells (such as cells copied from Excel or other spreadhseet
+#' software)
+#'
+#' @param ... passed on to [read_table()]
+#' @inheritParams utils::read.table
+#'
+#' @return a data.frame
+#' @export
+#' @md
+#'
+read_clipboard_tab <- function(header = FALSE, ...){
+  read.table(file = "clipboard", sep="\t", header = header...)
+}
+
+
+
+
+#' Write an R object to the clipboard
+#'
+#' @param x any R object
+#'
+#' @family write_clipboard methods
+#' @return `x` (invisibly)
+#' @md
+#' @export
+#'
+write_clipboard <- function(x, ...){
+  UseMethod('write_clipboard')
+}
+
+
+
+
+#' Write a Data Frame to the clipboard
+#'
+#' @param x a data.frame
+#' @param sep a scalar character. Defaults to `\\t` (Tab) for compatibilty with
+#'   Excel or similar software
+#' @param ... further arguments passed on to [write.table()]
+#' @inheritParams utils::write.table
+#'
+#' @family write_clipboard methods
+#' @inherit write_clipboard return
+#' @export
+#' @md
+write_clipboard.data.frame <- function(
+  x,
+  row.names=FALSE,
+  sep="\t",
+  ...
+){
+  write.table(x, "clipboard", row.names = row.names, sep = "\t", ...)
+  invisible(x)
 }
