@@ -1,12 +1,18 @@
 # ctor --------------------------------------------------------------------
 
-#' A custom data type for Year-Quarter
+#' A Simple Year-Quarter Date Format
+#'
+#' A simple data type for storing year-quarter dates in a human readable integer
+#' format, e.g.: 3.Qurter of 2012 is stored as 20123. Supports simple arithmethics
+#' (`+` and `-`) as well formatting.
 #'
 #' @param y year
 #' @param q quarter (optional)
 #'
 #' @return `date_yq` returns an object of type `date_yq`
 #' @export
+#' @family simple dates
+#' @seealso [format.date_ym()]
 #' @md
 #'
 #' @examples
@@ -20,8 +26,7 @@ date_yq <- function(y, q) {
   s <- ifelse(sign(y) >= 0, 1L, -1L)
   res <- (as.integer(abs(y)) * 10L + as.integer(q)) * s
 
-  attr(res, 'class') <- c('date_yq')
-  res
+  date_xx(res, 'date_yq')
 }
 
 
@@ -102,48 +107,7 @@ as.Date.date_yq <- function(x, ...){
 }
 
 
-#' @rdname as.Date.date_yq
-#' @export
-as_date.date_ym <- function(x, ...){
-  as.Date.date_ym(x)
-}
-
-
-#' @rdname as.Date.date_yq
-#' @export
-as_datetime.date_ym <- function(x, ...){
-  lubridate::as_datetime(as.Date(x))
-}
-
-
-
-
 # accessors ---------------------------------------------------------------
-
-#' Get years component of a date_yq
-#'
-#' `year()` is there for consistency with [lubridate], `get_year()` is there
-#' for consistency with other `get_` functions in \pkg{hammr}.
-#'
-#' @param x a [date_yq] object
-#' @family yq getters
-#'
-#' @md
-#' @export
-#' @aliases year
-#'
-#' @examples
-#'
-#' \dontrun{
-#' x <- date_yq(2016, 2)
-#'
-#' year(x)
-#' get_year(x)
-#' }
-#'
-get_year <- function(x){
-  UseMethod('get_year')
-}
 
 #' @export
 get_year.date_yq <- function(x){
@@ -151,36 +115,6 @@ get_year.date_yq <- function(x){
 }
 
 
-#' @export
-#' @rdname get_year
-year.date_yq <- function(x){
-  get_year(x)
-}
-
-#' Get quarter component of a date_yq.
-#'
-#' `get_quarter()` extracts the quarter of a [date_yq] object.
-#' [lubridate::quarter()] also works, because \pkg{hammr} exports a method for
-#' [lubridate::month()]. This will have more overhead than using
-#' `get_quarter()`, but should generally be prefered for consistency in
-#' function naming across packages.
-#'
-#' @inheritParams lubridate::year
-#' @seealso [lubridate::quarter()]
-#' @aliases quarter
-#' @family yq getters
-#' @export
-#'
-#' @examples
-#'
-#' x <- date_yq(2016, 2)
-#'
-#' quarter(x)
-#' get_quarter(x)
-#'
-get_quarter <- function(x){
-  UseMethod('get_quarter')
-}
 
 #' @export
 get_quarter.date_yq <- function(x){
@@ -188,45 +122,12 @@ get_quarter.date_yq <- function(x){
 }
 
 
-#' Get month component of a date_yq
-#'
-#' `get_month()` extracts the month of a date_yq object.
-#' A method for [lubridate::month()] is also exported. This will have
-#' slightly more overhead than using `get_month()`, but should generally be
-#' prefered for consistency in function naming across packages.
-#'
-#' @param x a [date_yq] object.
-#' @inheritParams lubridate::month
-#' @rdname get_month
-#' @aliases month
-#' @seealso [lubridate::month()]
-#' @family yq getters
-#' @export
-#'
-#' @examples
-#'
-#' x <- date_yq(2016, 2)
-#'
-#' month(x)
-#' month(x, label = TRUE)
-#' get_month(x)
-#'
-get_month <- function(x){
-  UseMethod('get_month')
-}
+
 
 #' @export
 get_month.date_yq <- function(x){
-  c(1, 4, 7, 10)[get_quarter(x)]
+  c(1L, 4L, 7L, 10L)[get_quarter(x)]
 }
-
-
-#' @export
-#' @rdname get_month
-month.date_yq <- function(x, label = FALSE, abbr = TRUE){
-  lubridate::month(get_month(x), label = label, abbr = abbr)
-}
-
 
 
 
