@@ -31,6 +31,7 @@ date_ym <- function(y, m) {
 
 
 
+
 # as_data_ym --------------------------------------------------------------
 
 #' @param x any R object
@@ -43,6 +44,9 @@ date_ym <- function(y, m) {
 is_date_ym <- function(x){
   inherits(x, 'date_ym')
 }
+
+
+
 
 #' @md
 #' @return `as_date_ym` attempts to coerce its argument to `date_ym` type
@@ -66,6 +70,7 @@ as_date_ym.default <- function(x){
 
 
 
+
 #' @export
 as_date_ym.numeric <- function(x){
   assert_that(all(x > 0 | x <= -101L))
@@ -74,12 +79,15 @@ as_date_ym.numeric <- function(x){
 }
 
 
+
+
 #' @export
 as_date_ym.Date <- function(x){
   y <- lubridate::year(x)
   m <- lubridate::month(x)
   date_ym(y = y, m = m)
 }
+
 
 
 
@@ -103,8 +111,6 @@ as.Date.date_ym <- function(x, ...){
 
 
 
-
-
 # accessors ---------------------------------------------------------------
 
 #' @export
@@ -113,16 +119,21 @@ get_year.date_ym <- function(x){
 }
 
 
+
+
 #' @export
 get_quarter.date_ym <- function(x){
   as.integer(ceiling(get_month(x) / 3))
 }
 
 
+
+
 #' @export
 get_month.date_ym <- function(x){
   as.integer(x %% 100)
 }
+
 
 
 
@@ -166,15 +177,24 @@ format.date_ym <- function(
   )
 }
 
+
+
+
 format_date_ym_iso <- function(x){
   d <- yms_matrix_from_numeric(x)
   sprintf("%s-M%02i", d[, 1] * d[, 3], d[, 2])
 }
 
+
+
+
 format_date_ym_short <- function(x){
   d <- yms_matrix_from_numeric(x)
   sprintf("%s.%02i", d[, 1] * d[, 3], d[, 2])
 }
+
+
+
 
 format_date_ym_shorter <- function(x){
   d <- yms_matrix_from_numeric(x)
@@ -182,7 +202,6 @@ format_date_ym_shorter <- function(x){
   y <- ifelse(d[, 3] < 0, paste0('-', y), y)
   sprintf("%s.%02i", y, d[, 2])
 }
-
 
 
 
@@ -206,11 +225,17 @@ format_date_ym_shorter <- function(x){
   increment(x, as.integer(y))
 }
 
+
+
+
 #' @rdname date_ym_arithmetic
 #' @export
 `-.date_ym` <- function(x, y){
   increment(x, as.integer(-y))
 }
+
+
+
 
 #' @rdname date_ym_arithmetic
 #' @export
@@ -218,17 +243,26 @@ format_date_ym_shorter <- function(x){
   stop('Operation not supported')
 }
 
+
+
+
 #' @rdname date_ym_arithmetic
 #' @export
 `/.date_ym` <- function(x, y){
   stop('Operation not supported')
 }
 
+
+
+
 #' @rdname date_ym_arithmetic
 #' @export
 `^.date_ym` <- function(x, y){
   stop('Operation not supported')
 }
+
+
+
 
 #' @rdname date_ym_arithmetic
 #' @export
@@ -237,11 +271,16 @@ format_date_ym_shorter <- function(x){
 }
 
 
+
+
 #' @rdname date_ym_arithmetic
 #' @export
 `%/%.date_ym` <- function(x, y){
   stop('Operation not supported')
 }
+
+
+
 
 # shortcuts ---------------------------------------------------------------
 
@@ -279,7 +318,6 @@ format_ym <- function(x, m = NULL, format = 'iso'){
 
 
 
-
 # utils -------------------------------------------------------------------
 
 yms_matrix_from_numeric <- function(x){
@@ -289,5 +327,3 @@ yms_matrix_from_numeric <- function(x){
     ncol = 3
   )
 }
-
-

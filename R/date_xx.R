@@ -18,6 +18,7 @@ date_xx <- function(x, subclass){
 
 
 
+
 # as.Date -----------------------------------------------------------------
 
 #' @rdname as.Date.date_ym
@@ -25,6 +26,9 @@ date_xx <- function(x, subclass){
 as_date.date_xx <- function(x, ...){
   as.Date(x)
 }
+
+
+
 
 #' @rdname as.Date.date_ym
 #' @export
@@ -63,11 +67,14 @@ get_year <- function(x){
 }
 
 
+
+
 #' @export
 #' @rdname get_year
 year.date_xx <- function(x){
   get_year(x)
 }
+
 
 
 
@@ -97,11 +104,15 @@ get_quarter <- function(x){
 }
 
 
+
+
 #' @export
 #' @rdname get_month
-month.date_xx<- function(x, label = FALSE, abbr = TRUE){
+month.date_xx <- function(x, label = FALSE, abbr = TRUE){
   lubridate::month(get_month(x), label = label, abbr = abbr)
 }
+
+
 
 
 #' Get month of a date_xx

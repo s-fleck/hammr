@@ -31,6 +31,7 @@ date_yq <- function(y, q) {
 
 
 
+
 # as_data_yq --------------------------------------------------------------
 
 #' @param x any R object
@@ -89,6 +90,7 @@ as_date_yq.Date <- function(x){
 
 
 
+
 # as.Date -----------------------------------------------------------------
 
 #' Convert date_yq to Date
@@ -107,12 +109,15 @@ as.Date.date_yq <- function(x, ...){
 }
 
 
+
+
 # accessors ---------------------------------------------------------------
 
 #' @export
 get_year.date_yq <- function(x){
   as.integer(x) %/% 10
 }
+
 
 
 
@@ -128,6 +133,7 @@ get_quarter.date_yq <- function(x){
 get_month.date_yq <- function(x){
   c(1L, 4L, 7L, 10L)[get_quarter(x)]
 }
+
 
 
 
@@ -171,15 +177,24 @@ format.date_yq <- function(
   )
 }
 
+
+
+
 format_date_yq_iso <- function(x){
   d <- yqs_matrix_from_numeric(x)
   sprintf("%s-Q%s", d[, 1] * d[, 3], d[, 2])
 }
 
+
+
+
 format_date_yq_short <- function(x){
   d <- yqs_matrix_from_numeric(x)
   sprintf("%s.%s", d[, 1] * d[, 3], d[, 2])
 }
+
+
+
 
 format_date_yq_shorter <- function(x){
   d <- yqs_matrix_from_numeric(x)
@@ -187,6 +202,8 @@ format_date_yq_shorter <- function(x){
   y <- ifelse(d[, 3] < 0, paste0('-', y), y)
   sprintf("%s.%s", y, d[, 2])
 }
+
+
 
 
 # algebra -----------------------------------------------------------------
@@ -208,11 +225,17 @@ format_date_yq_shorter <- function(x){
   increment(x, as.integer(y))
 }
 
+
+
+
 #' @rdname date_yq_arithmetic
 #' @export
 `-.date_yq` <- function(x, y){
   increment(x, as.integer(-y))
 }
+
+
+
 
 #' @rdname date_yq_arithmetic
 #' @export
@@ -220,17 +243,26 @@ format_date_yq_shorter <- function(x){
   stop('Operation not supported')
 }
 
+
+
+
 #' @rdname date_yq_arithmetic
 #' @export
 `/.date_yq` <- function(x, y){
   stop('Operation not supported')
 }
 
+
+
+
 #' @rdname date_yq_arithmetic
 #' @export
 `^.date_yq` <- function(x, y){
   stop('Operation not supported')
 }
+
+
+
 
 #' @rdname date_yq_arithmetic
 #' @export
@@ -239,11 +271,15 @@ format_date_yq_shorter <- function(x){
 }
 
 
+
+
 #' @rdname date_yq_arithmetic
 #' @export
 `%/%.date_yq` <- function(x, y){
   stop('Operation not supported')
 }
+
+
 
 
 # shortcuts ---------------------------------------------------------------
@@ -280,6 +316,8 @@ format_yq <- function(x, q = NULL, format = 'iso'){
 }
 
 
+
+
 #' Conveniently get first/last day of quarter from numbers
 #'
 #' @inheritParams format_yq
@@ -304,6 +342,9 @@ first_day_yq <- function(x, q = NULL){
 
   first_day_of_quarter(d)
 }
+
+
+
 
 #' @rdname first_day_yq
 #' @export
@@ -340,6 +381,7 @@ first_day_of_quarter <- function(x){
 
 
 
+
 #' @rdname day_of_quarter
 #' @export
 first_day_of_quarter.default <- function(x){
@@ -354,6 +396,7 @@ first_day_of_quarter.default <- function(x){
 last_day_of_quarter <- function(x){
   UseMethod('last_day_of_quarter')
 }
+
 
 
 
