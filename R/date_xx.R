@@ -19,6 +19,21 @@ date_xx <- function(x, subclass){
 
 
 
+# is_date_xx --------------------------------------------------------------
+
+#' @param x any R object
+#' @return `is_date_xx` returns `TRUE` or `FALSE` depending on whether its
+#'   argument is of type `date_xx` or not.
+#'
+#' @rdname date_xx
+#' @export
+is_date_xx <- function(x){
+  inherits(x, 'date_xx')
+}
+
+
+
+
 # as.Date -----------------------------------------------------------------
 
 #' @rdname as.Date.date_ym
