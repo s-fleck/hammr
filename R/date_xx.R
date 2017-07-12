@@ -19,6 +19,22 @@ date_xx <- function(x, subclass){
 
 
 
+#' @rdname date_xx
+#' @export
+#' @return `make_date_xx()` is a helper that returns a valid `date_xx`
+#'   object for assignment as reporting period.
+make_date_xx <- function(y, q = NULL, m = NULL){
+  if(!is.null(q)){
+    assert_that(is.null(m))
+    date_yq(y, q)
+  } else if (!is.null(m)){
+    date_ym(y, m)
+  } else {
+    date_y(y)
+  }
+}
+
+
 # is_date_xx --------------------------------------------------------------
 
 #' @param x any R object

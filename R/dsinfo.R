@@ -1,11 +1,10 @@
-#' Title
+#' Set and Display Info about a Data Set
 #'
-#' @param x
+#' @param x any R object
 #'
 #' @return
 #' @export
 #'
-#' @examples
 dsinfo <- function(x){
   attr(x, 'dsinfo')
 }
@@ -13,16 +12,18 @@ dsinfo <- function(x){
 
 
 
-#' Title
+#' @param version Version of the Dataset (after your own versionen scheme)
+#' @param comment A comment on / description of the dataset.
+#' @param reporting_period Reporting Period of the data set. Must be a [date_xx]
+#'   object. [lubridate::period()] objects will likely be supported in the future.
+#' @param ... any number of further objects to be stored in the `dsinfo`
+#'   attribute.
 #'
-#' @param version
-#' @param comment
-#' @param ...
+#' @return `set_dsinfo()` attaches the attribute `dsinfo` to an object.
 #'
-#' @return
+#' @rdname dsinfo
 #' @export
 #'
-#' @examples
 set_dsinfo <- function(
   x,
   version = NULL,
@@ -30,7 +31,7 @@ set_dsinfo <- function(
   reporting_period = NULL,
   ...
 ){
-  attr(x, 'dsinfo') <- c(
+  info <- c(
     list(
       version = version,
       reporting_period = reporting_period,
@@ -38,6 +39,9 @@ set_dsinfo <- function(
     ),
     list(...)
   )
+
+  class(info) <- c('dsinfo', 'list')
+  attr(x, 'dsinfo') <- info
 
   return(x)
 }
@@ -47,11 +51,12 @@ set_dsinfo <- function(
 
 # reporting_period --------------------------------------------------------
 
-#' Access and Modify Reporting Periods of R Object
+
+
+#' @return `reporting_period()` retrieves the `reporting_period` field of the
+#'   `dsinfo` attribute of `x` (or `NULL` if no such attribute exists)
 #'
-#' @param x Any R object
-#'
-#' @return `reporting_period` attribute of `x`
+#' @rdname dsinfo
 #' @export
 #'
 reporting_period <- function(x){
@@ -65,9 +70,9 @@ reporting_period <- function(x){
 
 
 
-#' @param a [hammr::date_xx] object
+#' @param value a [hammr::date_xx] object
 #'
-#' @rdname set_reporting_period
+#' @rdname dsinfo
 #' @export
 `reporting_period<-` <- function(x, value){
   assert_that(is_date_xx(value))
@@ -78,48 +83,31 @@ reporting_period <- function(x){
 
 
 
-#' @param y integer. a year
-#' @param q integer. a quarter (optional, only supply month or quarter, not both)
-#' @param m integer. a month (optional, only supply month or quarter, not both)
+#' @param y,q,m integer. year, quarter, month. Month and quarter are optional,
+#'  and mutually exclusive (only supply one, not both)
 #'
 #' @return `set_reporting_period()` and `'reporting_period<-'` can be used to
-#'   modify the reporting period attribute of an R object.
+#'   directlty set the `reporting_period` field of the `dsinfo` attribute of
+#'   an R object.
 #'
+#' @rdname dsinfo
 #' @export
-#' @rdname reporting_period
 #'
 set_reporting_period <- function(x, y, q = NULL, m = NULL){
-  value <- as_reporting_period(y, q, m)
+  value <- make_date_xx(y, q, m)
   x <- set_dsinfo(x, reporting_period = value)
 }
 
 
 
 
-#' @rdname reporting_period
-#'
+
 #' @return `has_reporting_period()` returns `TRUE` if `x` has a valid
-#'   `reporting_period` attribute, and `FALSE` otherwise
+#'   `reporting_period`, and `FALSE` otherwise
+#'
+#' @rdname dsinfo
 #' @export
 #'
 has_reporting_period <- function(x){
   hammr::is_date_xx(reporting_period(x))
-}
-
-
-
-
-#' @return `as_reporting_period()` is a helper that returns a valid `date_xx` object for
-#'   assignment as reporting period.
-#' @rdname reporting_period
-#'
-as_reporting_period <- function(y, q = NULL, m = NULL){
-  if(!is.null(q)){
-    assert_that(is.null(m))
-    date_yq(y, q)
-  } else if (!is.null(m)){
-    date_ym(y, m)
-  } else {
-    date_y(y)
-  }
 }
