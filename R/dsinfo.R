@@ -26,6 +26,7 @@ dsinfo <- function(x){
 #'
 set_dsinfo <- function(
   x,
+  dsname = NULL,
   version = NULL,
   comment = NULL,
   reporting_period = NULL,
@@ -33,6 +34,7 @@ set_dsinfo <- function(
 ){
   info <- c(
     list(
+      dsname = dsname,
       version = version,
       reporting_period = reporting_period,
       comment = comment
@@ -110,4 +112,34 @@ set_reporting_period <- function(x, y, q = NULL, m = NULL){
 #'
 has_reporting_period <- function(x){
   hammr::is_date_xx(reporting_period(x))
+}
+
+
+
+
+#' @export
+print.dsinfo <- function(x){
+
+  browser()
+
+  x <- x[!unlist(lapply(x, is.null))]
+  title <- paste(x$dsname, x$reporting_period, x$version, sep = ' - ')
+
+  cat(title)
+
+
+  cat("\n\n")
+
+  if (!is.null(x$comment)) {
+    cat(x$comment)
+  }
+
+  cat('\n\n')
+
+  y <- x[!names(x) %in% c('version', 'reporting_period', 'comment')]
+
+
+  for(i in seq_along(y)){
+    cat(sprintf("%s: \t%s\n", names(y)[[i]], y[[i]]))
+  }
 }
