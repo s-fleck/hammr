@@ -30,6 +30,9 @@ set_dsinfo <- function(
   version = NULL,
   comment = NULL,
   reporting_period = NULL,
+  modify_date = Sys.Date(),
+  source_date = NULL,
+  source_path = NULL,
   ...
 ){
   info <- c(
@@ -37,7 +40,10 @@ set_dsinfo <- function(
       dsname = dsname,
       version = version,
       reporting_period = reporting_period,
-      comment = comment
+      comment = comment,
+      modify_date = modify_date,
+      source_date = source_date,
+      source_path = source_path
     ),
     list(...)
   )
@@ -119,9 +125,6 @@ has_reporting_period <- function(x){
 
 #' @export
 print.dsinfo <- function(x){
-
-  browser()
-
   x <- x[!unlist(lapply(x, is.null))]
   title <- paste(x$dsname, x$reporting_period, x$version, sep = ' - ')
 
@@ -136,7 +139,7 @@ print.dsinfo <- function(x){
 
   cat('\n\n')
 
-  y <- x[!names(x) %in% c('version', 'reporting_period', 'comment')]
+  y <- x[!names(x) %in% c('version', 'reporting_period', 'comment', 'dsname')]
 
 
   for(i in seq_along(y)){
