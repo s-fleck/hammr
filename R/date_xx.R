@@ -12,7 +12,7 @@
 #' @md
 #'
 date_xx <- function(x, subclass){
-  attr(x, 'class') <- union(subclass, 'date_xx')
+  attr(x, 'class') <- union(subclass, c('date_xx', 'integer'))
   x
 }
 
