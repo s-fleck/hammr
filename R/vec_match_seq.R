@@ -5,8 +5,6 @@
 #' first element of the sequence matches the vector. Please note that `NA`
 #' matches `NA` to be consistent with [match()]
 #'
-#' `%seq_in%` returns a logical vector of the matching described above
-#'
 #' @param sequence sequence to be matched
 #' @param target   target vector for sequence matching
 #'

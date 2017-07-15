@@ -8,6 +8,7 @@
 #' @param value value to replace
 #' @param replace replacement value
 #'
+#' @return `dat` with `value` replaced by `replace`
 #' @inheritParams df_replace_na
 #'
 #' @export
@@ -37,17 +38,14 @@ df_replace_value_if <- function(
 
 
 
-#' Title
+#' Replace value in numeric columns
 #'
-#' @param dat
-#' @param value
-#' @param replace
-#' @param as_char
+#' @inheritParams df_replace_value_if
+#' @param replace replacement value. will be coerced to numeric.
 #'
-#' @return
+#' @inherit df_replace_value_if return
+#'
 #' @export
-#'
-#' @examples
 df_replace_value_num <- function(
   dat,
   value,
@@ -57,7 +55,7 @@ df_replace_value_num <- function(
     dat = dat,
     predicate = is.numeric,
     value = value,
-    replace = replace
+    replace = as.numeric(replace)
   )
 }
 
