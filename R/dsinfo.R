@@ -1,8 +1,79 @@
 #' Set and Display Info about a Data Set
 #'
+#' Attaches a list as the attribute `dsinfo` to `x`. `dsinfo` may contain
+#' any kind of R object. The parameters section of this help file describes
+#' a sensible selection of possible metadata elements, heavyly inspired by
+#' https://specs.frictionlessdata.io/data-package/ with some minor
+#' modifications.
+#'
 #' @param x any R object
 #'
-#' @return
+#' @param name A short url-usable (and preferably human-readable) name of the
+#'   dataset This MUST be lower-case and contain only alphanumeric characters
+#'   along with ".", "_" or "-" characters. It will function as a unique
+#'   identifier and therefore SHOULD be unique in relation to any registry in
+#'   which this dataset will be deposited (and preferably globally unique).
+#'
+#'   The name SHOULD be invariant, meaning that it SHOULD NOT change when a data
+#'   dataset is updated, unless the new dataset version should be considered a
+#'   distinct dataset, e.g. due to significant changes in structure or
+#'   interpretation. Version distinction SHOULD be left to the version property.
+#'   As a corollary, the name also SHOULD NOT include an indication of time
+#'   range covered.
+#' @param id A property reserved for globally unique identifiers. Examples of
+#'   identifiers that are unique include UUIDs and DOIs.
+#'
+#'   A common usage pattern for datasets is as a packaging format within
+#'   the bounds of a system or platform. In these cases, a unique identifier for
+#'   a dataset is desired for common data handling workflows, such as updating
+#'   an existing dataset. While at the level of the specification, global
+#'   uniqueness cannot be validated, consumers using the id property MUST ensure
+#'   identifiers are globally unique.
+#' @param license The license(s) under which the dataset is provided.
+#' @param title A string providing a title or one sentence description for this dataset
+#' @param description a description of the dataset. The description MUST be
+#'   markdown formatted -- this also allows for simple plain text as plain text
+#'   is itself valid markdown. The first paragraph (up to the first double line
+#'   break) should be usable as summary information for the dataset.
+#'
+#' @param homepage A URL for the home on the web that is related to this dataset.
+#' @param version a version string identifying the version of the dataset. It
+#'   should conform to the Semantic Versioning requirements. See http://semver.org/
+#' @param sources The raw sources for this dataset. It MUST be a list of
+#'   Source objects. Each Source object MAY have title, path and email
+#'   properties.
+#' @param contributors The people or organizations who contributed to this
+#'   dataset. It MUST be a list. Each entry is a Contributor and MUST be an
+#'   object. A Contributor MUST have a name property and MAY contain path,
+#'   email, role and organization properties.
+#' @param keywords An character vector of keywords to assist users
+#'   searching for the dataset in catalogs.
+#' @param created a Datetime scalar
+#' @param reference_date Reference date for the data set. May be a [base::Date],
+#'   [base::POSIXt], [hammr::date_xx] or a [lubridate::period].
+#' @param source_date Creation date of the source file(s) that the dataset
+#'   `x` was created from.
+#' @param source_path Path to the source file
+#'
+#' @param image Provided for compatability with the Data Package standard. An
+#'   image to use for this data package. For example, when showing the package
+#'   in a listing.
+#'
+#'   The value of the image property MUST be a string pointing to the location
+#'   of the image. The string must be a url-or-path, that is a fully qualified
+#'   HTTP address, or a relative POSIX path (see the url-or-path definition in
+#' Data Resource for details).
+#'
+#' @param profile for compatability with the Data Package standard. A string
+#'   identifying the profile of this descriptor as per the profiles
+#'   specification. (see Data Package sepcifications)
+#'
+#' @param ... any number of arbitrary metadata elements that will also be
+#'   attached to dsinfo.
+#'
+#' @return `dsinfo()` returns the `desinfo` attribute of `x` (or `NULL` if there
+#'   is none).
+#'
 #' @export
 #'
 dsinfo <- function(x){
@@ -12,41 +83,88 @@ dsinfo <- function(x){
 
 
 
-#' @param version Version of the Dataset (after your own versionen scheme)
-#' @param comment A comment on / description of the dataset.
-#' @param reporting_period Reporting Period of the data set. Must be a [date_xx]
-#'   object. [lubridate::period()] objects will likely be supported in the future.
-#' @param ... any number of further objects to be stored in the `dsinfo`
-#'   attribute.
-#'
-#' @return `set_dsinfo()` attaches the attribute `dsinfo` to an object.
-#'
 #' @rdname dsinfo
+#'
+#' @return `set_dsinfo()` returns `x` with an additional `dsinfo` attribute.
 #' @export
 #'
 set_dsinfo <- function(
   x,
-  dsname = NULL,
+
+  # hammr recommended
+  id = NULL,
+  name = NULL,
+  reference_date = NULL,
   version = NULL,
-  comment = NULL,
-  reporting_period = NULL,
-  modify_date = Sys.Date(),
+
+  # data-package recommended
+  license = NULL,
+
+  # hammr-optional
   source_date = NULL,
   source_path = NULL,
+
+  # data-package optional
+  title = NULL,
+  description = NULL,
+  homepage = NULL,
+  sources = NULL,
+  contributors = NULL,
+  keywords = NULL,
+  created = NULL,
+
+  # data package-compat
+  profile = NULL,  #recommended
+  image = NULL,  #optional
   ...
 ){
-  info <- c(
-    list(
-      dsname = dsname,
-      version = version,
-      reporting_period = reporting_period,
-      comment = comment,
-      modify_date = modify_date,
-      source_date = source_date,
-      source_path = source_path
-    ),
-    list(...)
-  )
+  # Preconditions
+    for(el in c(name, id, title, description, version)){
+      assert_that(is.null(el) || purrr:::is_scalar_character(el))
+    }
+
+    for(el in c(homepage, keywords, source_path, profile)){
+      assert_that(is.null(el) || is.character(el))
+    }
+
+    assert_that(is.null(reference_date) || inherits(reference_date, c('Date', 'POSIXt', 'Interval', 'date_xx')))
+    assert_that(is.null(name) || is_dsinfo_name(name))
+    # license
+
+
+  # Processing
+    name <- tolower(name)
+
+    info <- c(
+      list(
+        # hammr recommended
+        id = id,
+        name = name,
+        reference_date = reference_date,
+        version = version,
+
+        # data-package recommended
+        license = license,
+
+        # hammr-optional
+        source_date = source_date,
+        source_path = source_path,
+
+        # data-package optional
+        title = title,
+        description = description,
+        homepage = homepage,
+        sources = sources,
+        contributors = contributors,
+        keywords = keywords,
+        image = image,
+        created = created
+      ),
+      list(...)
+    )
+
+
+  info <- info[!unlist(lapply(info, is.null))]
 
   class(info) <- c('dsinfo', 'list')
   attr(x, 'dsinfo') <- info
@@ -57,34 +175,32 @@ set_dsinfo <- function(
 
 
 
-# reporting_period --------------------------------------------------------
+# reference_date --------------------------------------------------------
 
 
 
-#' @return `reporting_period()` retrieves the `reporting_period` field of the
+#' @return `reference_date()` retrieves the `reference_date` field of the
 #'   `dsinfo` attribute of `x` (or `NULL` if no such attribute exists)
 #'
 #' @rdname dsinfo
 #' @export
 #'
-reporting_period <- function(x){
+reference_date <- function(x){
   if(is.null(attr(x, 'dsinfo'))){
     return(NULL)
   } else {
-    attr(x, 'dsinfo')$reporting_period
+    attr(x, 'dsinfo')$reference_date
   }
 }
 
 
 
 
-#' @param value a [hammr::date_xx] object
-#'
 #' @rdname dsinfo
 #' @export
-`reporting_period<-` <- function(x, value){
+`reference_date<-` <- function(x, value){
   assert_that(is_date_xx(value))
-  x <- set_dsinfo(x, reporting_period = value)
+  x <- set_dsinfo(x, reference_date = value)
   x
 }
 
@@ -94,55 +210,78 @@ reporting_period <- function(x){
 #' @param y,q,m integer. year, quarter, month. Month and quarter are optional,
 #'  and mutually exclusive (only supply one, not both)
 #'
-#' @return `set_reporting_period()` and `'reporting_period<-'` can be used to
-#'   directlty set the `reporting_period` field of the `dsinfo` attribute of
+#' @return `set_reference_date()` and `'reference_date<-'` can be used to
+#'   directlty set the `reference_date` field of the `dsinfo` attribute of
 #'   an R object.
 #'
 #' @rdname dsinfo
 #' @export
 #'
-set_reporting_period <- function(x, y, q = NULL, m = NULL){
+set_reference_date <- function(x, y, q = NULL, m = NULL){
   value <- make_date_xx(y, q, m)
-  x <- set_dsinfo(x, reporting_period = value)
+  x <- set_dsinfo(x, reference_date = value)
 }
 
 
 
 
 
-#' @return `has_reporting_period()` returns `TRUE` if `x` has a valid
-#'   `reporting_period`, and `FALSE` otherwise
+#' @return `has_reference_date()` returns `TRUE` if `x` has a valid
+#'   `reference_date`, and `FALSE` otherwise
 #'
 #' @rdname dsinfo
 #' @export
 #'
-has_reporting_period <- function(x){
-  hammr::is_date_xx(reporting_period(x))
+has_reference_date <- function(x){
+  hammr::is_date_xx(reference_date(x))
+}
+
+
+
+#' @export
+print.dsinfo <- function(x, ...){
+
+  title_els <- c("id", "name", "reference_date", "version")
+
+  r1 <- character()
+
+  r1[["header"]] <- paste_if_el(x, title_els)
+  r1[['title']] <- paste_if_el(x, "title")
+  r1[['desc']]  <- paste_if_el(x, "description", prefix = '\n', suffix = '\n')
+
+  y <- x[!names(x) %in% union(title_els, c("description", "title"))] %>%
+    lapply(as.character)
+  r2 <- sprintf("%s: \t%s", names(y), y)
+
+
+  res <- c(r1, r2)
+  res <- res[res != ""]
+
+  invisible(lapply(res, function(x) cat(x, '\n')))
+}
+
+
+
+paste_if_el <- function(x, els, prefix = NULL, suffix = NULL){
+  sel <- grep(
+    paste(els, collapse = "|"),
+    names(x)
+  )
+
+  res <- x[sel] %>%
+    lapply(as.character) %>%  # necessary for dates
+    unlist()
+
+  if(!is.null(res)){
+    paste(prefix, res, suffix, collapse = ' - ', sep = "")
+  } else {
+    ""
+  }
 }
 
 
 
 
-#' @export
-print.dsinfo <- function(x){
-  x <- x[!unlist(lapply(x, is.null))]
-  title <- paste(x$dsname, x$reporting_period, x$version, sep = ' - ')
-
-  cat(title)
-
-
-  cat("\n\n")
-
-  if (!is.null(x$comment)) {
-    cat(x$comment)
-  }
-
-  cat('\n\n')
-
-  y <- x[!names(x) %in% c('version', 'reporting_period', 'comment', 'dsname')]
-
-
-  for(i in seq_along(y)){
-    cat(sprintf("%s: \t%s\n", names(y)[[i]], y[[i]]))
-  }
+is_dsinfo_name <- function(x){
+  isTRUE(grepl("^[A-Za-z0-9_\\.-]*$", x)) && is.scalar(x)
 }
