@@ -1,7 +1,7 @@
 #' Package misc ultity functions
 #'
 #'
-#' @import assertthat
+#' @import assertthat isit
 #' @importFrom magrittr %>%
 #' @importFrom data.table data.table as.data.table ":="
 #' @importFrom lubridate year quarter month as_date as_datetime

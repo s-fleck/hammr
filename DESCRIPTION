@@ -17,7 +17,8 @@ Imports:
     purrr,
     lubridate,
     stringi,
-    tools
+    tools,
+    isit
 Suggests:
     dtplyr,
     testthat,
