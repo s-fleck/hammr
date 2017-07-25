@@ -9,9 +9,9 @@
 #' @param digits number of digits for rounding
 #'
 #' @return a character vector.
+#' @export
 #'
 #' @examples
-#' @export
 #'
 #' label_as_percent(0.5)
 #' label_as_percent(0.5, format = "%s [%%]" )
