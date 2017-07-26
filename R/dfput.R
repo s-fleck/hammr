@@ -39,6 +39,7 @@ dfput <- function(dat, factors = 'simple'){
       }
     }
 
+    value <- paste(value, collapse = "")
     lines[[i]] <- sprintf('%s = %s,', names(dat)[[i]], value)
   }
 
