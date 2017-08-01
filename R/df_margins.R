@@ -21,9 +21,10 @@ df_add_margin_row <- function(
   factor = "",
   POSIXt = sum,
   default = NA,
+  na_rm = FALSE,
   ...
 ){
-  rbind(dat, get_margin_row(dat))
+  dplyr::bind_rows(dat, get_margin_row(dat, na_rm = na_rm))
 }
 
 
@@ -38,17 +39,15 @@ get_margin_row <- function(
   factor = "",
   POSIXt = sum,
   default = NA,
+  na_rm = FALSE,
   ...
 ){
-  funs <- c(
-    list(
-      numeric = numeric,
-      integer = integer,
-      character = character,
-      factor = factor,
-      POSIXt = sum
-    ),
-    list(...)
+  funs <- list(
+    numeric = numeric,
+    integer = integer,
+    character = character,
+    factor = factor,
+    POSIXt = sum
   )
 
   res <- vector('list', length(dat))
@@ -57,17 +56,27 @@ get_margin_row <- function(
     cls <- class(dat[[i]])[[1]]
 
     fun <- funs[[cls]]
+    col <- dat[[i]]
+
+    if(na_rm){
+      col <- na.omit(col)
+    }
 
     if(is.null(fun)){
       fun <- default
     }
 
     if (is.function(fun)) {
-      res[[i]] <- fun(dat[[i]])
+      res[[i]] <- fun(col)
     } else if (is.scalar(fun)) {
       res[[i]] <- fun
     }
+
+    if(is.factor(dat[[i]])){
+      res[[i]] <- as.factor(res[[i]])
+    }
+
   }
 
-  as.data.frame(setNames(res, names(dat)))
+  setNames(res, names(dat))
 }

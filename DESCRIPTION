@@ -15,6 +15,7 @@ Imports:
     data.table,
     dplyr,
     purrr,
+    tibble,
     lubridate,
     stringi,
     tools,

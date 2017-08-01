@@ -3,6 +3,9 @@ context("df_margins")
 
 test_that("df_margins works as expected", {
 
+  # test na rm
+
+
   mc1 <-  1:5
   class(mc1) <- c('classy', class(mc1))
 
@@ -10,35 +13,39 @@ test_that("df_margins works as expected", {
   class(mc2) <- c('not_classy', class(mc2))
 
   tdat <- data.frame(
-    num = as.numeric(1:5),
+    num = as.numeric(c(1, 2, NA_real_, 3, 5)),
     int = 1L:5L,
     chr = LETTERS[1:5],
     fct = factor(LETTERS[1:5]),
     time = Sys.time(),
     date = Sys.Date(),
-    cls1 = mc1,
-    cls2 = mc2,
+    `funk column name %%%` = 11:15,
+    check.names = FALSE,
     stringsAsFactors = FALSE
   )
 
-  eres <- data.frame(
-    num  = 15,
+  eres <- list(
+    num  = 11,
     int  = 15L,
     chr  = "",
     fct  = "",
     time = NA,
     date = NA,
     cls1  = 99L,
-    cls2 = NA
+    `funk column name %%%` = 65
   )
 
 
-  tres <- get_margin_row(tdat, classy = 99L)
+  tres <- get_margin_row(tdat, classy = 99L, na_rm = TRUE)
   expect_identical(eres, tres)
 
 
-  expect_silent(df_add_margin_row(tdat))
+  expect_warning(r1 <- df_add_margin_row(tdat))
+  expect_warning(r2 <- df_add_margin_row(tibble::as.tibble(tdat)))
+  expect_warning(r3 <- df_add_margin_row(data.table::as.data.table(tdat)))
 
-
+  expect_identical(class(r1), "data.frame")
+  expect_identical(class(r2), c("tbl_df", "tbl", "data.frame"))
+  expect_identical(class(r3), c("data.table", "data.frame"))
 
 })
