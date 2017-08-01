@@ -18,12 +18,12 @@ test_that("date_yq ctor works as expected", {
 
   expect_identical(
     date_yq(0, 1),
-    structure(1L, class = c("date_yq", "date_xx"))
+    structure(1L, class = c("date_yq", "date_xx", "integer"))
   )
 
   expect_identical(
     date_yq(-1, 1),
-    structure(-11L, class = c("date_yq", "date_xx"))
+    structure(-11L, class = c("date_yq", "date_xx", "integer"))
   )
 
   expect_error(date_yq(0, -1))
