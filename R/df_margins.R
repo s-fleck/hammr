@@ -1,38 +1,35 @@
-#' Add margin row
+#' Add a margin row (summary) to a data.frame
 #'
 #' @param dat
-#' @param numeric
-#' @param integer
-#' @param character
-#' @param factor
-#' @param POSIXt
+#' @param sum_name
+#' @param sum_class
 #' @param default
-#' @param ...
+#' @param na_rm
 #'
 #' @return
 #' @export
 #'
 #' @examples
 df_add_margin_row <- function(
-  dat,
-  sum_name = list(),
-  sum_class = list(
+  .dat,
+  ...,
+  .sum_class = list(
     numeric = sum,
     integer = sum,
     character = "",
     factor = "",
     POSIXt = sum
   ),
-  default = NA,
-  na_rm = FALSE
+  .default = NA,
+  .na_rm = FALSE
 ){
   dplyr::bind_rows(
-    dat,
+    .dat,
     get_margin_row(
-      dat,
-      sum_name = sum_name,
-      sum_class = sum_class,
-      na_rm = na_rm
+      .dat,
+      sum_name = list(...),
+      sum_class = .sum_class,
+      na_rm = .na_rm
     )
   )
 }
@@ -53,6 +50,23 @@ get_margin_row <- function(
   default = NA,
   na_rm = FALSE
 ){
+  # Preconditions
+  assert_that(inherits(sum_name), "list")
+  assert_that(inherits(sum_class), "list")
+  assert_that(all(
+    purrr::map_lgl(
+      sum_name,
+      function(x) is.function(x) || rlang::is_scalar_atomic(x))
+  ))
+
+  assert_that(all(
+    purrr::map_lgl(
+      sum_class,
+      function(x) is.function(x) || rlang::is_scalar_atomic(x))
+  ))
+
+
+
   res <- vector('list', length(dat))
 
   for(i in seq_along(dat)){
