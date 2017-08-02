@@ -3,9 +3,6 @@ context("df_margins")
 
 test_that("df_margins works as expected", {
 
-  # test na rm
-
-
   mc1 <-  1:5
   class(mc1) <- c('classy', class(mc1))
 
@@ -28,21 +25,24 @@ test_that("df_margins works as expected", {
     num  = 11,
     int  = 15L,
     chr  = "",
-    fct  = "",
+    fct  = as.factor(""),
     time = NA,
     date = NA,
-    cls1  = 99L,
-    `funk column name %%%` = 65
+    `funk column name %%%` = 99
   )
 
 
-  tres <- get_margin_row(tdat, classy = 99L, na_rm = TRUE)
+  tres <- get_margin_row(tdat, sum_name = list(`funk column name %%%` = 99), na_rm = TRUE)
   expect_identical(eres, tres)
 
 
   expect_warning(r1 <- df_add_margin_row(tdat))
   expect_warning(r2 <- df_add_margin_row(tibble::as.tibble(tdat)))
-  expect_warning(r3 <- df_add_margin_row(data.table::as.data.table(tdat)))
+  expect_warning(r3 <- df_add_margin_row(
+    data.table::as.data.table(tdat),
+    sum_name = list(chr = "F")
+  ))
+
 
   expect_identical(class(r1), "data.frame")
   expect_identical(class(r2), c("tbl_df", "tbl", "data.frame"))
