@@ -43,11 +43,11 @@ test_that("df_na_replace works as expected", {
 
 
 
-  expect_warning(df_na_replace(tdat, ''))
-  expect_silent(df_na_replace(tdat, '', as_char = TRUE))
+  expect_warning(df_replace_na(tdat, ''))
+  expect_silent(df_replace_na(tdat, '', as_char = TRUE))
   expect_silent(r3 <- df_na_blank(tdat))
-  expect_warning(df_na_replace(as.data.frame(tdat), ''))
-  expect_silent(r4 <- df_na_replace(as.data.frame(tdat), '', as_char = TRUE))
+  expect_warning(df_replace_na(as.data.frame(tdat), ''))
+  expect_silent(r4 <- df_replace_na(as.data.frame(tdat), '', as_char = TRUE))
 
   eres34 <- data.frame(
     character = c("1", "NA", ""),

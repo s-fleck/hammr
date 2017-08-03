@@ -40,7 +40,7 @@ test_that("df_margins works as expected", {
   expect_warning(r2 <- df_add_margin_row(tibble::as.tibble(tdat)))
   expect_warning(r3 <- df_add_margin_row(
     data.table::as.data.table(tdat),
-    sum_name = list(chr = "F")
+    chr = "F"
   ))
 
 

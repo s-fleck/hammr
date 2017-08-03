@@ -45,8 +45,8 @@ test_that("dsinfo works as expected", {
 
 
   y <- set_dsinfo(1L, homepage = "www.zombo.com")
-
 })
+
 
 
 
@@ -58,3 +58,22 @@ test_that("dsinfo works as expected", {
 })
 
 
+
+
+test_that("reference_date works as expected", {
+  x <- 1L
+
+  expect_silent(
+    reference_date(x) <- as_date_ym(201612)
+  )
+
+  expect_identical(
+    reference_date(x),
+    date_ym(2016, 12)
+  )
+
+  expect_true(
+    has_reference_date(x)
+  )
+
+})
