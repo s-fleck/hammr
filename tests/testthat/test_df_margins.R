@@ -32,7 +32,7 @@ test_that("df_margins works as expected", {
   )
 
 
-  tres <- get_margin_row(tdat, sum_name = list(`funk column name %%%` = 99), na_rm = TRUE)
+  tres <- get_margin_row(tdat, sum_name = list(`funk column name %%%` = 99), na.rm = TRUE)
   expect_identical(eres, tres)
 
 

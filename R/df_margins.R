@@ -1,15 +1,26 @@
 #' Add a margin row (summary) to a data.frame
 #'
-#' @param dat
-#' @param sum_name
-#' @param sum_class
-#' @param default
-#' @param na_rm
+#' @param .dat a `data.frame`
+#' @param ... Pairs of column names and scalars, or functions that
+#'   return scalars. These values will be substituted into the margin row.
+#'   See example.
+#' @param .sum_class Pairs of column classes and scalars, or functions that
+#'   return scalars.
+#' @param .default default value to use if no value exists in `...` or `.sum_class`
+#' @param .na.rm `logical`. Should missing values (including `NaN`) be removed?
 #'
-#' @return
+#' @return a `data.frame`
 #' @export
 #'
+#' @family data.frame tools
+#' @seealso [get_margin_row()]
+#'
 #' @examples
+#'
+#' df_add_margin_row(iris, Species = "Average")
+#' df_add_margin_row(iris, .sum_class = list(numeric = mean, factor = "Average"))
+#'
+#'
 df_add_margin_row <- function(
   .dat,
   ...,
@@ -21,7 +32,7 @@ df_add_margin_row <- function(
     POSIXt = sum
   ),
   .default = NA,
-  .na_rm = FALSE
+  .na.rm = FALSE
 ){
   dplyr::bind_rows(
     .dat,
@@ -29,7 +40,7 @@ df_add_margin_row <- function(
       .dat,
       sum_name = list(...),
       sum_class = .sum_class,
-      na_rm = .na_rm
+      na.rm = .na.rm
     )
   )
 }
@@ -37,6 +48,23 @@ df_add_margin_row <- function(
 
 
 
+#' Get a margin row (summary) of a data.frame
+#'
+#' This function powers `df_add_margin_row()`. The syntax is the same, except
+#' that instead of the dot paramters (`...`) the summary functions for column
+#' names are passed in as a list.
+#'
+#' @param dat
+#' @param sum_name
+#' @param sum_class
+#' @param default
+#' @param na.rm
+#'
+#' @return A list of length `ncol(dat)`.
+#' @seealso [df_add_margin_row()]
+#' @export
+#'
+#' @examples
 get_margin_row <- function(
   dat,
   sum_name = list(),
@@ -48,16 +76,18 @@ get_margin_row <- function(
     POSIXt = sum
   ),
   default = NA,
-  na_rm = FALSE
+  na.rm = FALSE
 ){
   # Preconditions
-  assert_that(inherits(sum_name), "list")
-  assert_that(inherits(sum_class), "list")
+  assert_that(inherits(sum_name, "list"))
+  assert_that(inherits(sum_class, "list"))
   assert_that(all(
     purrr::map_lgl(
       sum_name,
       function(x) is.function(x) || rlang::is_scalar_atomic(x))
   ))
+
+  assert_that(all(names(sum_name) %in% names(dat)))
 
   assert_that(all(
     purrr::map_lgl(
@@ -73,7 +103,7 @@ get_margin_row <- function(
     col            <- dat[[i]]
     col_name       <- names(dat)[[i]]
     col_cls        <- class(dat[[i]])[[1]]
-    if(na_rm)  col <- na.omit(col)
+    if(na.rm)  col <- na.omit(col)
 
 
     if (col_name %in% names(sum_name)) {
@@ -92,6 +122,8 @@ get_margin_row <- function(
     if(is.factor(dat[[i]])){
       res[[i]] <- as.factor(res[[i]])
     }
+
+    assert_that(is.scalar(res[[i]]))
   }
 
 
