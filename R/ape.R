@@ -50,8 +50,8 @@ weighted_mape <- function(true, pred, w = 1, na_rm = TRUE){
 
 #' @rdname weighted_mape
 #' @export
-mape <- function(true, pred, na_rm = TRUE){
-  if(na_rm){
+mape <- function(true, pred, na.rm = TRUE){
+  if(na.rm){
     nas <- union(is.na(true), which(is.na(pred)))
 
     if(!is_empty(nas)){
@@ -68,8 +68,8 @@ mape <- function(true, pred, na_rm = TRUE){
 
 #' @rdname weighted_mape
 #' @export
-mpe <- function(true, pred, na_rm = TRUE){
-  if(na_rm){
+mpe <- function(true, pred, na.rm = TRUE){
+  if(na.rm){
     nas <- union(is.na(true), which(is.na(pred)))
 
     if(!is_empty(nas)){
