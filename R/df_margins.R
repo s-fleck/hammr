@@ -1,12 +1,30 @@
 #' Add a margin row (summary) to a data.frame
 #'
+#' If you want to have a specific value for a specific column in the summary
+#' row, you can do so by specifying this in the dot paramters (`...`). You can
+#' also specify a function that returns a scalar instead. See examples.
+#'
+#' In the same manner you can also modify the summary functions to be used for
+#' column classes. Again, you can also specify scalars instead.
+#' The default is `base::sum()` for `numeric` and `integer`, empty strings for
+#' `character` and `factor`, and `NA` for `Date` and `POSIXt` (Datetime).
+#'
+#' The summary row is added to the source `data.frame` via [dplyr::bind_rows()],
+#' and therefor the dplyr coercion rules apply.
+#' See `vignette("two-table", package = "dplyr")`.
+#'
+#'
 #' @param .dat a `data.frame`
 #' @param ... Pairs of column names and scalars, or functions that
-#'   return scalars. These values will be substituted into the margin row.
-#'   See example.
+#'   return scalars. These values will be substituted into the margin row,
+#'   and override the results of the summary functions defined in .sum_class.
+#'   See examples.
 #' @param .sum_class Pairs of column classes and scalars, or functions that
-#'   return scalars.
-#' @param .default default value to use if no value exists in `...` or `.sum_class`
+#'   return scalars. These functions will be applied to each column that matches
+#'   the specified class.
+#' @param .default A sclar of a function that returns a scalar. Default value
+#'   to use if column name or class could not be matched to any names in `...`
+#'   or `.sum_class`.
 #' @param .na.rm `logical`. Should missing values (including `NaN`) be removed?
 #'
 #' @return a `data.frame`
@@ -18,7 +36,11 @@
 #' @examples
 #'
 #' df_add_margin_row(iris, Species = "Average")
-#' df_add_margin_row(iris, .sum_class = list(numeric = mean, factor = "Average"))
+#'
+#' df_add_margin_row(iris, .sum_class = list(
+#'   numeric = mean,
+#'   factor = hammr::most_frequent
+#' ))
 #'
 #'
 df_add_margin_row <- function(
@@ -29,7 +51,8 @@ df_add_margin_row <- function(
     integer = sum,
     character = "",
     factor = "",
-    POSIXt = sum
+    POSIXt = NA,
+    Date = NA
   ),
   .default = NA,
   .na.rm = FALSE
@@ -52,7 +75,8 @@ df_add_margin_row <- function(
 #'
 #' This function powers `df_add_margin_row()`. The syntax is the same, except
 #' that instead of the dot paramters (`...`) the summary functions for column
-#' names are passed in as a list.
+#' names are passed in as a `list` like sum_class (which makes it a bit safer
+#' to programm with).
 #'
 #' @param dat
 #' @param sum_name
@@ -94,7 +118,6 @@ get_margin_row <- function(
       sum_class,
       function(x) is.function(x) || rlang::is_scalar_atomic(x))
   ))
-
 
 
   res <- vector('list', length(dat))
