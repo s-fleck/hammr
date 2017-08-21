@@ -77,3 +77,33 @@ test_that("reference_date works as expected", {
   )
 
 })
+
+
+
+
+test_that("test print method", {
+  x <- set_dsinfo(
+    iris,
+    name = "iris",
+    title = "iris data set",
+    reference_date = Sys.Date(),
+    sources = dsi_source(title = "wd", path = getwd() )
+  )
+
+  dsinfo(x)
+
+
+  x <- set_dsinfo(
+    iris,
+    name = "iris",
+    title = "iris data set",
+    reference_date = Sys.Date(),
+    sources = dsi_sources(
+      dsi_source(title = "wd", path = getwd() ),
+      dsi_source(title = "wd2", path = getwd() ))
+  )
+
+
+  dsinfo(x)
+
+})

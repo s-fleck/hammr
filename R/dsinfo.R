@@ -135,6 +135,12 @@ set_dsinfo <- function(
   # Processing
     name <- tolower(name)
 
+    if (inherits(sources, "dsinfo_source")){
+      sources <- dsi_sources(sources)
+    }
+
+    assert_that(inherits(sources, "dsinfo_sources"))
+
     info <- c(
       list(
         # hammr recommended
@@ -245,11 +251,13 @@ print.dsinfo <- function(x, ...){
 
   r1 <- character()
 
-  r1[["header"]] <- paste_if_el(x, title_els)
-  r1[['title']] <- paste_if_el(x, "title")
-  r1[['desc']]  <- paste_if_el(x, "description", prefix = '\n', suffix = '\n')
+  r1[["header"]]  <- paste_if_el(x, title_els)
+  r1[['title']]   <- paste_if_el(x, "title")
+  r1[['desc']]    <- paste_if_el(x, "description", prefix = '\n', suffix = '\n')
+  r1[["sources"]] <- paste("sources: ", format_sources(x$sources))
 
-  y <- x[!names(x) %in% union(title_els, c("description", "title"))] %>%
+
+  y <- x[!names(x) %in% union(title_els, c("description", "title", "sources"))] %>%
     lapply(as.character)
   r2 <- sprintf("%s: \t%s", names(y), y)
 
@@ -257,7 +265,7 @@ print.dsinfo <- function(x, ...){
   res <- c(r1, r2)
   res <- res[res != ""]
 
-  invisible(lapply(res, function(x) cat(x, '\n')))
+  invisible(lapply(res, cat, '\n'))
 }
 
 
@@ -284,4 +292,63 @@ paste_if_el <- function(x, els, prefix = NULL, suffix = NULL){
 
 is_dsinfo_name <- function(x){
   isTRUE(grepl("^[A-Za-z0-9_\\.-]*$", x)) && is.scalar(x)
+}
+
+
+
+
+#' Title
+#'
+#' @param title
+#' @param path
+#' @param email
+#' @param date
+#'
+#' @return
+#' @export
+#'
+#' @examples
+dsi_source <- function(title, path = NULL, email = NULL, date = NULL){
+  res <- list(title = title, path = path, email = email, date = date)
+  attr(res, "class") <- c("dsinfo_source", "list")
+  res
+}
+
+
+
+
+#' Title
+#'
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+dsi_sources <- function(...){
+  res <- list(...)
+  assert_that(all(unlist(lapply(res, function(x) inherits(x, "dsinfo_source")))))
+  attr(res, "class") <- c("dsinfo_sources", "list")
+  res
+}
+
+
+
+
+format_sources <- function(x){
+  lapply(x, function(y){
+    y <- unlist(y)
+    y <- y[!is.null(y)]
+    paste("  ", paste(y, collapse = " -- "))
+  }) %>%
+    unlist() %>%
+    paste(collapse = "\n") %>%
+    paste0("\n", .)
+
+
+
+
+
+
+
 }
