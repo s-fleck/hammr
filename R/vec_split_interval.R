@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' vec <- c("a","b","d","e","f","g","h")
-#' vec_chop(vec, 3)
+#' vec_split_interval(vec, 3)
 vec_split_interval <- function(x, interval){
   splt                 <- rep(FALSE, interval)
   splt[1]              <- TRUE

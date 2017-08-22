@@ -19,7 +19,8 @@ Imports:
     lubridate,
     stringi,
     tools,
-    isit
+    isit,
+    rlang
 Suggests:
     dtplyr,
     testthat,

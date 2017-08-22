@@ -215,6 +215,7 @@ format_date_yq_shorter <- function(x){
 #'
 #' @param x a date_yq object
 #' @param y an integer
+#' @param ... currently ingored.
 #'
 #' @md
 #' @rdname date_yq_arithmetic
@@ -283,7 +284,7 @@ format_date_yq_shorter <- function(x){
 
 #' @rdname date_yq_arithmetic
 #' @export
-seq.date_yq <- function(x, y){
+seq.date_yq <- function(x, y, ...){
   res <- seq(x, y)
   as_date_yq(res[(res %% 10) %in% 1:4])
 }

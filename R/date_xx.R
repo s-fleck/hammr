@@ -19,6 +19,9 @@ date_xx <- function(x, subclass){
 
 
 
+#' @param y,q,m Year, Quarter, Month. Quarter and Month are optional and only
+#'   one of both can be set at the same time.
+#'
 #' @rdname date_xx
 #' @export
 #' @return `make_date_xx()` is a helper that returns a valid `date_xx`
@@ -37,7 +40,6 @@ make_date_xx <- function(y, q = NULL, m = NULL){
 
 # is_date_xx --------------------------------------------------------------
 
-#' @param x any R object
 #' @return `is_date_xx` returns `TRUE` or `FALSE` depending on whether its
 #'   argument is of type `date_xx` or not.
 #'

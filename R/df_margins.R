@@ -78,17 +78,23 @@ df_add_margin_row <- function(
 #' names are passed in as a `list` like sum_class (which makes it a bit safer
 #' to programm with).
 #'
-#' @param dat
-#' @param sum_name
-#' @param sum_class
-#' @param default
-#' @param na.rm
+#' @param dat a `data.frame`
+#' @param sum_name A list of column names and scalars or functions that
+#'   return scalars. These values will be substituted into the margin row,
+#'   and override the results of the summary functions defined in .sum_class.
+#'   See examples.
+#' @param sum_class Pairs of column classes and scalars or functions that
+#'   return scalars. These functions will be applied to each column that matches
+#'   the specified class.
+#' @param default A sclar of a function that returns a scalar. Default value
+#'   to use if column name or class could not be matched to any names in `...`
+#'   or `.sum_class`.
+#' @param na.rm `logical`. Should missing values (including `NaN`) be removed?
 #'
 #' @return A list of length `ncol(dat)`.
 #' @seealso [df_add_margin_row()]
 #' @export
 #'
-#' @examples
 get_margin_row <- function(
   dat,
   sum_name = list(),
@@ -126,7 +132,7 @@ get_margin_row <- function(
     col            <- dat[[i]]
     col_name       <- names(dat)[[i]]
     col_cls        <- class(dat[[i]])[[1]]
-    if(na.rm)  col <- na.omit(col)
+    if(na.rm)  col <- stats::na.omit(col)
 
 
     if (col_name %in% names(sum_name)) {
@@ -150,7 +156,7 @@ get_margin_row <- function(
   }
 
 
-  setNames(res, names(dat))
+  stats::setNames(res, names(dat))
 }
 
 

@@ -10,8 +10,11 @@
 #' @return if img is `TRUE` a shiny.tag object, else a character scalar.
 #' @export
 #' @md
+#' @importFrom graphics plot
 #'
 #' @examples
+#'
+#' \dontrun{
 #'
 #' embed_plot(function() plot(cars), width = 200, height = 200)
 #'
@@ -23,6 +26,7 @@
 #'   geom_bar(stat = 'identity')
 #'
 #' embed_plot(p, width = 200, height = 200)
+#' }
 #'
 embed_plot <- function(x, img, ...){
   requireNamespace('knitr')

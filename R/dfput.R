@@ -13,7 +13,7 @@
 #' @export
 dfput <- function(dat, factors = 'simple'){
   assert_that(is.data.frame(dat))
-  assert_that(purrr::is_scalar_character(factors))
+  assert_that(rlang::is_scalar_character(factors))
   assert_that(factors %in% c('character', 'simple', 'full'))
 
 

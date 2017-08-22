@@ -120,7 +120,7 @@ set_dsinfo <- function(
 ){
   # Preconditions
     for(el in c(name, id, title, description, version)){
-      assert_that(is.null(el) || purrr:::is_scalar_character(el))
+      assert_that(is.null(el) || rlang::is_scalar_character(el))
     }
 
     for(el in c(homepage, keywords, source_path, profile)){
@@ -201,7 +201,8 @@ reference_date <- function(x){
 
 
 
-
+#' @param value Value to assign.
+#'
 #' @rdname dsinfo
 #' @export
 `reference_date<-` <- function(x, value){
@@ -297,17 +298,16 @@ is_dsinfo_name <- function(x){
 
 
 
-#' Title
+#' Constructor for dsinfo "source" obects
 #'
-#' @param title
-#' @param path
-#' @param email
-#' @param date
+#' @param title Title of the source
+#' @param path Path to the source
+#' @param email Email address of the source
+#' @param date Date of the source
 #'
-#' @return
+#' @return  `dsi_source()` returns a `dsinfo_source` object.
 #' @export
 #'
-#' @examples
 dsi_source <- function(title, path = NULL, email = NULL, date = NULL){
   res <- list(title = title, path = path, email = email, date = date)
   attr(res, "class") <- c("dsinfo_source", "list")
@@ -317,14 +317,11 @@ dsi_source <- function(title, path = NULL, email = NULL, date = NULL){
 
 
 
-#' Title
+#' @param ... `dsinfo_source` objects.
 #'
-#' @param ...
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @return  `dsi_sources()` returns a `dsinfo_sources` object, which is a list
+#'   of dsinfo_source objects.
+#' @rdname dsi_source
 dsi_sources <- function(...){
   res <- list(...)
   assert_that(all(unlist(lapply(res, function(x) inherits(x, "dsinfo_source")))))
@@ -344,11 +341,4 @@ format_sources <- function(x){
     unlist() %>%
     paste(collapse = "\n") %>%
     paste0("\n", .)
-
-
-
-
-
-
-
 }

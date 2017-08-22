@@ -13,6 +13,7 @@
 #' @param pots A named numeric vector of rounding levels and associated
 #'   shorthand
 #' @param big_mark thousands-sepparator mark
+#' @param sep sepparator between number and prefix
 #'
 #' @return a character vector the same length as the input vector
 #'
@@ -130,7 +131,8 @@ human_num_de   <- function(x){
   human_numbers(
     x,
     symbol = "",
-    pots = c(' Tsd' = 1e3, ' Mio' = 1e6, ' Mrd' = 1e9)
+    sep = "",
+    pots = c('Tsd' = 1e3, 'Mio' = 1e6, 'Mrd' = 1e9)
   )
 }
 

@@ -96,13 +96,13 @@ basename_sans_ext <- function(x){
 weighted_median <- function(x, w = NULL){
 
   if(is.null(w)){
-    return(median(x))
+    return(stats::median(x))
 
   } else {
     assert_that(all(looks_like_integer(w)))
     assert_that(identical(length(x), length(w)))
     w <- as.integer(w)
 
-    return(median(rep(x, w)))
+    return(stats::median(rep(x, w)))
   }
 }

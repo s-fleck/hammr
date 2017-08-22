@@ -3,7 +3,7 @@
 #' `round` rounds the values in its first argument to the specified number of
 #' decimal places.
 #'
-#' @param dat a data.frame
+#' @param x a data.frame
 #' @inheritParams base::round
 #'
 #' @return a data.frame
@@ -19,20 +19,20 @@ df_round <- function(x, digits = 0, ...){
 
 #' @export
 df_round.data.frame <- function(
-  dat,
+  x,
   digits = 0,
   ...
 ){
-  assert_that(is.data.frame(dat))
+  assert_that(is.data.frame(x))
   assert_that(is.number(digits))
 
-  numcols <- which(unlist(lapply(dat, is.numeric)))
+  numcols <- which(unlist(lapply(x, is.numeric)))
 
   for(i in numcols){
-    dat[[i]] <- round(dat[[i]], digits = digits)
+    x[[i]] <- round(x[[i]], digits = digits)
   }
 
-  return(dat)
+  return(x)
 }
 
 
@@ -44,15 +44,15 @@ df_round.data.frame <- function(
 #' @md
 #' @rdname df_round
 #' @export
-df_signif <- function(dat, digits = 0){
-  assert_that(is.data.frame(dat))
+df_signif <- function(x, digits = 0){
+  assert_that(is.data.frame(x))
   assert_that(is.number(digits))
 
-  numcols <- names(dat)[unlist(lapply(dat, is.numeric))]
+  numcols <- names(x)[unlist(lapply(x, is.numeric))]
 
   for(i in numcols){
-    dat[[i]] <- signif(dat[[i]], digits = digits)
+    x[[i]] <- signif(x[[i]], digits = digits)
   }
 
-  return(dat)
+  return(x)
 }

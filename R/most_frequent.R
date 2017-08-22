@@ -2,7 +2,7 @@
 #'
 #' Warning: does not behave in a defined way if several values with the same
 #' frequency occur in `x`. If you are looking for a true implementation of the
-#' statistical mode, pleasre refer to the [modeest] package.
+#' statistical mode, pleasre refer to the modeest package ([modeest::modeest]).
 #'
 #' @param x A vector
 #' @param n number of most frequent elements to get
