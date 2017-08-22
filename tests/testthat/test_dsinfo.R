@@ -25,7 +25,6 @@ test_that("dsinfo works as expected", {
       description = "A dataset created for testing purposes \n* test \n* data",
       homepage = "www.zombo.com",
 
-      sources = "self create",
       contributors = "Foobert Bar",
       keywords = c("test", "data"),
       created = Sys.time(),

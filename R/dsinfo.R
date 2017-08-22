@@ -139,7 +139,7 @@ set_dsinfo <- function(
       sources <- dsi_sources(sources)
     }
 
-    assert_that(inherits(sources, "dsinfo_sources"))
+    assert_that(is.null(sources) || inherits(sources, "dsinfo_sources"))
 
     info <- c(
       list(
