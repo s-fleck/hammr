@@ -6,9 +6,10 @@
 #' * APE: Absolute Percentage Error
 #' * MAPE: Mean Absolute Percentage Error
 #'
-#' @param true
-#' @param pred
-#' @param weights
+#' @param true True baseline values
+#' @param pred Predicted values to assess
+#' @param weights An integer vector vector of the same length as `true` and
+#'   `pred`. If `NULL` no weighting takes place.
 #'
 #' @return
 #'
@@ -24,24 +25,43 @@
 #' @export
 #'
 #' @examples
-weighted_mape <- function(true, pred, w = 1, na_rm = TRUE){
+weighted_mape <- function(
+  true,
+  pred,
+  w = NULL,
+  na_rm = TRUE
+){
+  # Preconditions
+  assert_that(is.numeric(true))
+  assert_that(is.numeric(pred))
+  assert_that(isit::is_equal_length(true, pred))
+  assert_that(is.null(w) || isit::is_equal_length(true, w))
 
-  if(na_rm){
+  if (na_rm) {
     nas <- purrr::reduce(
-      list(which(is.na(true)), which(is.na(pred)), which(is.na(w))),
+      list(
+        which(is.na(true)),
+        which(is.na(pred)),
+        suppressWarnings(which(is.na(w)))
+      ),
       union
     )
 
-    if(!is_empty(nas)){
+    if (!is_empty(nas)) {
       true <- true[-nas]
       pred <- pred[-nas]
-      w    <- w[-nas]
+
+      if (!is.null(w)){
+        w    <- w[-nas]
+      }
     }
   }
 
+  if (!is.null(w)) {
+    true <- rep(true, w)
+    pred <- rep(pred, w)
+  }
 
-  true <- rep(true, w)
-  pred <- rep(pred, w)
   mean(ape(true, pred))
 }
 
@@ -51,10 +71,10 @@ weighted_mape <- function(true, pred, w = 1, na_rm = TRUE){
 #' @rdname weighted_mape
 #' @export
 mape <- function(true, pred, na.rm = TRUE){
-  if(na.rm){
+  if (na.rm) {
     nas <- union(is.na(true), which(is.na(pred)))
 
-    if(!is_empty(nas)){
+    if (!is_empty(nas)) {
       true <- true[-nas]
       pred <- pred[-nas]
     }
@@ -69,10 +89,10 @@ mape <- function(true, pred, na.rm = TRUE){
 #' @rdname weighted_mape
 #' @export
 mpe <- function(true, pred, na.rm = TRUE){
-  if(na.rm){
+  if (na.rm) {
     nas <- union(is.na(true), which(is.na(pred)))
 
-    if(!is_empty(nas)){
+    if (!is_empty(nas)) {
       true <- true[-nas]
       pred <- pred[-nas]
     }
@@ -97,7 +117,7 @@ weighted_mpe <- function(true, pred, weights = 1, na.rm = TRUE){
 
 #' @rdname weighted_mape
 #' @export
-ape = function(true, pred){
+ape <- function(true, pred){
   abs(pe(true, pred))
 }
 
@@ -106,6 +126,6 @@ ape = function(true, pred){
 
 #' @rdname weighted_mape
 #' @export
-pe = function(true, pred){
-  (pred/true - 1) * 100
+pe <- function(true, pred){
+  (pred / true - 1) * 100
 }
