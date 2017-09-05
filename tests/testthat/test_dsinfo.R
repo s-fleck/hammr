@@ -74,6 +74,15 @@ test_that("reference_date works as expected", {
   expect_true(
     has_reference_date(x)
   )
+
+  y <- 2L
+
+  y <- set_reference_date(y, reference_date(x))
+
+  expect_identical(
+    reference_date(x),
+    reference_date(y)
+  )
 })
 
 

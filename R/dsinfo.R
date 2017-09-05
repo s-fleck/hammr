@@ -214,8 +214,10 @@ reference_date <- function(x){
 
 
 
-#' @param y,q,m integer. year, quarter, month. Month and quarter are optional,
-#'  and mutually exclusive (only supply one, not both)
+#' @param y integer (year) or a `date_xx` object.
+#' @param q,m integer. Quarter, month. Month and quarter are optional,
+#'  and mutually exclusive (only supply one, not both). If `y` is a `date_xx`
+#'  `q` and `m` must be `NULL`.
 #'
 #' @return `set_reference_date()` and `'reference_date<-'` can be used to
 #'   directlty set the `reference_date` field of the `dsinfo` attribute of
@@ -225,7 +227,13 @@ reference_date <- function(x){
 #' @export
 #'
 set_reference_date <- function(x, y, q = NULL, m = NULL){
-  value <- make_date_xx(y, q, m)
+  if(is_date_xx(y)){
+    assert_that(is.null(q) && is.null(m))
+    value <- y
+  } else {
+    value <- make_date_xx(y, q, m)
+  }
+
   x <- set_dsinfo(x, reference_date = value)
 }
 
