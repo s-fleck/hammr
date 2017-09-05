@@ -72,6 +72,6 @@ vec_match_seq_internal <- function(sequence, target){
   matches    <- purrr::map(
     iterations, group_matches, matches, sequence, target
   )
-  res <- purrr::at_depth(matches, 1, add_elements)
+  res <- purrr::modify_depth(matches, 1, add_elements)
   unlist(res)
 }
