@@ -113,28 +113,33 @@ human_numbers <- function(
 #' @export
 human_gbp   <- function(x) human_numbers(x, symbol = "\u00A3")
 
+
 #' @rdname human_numbers
 #' @export
 human_usd   <- function(x) human_numbers(x, symbol = "$")
+
 
 #' @rdname human_numbers
 #' @export
 human_euro  <- function(x) human_numbers(x, symbol = "\u20AC")
 
+
 #' @rdname human_numbers
 #' @export
 human_num   <- function(x) human_numbers(x, symbol = "")
 
+
 #' @rdname human_numbers
 #' @export
-human_num_de   <- function(x){
+human_num_de   <- function(x, sep = " "){
   human_numbers(
     x,
     symbol = "",
-    sep = "",
+    sep = sep,
     pots = c('Tsd' = 1e3, 'Mio' = 1e6, 'Mrd' = 1e9)
   )
 }
+
 
 #' @rdname human_numbers
 #' @export
@@ -155,6 +160,7 @@ human_si   <- function(x){
     )
   )
 }
+
 
 #' @rdname human_numbers
 #' @export
