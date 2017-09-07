@@ -270,7 +270,6 @@ print.dsinfo <- function(x, ...){
     lapply(as.character)
   r2 <- sprintf("%s: \t%s", names(y), y)
 
-
   res <- c(r1, r2)
   res <- res[res != ""]
 
@@ -340,13 +339,25 @@ dsi_sources <- function(...){
 
 
 
-format_sources <- function(x){
-  lapply(x, function(y){
-    y <- unlist(y)
-    y <- y[!is.null(y)]
-    paste("  ", paste(y, collapse = " -- "))
-  }) %>%
+format_sources <- function(x, indent = "  "){
+  lapply(x, format_source) %>%
     unlist() %>%
-    paste(collapse = "\n") %>%
-    paste0("\n", .)
+    paste(collapse = paste("\n", indent)) %>%
+    paste0("\n", indent, .)
+}
+
+
+
+
+format_source <- function(x){
+  title <- paste(x$title, x$date, sep = "\t")
+
+  paths   <- purrr::map_chr(x$path, function(x.) paste(" -", x.))
+  emails <- purrr::map_chr(x$email, function(x.) paste(" -", x.))
+
+
+  if(!isit::is_empty(paths))  paths <- c("Paths: ", paths)
+  if(!isit::is_empty(emails)) emails <- c("Contact: ", emails)
+
+  c(title, paths, emails)
 }
