@@ -80,14 +80,14 @@ df_replace_value_num <- function(
 #' @export
 #'
 #' @export
-df_replace_na <- function(dat, replace, inf = FALSE, as_char = FALSE){
+df_replace_na <- function(dat, replace, inf = FALSE, as_char = FALSE, replace_na_string = FALSE){
   UseMethod("df_replace_na")
 }
 
 
 
 
-df_na_replace <- function(dat, replace, inf = FALSE, as_char = FALSE){
+df_na_replace <- function(dat, replace, inf = FALSE, as_char = FALSE, replace_na_string = FALSE){
   .Deprecated("Please use df_replace_na")
   UseMethod("df_replace_na")
 }
@@ -100,7 +100,8 @@ df_replace_na.data.frame <- function(
   dat,
   replace,
   inf = FALSE,
-  as_char = FALSE
+  as_char = FALSE,
+  replace_na_string = FALSE
 ){
   # Precodntions
   assert_that(is.flag(inf))
@@ -117,6 +118,10 @@ df_replace_na.data.frame <- function(
     dat[is.na(dat) | is.infinite(dat)] <- replace
   }
 
+  if(replace_na_string){
+    dat[trimws(as.matrix(dat)) == "NA"] <- replace
+  }
+
   return(dat)
 }
 
@@ -128,19 +133,29 @@ df_replace_na.data.table <- function(
   dat,
   replace,
   inf = FALSE,
-  as_char = FALSE
+  as_char = FALSE,
+  replace_na_string = FALSE
 ){
   assert_that(is.flag(inf))
   res <- data.table::copy(dat)
+
+  string_replace <- function(x){
+    if(replace_na_string){
+      trimws(x) == "NA"
+    } else {
+      FALSE
+    }
+  }
+
 
   if (as_char) {
     res <- na_cols_to_character(res)
   }
 
   if (!inf) {
-    selector <- function(x) which(is.na(x))
+    selector <- function(x) which(is.na(x) | string_replace(x) )
   } else {
-    selector <- function(x) which(is.na(x) | is.infinite(x))
+    selector <- function(x) which(is.na(x) | is.infinite(x) | string_replace(x))
   }
 
   for (j in seq_along(res)) {

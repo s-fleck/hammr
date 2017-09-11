@@ -42,7 +42,6 @@ test_that("df_na_replace works as expected", {
   expect_identical(r2, eres12)
 
 
-
   expect_warning(df_replace_na(tdat, ''))
   expect_silent(df_replace_na(tdat, '', as_char = TRUE))
   expect_silent(r3 <- df_na_blank(tdat))
@@ -61,4 +60,21 @@ test_that("df_na_replace works as expected", {
   expect_identical(r4, eres34)
 
 
+  # replace_na_string behaves as expected
+    eres4 <- data.table::data.table(
+      character = c("1", "", ""),
+      numeric = c("1", "", "0"),
+      integer = c("1", "", "2"),
+      factor = c("a", "", "")
+    )
+
+    expect_equal(
+      df_replace_na(tdat, "", replace_na_string = TRUE, as_char = TRUE),
+      eres4
+    )
+
+    expect_equal(
+      df_replace_na(as.data.frame(tdat), "", replace_na_string = TRUE, as_char = TRUE),
+      as.data.frame(eres4)
+    )
 })
