@@ -1,3 +1,9 @@
+#' A unified format for storing Credentials
+#'
+#' @param dat a `list`
+#' @aliases Credentials
+#'
+#' @export
 credentials <- function(dat){
   class(dat) <- c('Credentials', 'list')
   return(dat)
@@ -6,6 +12,7 @@ credentials <- function(dat){
 
 
 
+#' @rdname credentials
 credentials_db <- function(dat){
   class(dat) <- c('Credentials_db', 'Credentials', 'list')
   return(dat)
