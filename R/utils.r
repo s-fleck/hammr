@@ -106,3 +106,19 @@ weighted_median <- function(x, w = NULL){
     return(stats::median(rep(x, w)))
   }
 }
+
+
+
+
+#' Title
+#'
+#' Print each element of `x` in a single line
+#'
+#' @param x a vector or list of elements that can be handled by [cat()]
+#'
+#' @return `x` (invisibly)
+#' @export
+cat_lines <- function(x){
+  for(el in x)  cat(el, "\n")
+  invisible(x)
+}
