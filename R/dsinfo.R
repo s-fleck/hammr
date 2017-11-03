@@ -395,7 +395,7 @@ dsi_sources_from_paths <- function(paths){
 format_sources <- function(x, indent = "  "){
   lapply(x, format_source) %>%
     unlist() %>%
-    paste(collapse = paste("\n", indent)) %>%
+    paste0(collapse = paste0("\n", indent)) %>%
     paste0("\n", indent, .)
 }
 
@@ -404,12 +404,19 @@ format_sources <- function(x, indent = "  "){
 format_source <- function(x){
   title <- paste(x$title, x$date, sep = "\t")
 
-  paths   <- purrr::map_chr(x$path, function(x.) paste(" -", x.))
-  emails <- purrr::map_chr(x$email, function(x.) paste(" -", x.))
+  paths  <- purrr::map_chr(x$path, function(x.) paste("   -", x.))
+
+  if (!isit::is_empty(x$email)) {
+    emails <- paste(x$email, collapse = ", ")
+  } else {
+    emails <- NULL
+  }
 
 
-  if(!isit::is_empty(paths))  paths <- c("Paths: ", paths)
-  if(!isit::is_empty(emails)) emails <- c("Contact: ", emails)
+
+
+  if(!isit::is_empty(paths))  paths  <- c("  Paths: ", paths)
+  if(!isit::is_empty(emails)) emails <- paste("  Contact: ", emails)
 
   c(title, paths, emails)
 }
