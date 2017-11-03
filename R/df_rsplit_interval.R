@@ -1,3 +1,12 @@
+#' Title
+#'
+#' @param x
+#' @param interval
+#'
+#' @return
+#' @export
+#'
+#' @examples
 df_rsplit_interval <- function(x, interval = 10){
   splits <- c(seq(1, nrow(x), by = interval), nrow(x) + 1)
 

@@ -2,6 +2,11 @@
 
 * added wday2: ISO compliant wrapper for lubridate::wday
 * combat updates for purrr 0.2.3 and dplyr 0.7.0
+* added `add_subclass()` utility function
+* added `dsi_sources_from_paths()` helper function for generating sources for
+  `dsinfo()`
+* added `df_rsplit_interval()` to split a `data.frame` by row at regular 
+  intervals 
 
 # hammr 1.0.1
 
