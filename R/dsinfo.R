@@ -41,7 +41,7 @@
 #'   should conform to the Semantic Versioning requirements. See http://semver.org/
 #' @param sources The raw sources for this dataset. It MUST be a list of
 #'   Source objects. Each Source object MAY have title, path and email
-#'   properties.
+#'   properties. See [dsi_sources]
 #' @param contributors The people or organizations who contributed to this
 #'   dataset. It MUST be a list. Each entry is a Contributor and MUST be an
 #'   object. A Contributor MUST have a name property and MAY contain path,
@@ -51,9 +51,9 @@
 #' @param created a Datetime scalar
 #' @param reference_date Reference date for the data set. May be a [base::Date],
 #'   [base::POSIXt], [hammr::date_xx] or a [lubridate::period].
-#' @param source_date Creation date of the source file(s) that the dataset
+#' @param source_date Deprecated. Creation date of the source file(s) that the dataset
 #'   `x` was created from.
-#' @param source_path Path to the source file
+#' @param source_path Deprecated. Path to the source file
 #'
 #' @param image Provided for compatability with the Data Package standard. An
 #'   image to use for this data package. For example, when showing the package
@@ -305,7 +305,11 @@ is_dsinfo_name <- function(x){
 
 
 
-#' Constructor for dsinfo "source" obects
+#' Create sources for dsinfo
+#'
+#'
+#' `dsi_source()` is a constructor for the component objects that make up a
+#' `dsi_sources()` object (a single source file or person).
 #'
 #' @param title Title of the source
 #' @param path Path to the source
@@ -324,16 +328,65 @@ dsi_source <- function(title, path = NULL, email = NULL, date = NULL){
 
 
 
-#' @param ... `dsinfo_source` objects.
+#' `dsi_sources()` and `dsi_sources_list()` are constructors for objects that
+#' can be used for the `source` parameter of [dsinfo()] (a list of sources)
 #'
-#' @return  `dsi_sources()` returns a `dsinfo_sources` object, which is a list
-#'   of dsinfo_source objects.
+#' @param ... `dsinfo_source` objects.
+#' @export
+#' @return  `dsi_sources()`, `dsi_sources_list()`, and `dsi_sources_from_paths()`
+#'   return a `dsinfo_sources` object, which is a list of `dsinfo_source`
+#'   objects.
 #' @rdname dsi_source
+#'
 dsi_sources <- function(...){
-  res <- list(...)
-  assert_that(all(unlist(lapply(res, function(x) inherits(x, "dsinfo_source")))))
-  attr(res, "class") <- c("dsinfo_sources", "list")
-  res
+  dsi_sources_list(list(...))
+}
+
+
+
+
+#' @param sources a list of `dsinfo_source` objects.
+#' @export
+#'
+#' @rdname dsi_source
+#'
+dsi_sources_list <- function(sources){
+  assert_that(all(
+    purrr::map_lgl(sources, function(x) inherits(x, "dsinfo_source"))
+  ))
+  attr(sources, "class") <- c("dsinfo_sources", "list")
+  sources
+}
+
+
+
+
+#' `dsi_sources_from_paths()` is a helper function to automatically creates a
+#' `dsi_sources` object from file system paths.
+#'
+#' @export
+#' @param paths `character` vector of file system paths
+#' @return `dsi_sources_from_paths` returns a `dsi_sources` object.
+#' @rdname dsi_source
+#'
+#' @examples
+#' x <- set_dsinfo(
+#'   iris,
+#'   title = "Iris",
+#'   sources = dsi_sources(
+#'     dsi_source("R demo data", date = Sys.Date()),
+#'     dsi_source("Alfred Bogus", email = "alfred@bogus.xx")
+#'   )
+#' )
+#'
+#' dsinfo(x)
+#'
+dsi_sources_from_paths <- function(paths){
+  dsi_sources_list(
+    lapply(paths, function(x){
+        dsi_source(title = basename(x), path = x, date = file.info(x)$mtime)
+    })
+  )
 }
 
 
@@ -345,7 +398,6 @@ format_sources <- function(x, indent = "  "){
     paste(collapse = paste("\n", indent)) %>%
     paste0("\n", indent, .)
 }
-
 
 
 
