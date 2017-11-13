@@ -7,6 +7,7 @@
   `dsinfo()`
 * added `df_rsplit_interval()` to split a `data.frame` by row at regular 
   intervals 
+* added `vec_enum()` to enumerate elements of vectors
 
 # hammr 1.0.1
 
