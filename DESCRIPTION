@@ -21,12 +21,12 @@ Imports:
     tools,
     isit,
     rlang,
+    forcats,
     digest
 Suggests:
     dtplyr,
     testthat,
     bit64,
-    forcats,
     ggplot2,
     tatoo,
     shiny,

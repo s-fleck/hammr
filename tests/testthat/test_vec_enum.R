@@ -8,12 +8,11 @@ test_that("vec_enum works as expected", {
   z2 <- list(cars, cars, cars, iris)
 
   expect_identical(
-    vec_enum(x, y, z1), c(1L, 3L, 2L, 3L)
+    vec_enum(x, y, z1), c(1L, 2L, 3L, 2L)
   )
 
   expect_identical(
-    vec_enum(x, y, z2), c(1L, 3L, 2L, 4L)
+    vec_enum(x, y, z2), c(1L, 2L, 3L, 4L)
   )
-
-
 })
+
