@@ -131,7 +131,7 @@ get_quarter.date_ym <- function(x){
 
 #' @export
 get_month.date_ym <- function(x){
-  as.integer(x %% 100)
+  as.integer(as.integer(x) %% 100)
 }
 
 
