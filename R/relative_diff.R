@@ -7,6 +7,6 @@
 #' @export
 #'
 #' @examples
-relative_diff <- function(x, y, fun = function(.x, .y) (x + y) / 2 ){
+relative_diff <- function(x, y, fun = function(.x, .y) pmax(.x, .y) ){
     abs(x - y) / fun(x, y)
 }
