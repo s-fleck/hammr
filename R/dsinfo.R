@@ -127,7 +127,7 @@ set_dsinfo <- function(
       assert_that(is.null(el) || is.character(el))
     }
 
-    assert_that(is.null(reference_date) || inherits(reference_date, c('Date', 'POSIXt', 'Interval', 'date_xx')))
+    assert_that(is.null(reference_date) || is_reference_date(reference_date) )
     assert_that(is.null(name) || is_dsinfo_name(name))
     # license
 
@@ -180,6 +180,20 @@ set_dsinfo <- function(
 
 
 
+#' Title
+#'
+#' @param x
+#' @param value
+#'
+#' @return
+#' @export
+#'
+`dsinfo<-` <- function(x, value){
+  attr(x, 'dsinfo') <- value
+  x
+}
+
+
 
 # reference_date --------------------------------------------------------
 
@@ -206,8 +220,17 @@ reference_date <- function(x){
 #' @rdname dsinfo
 #' @export
 `reference_date<-` <- function(x, value){
-  assert_that(is_date_xx(value))
-  x <- set_dsinfo(x, reference_date = value)
+  assert_that(is_reference_date(value))
+
+  dsi <- hammr::dsinfo(x)
+
+  if (inherits(dsi, "dsinfo")){
+    dsi$reference_date <- value
+    attr(x, "dsinfo") <- dsi
+  } else {
+    x <- set_dsinfo(x, reference_date = value)
+  }
+
   x
 }
 
@@ -419,4 +442,10 @@ format_source <- function(x){
   if(!isit::is_empty(emails)) emails <- paste("  Contact: ", emails)
 
   c(title, paths, emails)
+}
+
+
+
+is_reference_date <- function(x){
+  inherits(x, c('Date', 'POSIXt', 'Interval', 'date_xx'))
 }
