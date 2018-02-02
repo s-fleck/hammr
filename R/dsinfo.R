@@ -141,7 +141,7 @@ set_dsinfo <- function(
 
 
   # Processing
-    name <- tolower(name)
+    if (!is.null(name)) name <- tolower(name)
 
     if (inherits(sources, "dsinfo_source")){
       sources <- dsi_sources(sources)
