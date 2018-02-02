@@ -77,4 +77,14 @@ test_that("df_na_replace works as expected", {
       df_replace_na(as.data.frame(tdat), "", replace_na_string = TRUE, as_char = TRUE),
       as.data.frame(eres4)
     )
+
+
+  # NaNs are replaced
+    tdat <- data.table(x = NaN)
+    tres <- hammr::df_replace_na(tdat, 99)
+    expect_identical(tres[[1]][[1]], 99)
+
+    tdat <- data.frame(x = NaN)
+    tres <- hammr::df_replace_na(tdat, 99)
+    expect_identical(tres[[1]][[1]], 99)
 })

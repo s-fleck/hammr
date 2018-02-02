@@ -9,6 +9,7 @@
   intervals 
 * added `vec_enum()` to enumerate elements of vectors
 * `relative_diff()` for calculating relative difference between numbers
+* `set_dsinfo()` now supports `.add` paramter 
 
 # hammr 1.0.1
 

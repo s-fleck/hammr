@@ -113,3 +113,25 @@ test_that("test print method", {
 
   dsinfo(x)
 })
+
+
+
+
+test_that("dsinfo .add = TRUE works as expected", {
+  x <- set_dsinfo(
+    iris,
+    name = "iris",
+    title = "iris data set",
+    reference_date = Sys.Date(),
+    sources = dsi_source(title = "wd", path = getwd() ),
+    .add = TRUE
+  )
+
+  expect_identical(dsinfo(x)$title, "iris data set")
+  expect_identical(dsinfo(x)$name,  "iris")
+
+  x <- set_dsinfo(x, name = "iris2", .add = TRUE)
+
+  expect_identical(dsinfo(x)$title, "iris data set")
+  expect_identical(dsinfo(x)$name,  "iris2")
+})

@@ -74,6 +74,12 @@
 #' @return `dsinfo()` returns the `desinfo` attribute of `x` (or `NULL` if there
 #'   is none).
 #'
+#' @param .add if `FALSE` (default), the complete `dsinfo` attribute is
+#'   replaced, dropping values that are not present in the new attribute.
+#'   If `TRUE`, the new values are added to the existing `dsinfo`
+#'   attribute (values that exist in the original and new dsinfo are still
+#'   replaced by the new values).
+#'
 #' @export
 #'
 dsinfo <- function(x){
@@ -116,7 +122,8 @@ set_dsinfo <- function(
   # data package-compat
   profile = NULL,  #recommended
   image = NULL,  #optional
-  ...
+  ...,
+  .add = FALSE
 ){
   # Preconditions
     for(el in c(name, id, title, description, version)){
@@ -129,6 +136,7 @@ set_dsinfo <- function(
 
     assert_that(is.null(reference_date) || is_reference_date(reference_date) )
     assert_that(is.null(name) || is_dsinfo_name(name))
+    assert_that(is.flag(.add))
     # license
 
 
@@ -168,6 +176,15 @@ set_dsinfo <- function(
       ),
       list(...)
     )
+
+
+  if (.add){
+    old_info <- dsinfo(x)
+
+    for (nm in names(old_info)){
+      if (is.null(info[[nm]])) info[[nm]] <- old_info[[nm]]
+    }
+  }
 
 
   info <- info[!unlist(lapply(info, is.null))]
