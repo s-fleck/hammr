@@ -16,12 +16,30 @@
 #' @export
 #' @rdname assert_class
 assert_class <- function(dat, class){
+  .Deprecated("use inherits")
   assert_that(inherits(dat, class))
 }
+
+
 
 
 #' @export
 #' @rdname assert_class
 `%assert_class%` <- function(dat, class){
   assert_class(dat = dat, class = class)
+}
+
+
+
+
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+assert_namespace <- function(x){
+  assert_that(requireNamespace(x, quietly = TRUE))
 }
