@@ -33,8 +33,11 @@ sqlgen_create_table <- function(
   dialect = NULL
 ){
   # preconditions
-    assert_that(is.scalar(table_name))
+    assert_that(rlang::is_scalar_character(table_name))
+    assert_that(is.character(col_names))
+    assert_that(is.character(col_types))
     assert_that(length(col_names) %identical% length(col_types))
+
     assert_that(all(
       is.na(col_names) == FALSE |
       is.na(col_names) == is.na(col_types)
@@ -45,9 +48,6 @@ sqlgen_create_table <- function(
       length(col_options %identical% length(col_names))
     )
 
-    table_name %assert_class% 'character'
-    col_names  %assert_class% 'character'
-    col_types  %assert_class% 'character'
     col_types  <- toupper(col_types)
 
 

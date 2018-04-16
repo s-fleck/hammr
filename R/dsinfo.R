@@ -297,23 +297,47 @@ has_reference_date <- function(x){
 print.dsinfo <- function(x, ...){
 
   title_els <- c("id", "name", "reference_date", "version")
-
   r1 <- character()
 
-  r1[["header"]]  <- paste_if_el(x, title_els)
+  if ("reference_date" %in% names(x)){
+    x[["reference_date"]] <- as.character(x[["reference_date"]])
+  }
+
+  header_title <- paste(purrr::compact(x[c("id", "name")]), collapse = " - ")
+  header_title <- colt::clt_chr_accent(header_title)
+  version <- paste(
+    format(purrr::compact(x[c("version", "reference_date")])),
+    collapse = " - "
+  )
+  version <- colt::clt_chr_subtle(paste("(", version, ")", collapse = "", sep = ""))
+
+  r1[["header"]]  <- paste(header_title, version)
+
   r1[['title']]   <- paste_if_el(x, "title")
   r1[['desc']]    <- paste_if_el(x, "description", prefix = '\n', suffix = '\n')
-  r1[["sources"]] <- paste("sources: ", format_sources(x$sources))
+
+  if (identical(r1[["desc"]], "")){
+    r1[["desc"]] <- "\t"
+  }
+
+  r1[["sources"]] <- paste(colt::clt_maybe("sources:"), format_sources(x$sources))
 
 
   y <- x[!names(x) %in% union(title_els, c("description", "title", "sources"))] %>%
     lapply(as.character)
-  r2 <- sprintf("%s: \t%s", names(y), y)
 
-  res <- c(r1, r2)
+  if (length(y) > 0){
+    r2 <- paste0(colt::clt_maybe(paste0(names(y), ":")), "\n  ", colt::clt_chr_subtle(y))
+    res <- c(r1, r2)
+  } else {
+    res <- r1
+  }
+
+
   res <- res[res != ""]
 
   invisible(lapply(res, cat, '\n'))
+  invisible(x)
 }
 
 
@@ -442,21 +466,20 @@ format_sources <- function(x, indent = "  "){
 
 
 format_source <- function(x){
-  title <- paste(x$title, x$date, sep = "\t")
 
-  paths  <- purrr::map_chr(x$path, function(x.) paste("   -", x.))
-
-  if (!isit::is_empty(x$email)) {
-    emails <- paste(x$email, collapse = ", ")
+  if (!is.null(x$date)){
+    title <- paste(
+      x$title,
+      colt::clt_chr_subtle(paste0("(", x$date, ")"))
+    )
   } else {
-    emails <- NULL
+    title <- x$title
   }
 
+  paths  <- purrr::map_chr(x$path,  function(x.) colt::clt_chr_subtle(paste("   -", x.)))
+  emails <- purrr::map_chr(x$email, function(x.) colt::clt_chr_subtle(paste("   -", x.)))
 
-
-
-  if(!isit::is_empty(paths))  paths  <- c("  Paths: ", paths)
-  if(!isit::is_empty(emails)) emails <- paste("  Contact: ", emails)
+  if(!isit::is_empty(emails)) emails <- paste(emails)
 
   c(title, paths, emails)
 }
