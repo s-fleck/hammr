@@ -303,13 +303,17 @@ print.dsinfo <- function(x, ...){
     x[["reference_date"]] <- as.character(x[["reference_date"]])
   }
 
-  header_title <- paste(purrr::compact(x[c("id", "name")]), collapse = " - ")
+  header_title <- paste(purrr::compact(x[c("id", "name")]), collapse = ": ")
   header_title <- colt::clt_chr_accent(header_title)
   version <- paste(
     format(purrr::compact(x[c("version", "reference_date")])),
     collapse = " - "
   )
-  version <- colt::clt_chr_subtle(paste("(", version, ")", collapse = "", sep = ""))
+
+  if (!is_blank(version)){
+    version <- colt::clt_chr_subtle(paste("(", version, ")", collapse = "", sep = ""))
+  }
+
 
   r1[["header"]]  <- paste(header_title, version)
 

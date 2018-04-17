@@ -122,3 +122,8 @@ cat_lines <- function(x){
   for(el in x)  cat(el, "\n")
   invisible(x)
 }
+
+
+
+
+is_blank <- function(x) trimws(x) == ""

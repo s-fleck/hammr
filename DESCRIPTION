@@ -1,7 +1,7 @@
 Package: hammr
 Type: Package
 Title: Simple and Convenient Utilities
-Version: 1.0.1.9004
+Version: 1.0.1.9005
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: A collection of tools that encapsulate simple but common tasks
@@ -22,7 +22,8 @@ Imports:
     isit,
     rlang,
     forcats,
-    digest
+    digest,
+    colt
 Suggests:
     dtplyr,
     testthat,

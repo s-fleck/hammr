@@ -18,6 +18,23 @@ test_that("dsinfo sources print nicely", {
     homepage = "http://www.blah.bl"
   )
 
+  dsinfo(x)
+
+
+  x <- set_dsinfo(
+    iris,
+    id = "iris001",
+    name = "iris_dataset",
+    title = "The Iris Dataset",
+    sources = dsi_sources(
+      dsi_source("R demo data", path = "path/to/data", date = Sys.Date()),
+      dsi_source("Alfred Bogus", email = c("alfred@bogus.xx", "alfred.bogus@yahoo.ru"))
+    )
+  )
+
+  dsinfo(x)
+
+
   x <- gvtool::read_archive("road-rda/gvk_plausapp/gvk_plausapp_2017-2018.2018-04-16.rds")
 
   dsinfo(x)

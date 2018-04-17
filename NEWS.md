@@ -10,13 +10,11 @@
 * added `vec_enum()` to enumerate elements of vectors
 * `relative_diff()` for calculating relative difference between numbers
 * `set_dsinfo()` now supports `.add` paramter 
+* better `print.dsinfo()` that supports terminal colors
+
 
 # hammr 1.0.1
 
 * added dsinfo: set and display information about a data set
 * added df_value_replace_if: replace a value in data frame columns that match
   a predicate
-
-
-
-
