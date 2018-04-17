@@ -8,7 +8,7 @@
 #' @family data.frame tools
 #' @export
 df_trimws <- function(dat, process_factors = FALSE){
-  dat %assert_class% 'data.frame'
+  assert_that(is.data.frame(dat))
 
   for(i in seq_along(dat)){
     if('character' %in% class(dat[[i]])){
