@@ -322,7 +322,10 @@ print.dsinfo <- function(x, ...){
     r1[["desc"]] <- "\t"
   }
 
-  r1[["sources"]] <- paste(colt::clt_maybe("sources:"), format_sources(x$sources))
+  if (!is.null(x$sources)){
+    r1[["sources"]] <- paste(colt::clt_maybe("sources:"), format_sources(x$sources))
+  }
+
 
 
   y <- x[!names(x) %in% union(title_els, c("description", "title", "sources"))] %>%
