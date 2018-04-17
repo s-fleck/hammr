@@ -17,7 +17,6 @@ test_that("dsinfo sources print nicely", {
     description = paste(rep("blah", 200), collapse = " "),
     homepage = "http://www.blah.bl"
   )
-
   dsinfo(x)
 
 
@@ -31,12 +30,10 @@ test_that("dsinfo sources print nicely", {
       dsi_source("Alfred Bogus", email = c("alfred@bogus.xx", "alfred.bogus@yahoo.ru"))
     )
   )
-
   dsinfo(x)
 
 
   x <- gvtool::read_archive("road-rda/gvk_plausapp/gvk_plausapp_2017-2018.2018-04-16.rds")
-
   dsinfo(x)
 
 })

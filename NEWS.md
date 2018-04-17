@@ -1,6 +1,6 @@
 # hammr 1.0.1.9000
 
-* added wday2: ISO compliant wrapper for lubridate::wday
+* added wday2: ISO compliant wrapper for `lubridate::wday()` (i.e. Monday is day 1)
 * combat updates for purrr 0.2.3 and dplyr 0.7.0
 * added `add_subclass()` utility function
 * added `dsi_sources_from_paths()` helper function for generating sources for

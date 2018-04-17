@@ -20,6 +20,7 @@
 #'   interpretation. Version distinction SHOULD be left to the version property.
 #'   As a corollary, the name also SHOULD NOT include an indication of time
 #'   range covered.
+#'
 #' @param id A property reserved for globally unique identifiers. Examples of
 #'   identifiers that are unique include UUIDs and DOIs.
 #'
@@ -30,30 +31,35 @@
 #'   uniqueness cannot be validated, consumers using the id property MUST ensure
 #'   identifiers are globally unique.
 #' @param license The license(s) under which the dataset is provided.
+#'
 #' @param title A string providing a title or one sentence description for this dataset
+#'
 #' @param description a description of the dataset. The description MUST be
 #'   markdown formatted -- this also allows for simple plain text as plain text
 #'   is itself valid markdown. The first paragraph (up to the first double line
 #'   break) should be usable as summary information for the dataset.
 #'
 #' @param homepage A URL for the home on the web that is related to this dataset.
+#'
 #' @param version a version string identifying the version of the dataset. It
 #'   should conform to the Semantic Versioning requirements. See http://semver.org/
+#'
 #' @param sources The raw sources for this dataset. It MUST be a list of
 #'   Source objects. Each Source object MAY have title, path and email
 #'   properties. See [dsi_sources]
+#'
 #' @param contributors The people or organizations who contributed to this
 #'   dataset. It MUST be a list. Each entry is a Contributor and MUST be an
 #'   object. A Contributor MUST have a name property and MAY contain path,
 #'   email, role and organization properties.
+#'
 #' @param keywords An character vector of keywords to assist users
 #'   searching for the dataset in catalogs.
+#'
 #' @param created a Datetime scalar
+#'
 #' @param reference_date Reference date for the data set. May be a [base::Date],
 #'   [base::POSIXt], [hammr::date_xx] or a [lubridate::period].
-#' @param source_date Deprecated. Creation date of the source file(s) that the dataset
-#'   `x` was created from.
-#' @param source_path Deprecated. Path to the source file
 #'
 #' @param image Provided for compatability with the Data Package standard. An
 #'   image to use for this data package. For example, when showing the package
@@ -62,7 +68,7 @@
 #'   The value of the image property MUST be a string pointing to the location
 #'   of the image. The string must be a url-or-path, that is a fully qualified
 #'   HTTP address, or a relative POSIX path (see the url-or-path definition in
-#' Data Resource for details).
+#'   Data Resource for details).
 #'
 #' @param profile for compatability with the Data Package standard. A string
 #'   identifying the profile of this descriptor as per the profiles
@@ -106,10 +112,6 @@ set_dsinfo <- function(
   # data-package recommended
   license = NULL,
 
-  # hammr-optional
-  source_date = NULL,
-  source_path = NULL,
-
   # data-package optional
   title = NULL,
   description = NULL,
@@ -130,7 +132,7 @@ set_dsinfo <- function(
       assert_that(is.null(el) || rlang::is_scalar_character(el))
     }
 
-    for(el in c(homepage, keywords, source_path, profile)){
+    for(el in c(homepage, keywords, profile)){
       assert_that(is.null(el) || is.character(el))
     }
 
@@ -159,10 +161,6 @@ set_dsinfo <- function(
 
         # data-package recommended
         license = license,
-
-        # hammr-optional
-        source_date = source_date,
-        source_path = source_path,
 
         # data-package optional
         title = title,
