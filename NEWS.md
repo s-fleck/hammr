@@ -1,4 +1,9 @@
-# hammr 1.0.1.9000
+# hammr 1.0.2.9000
+
+* `dsinfo()` and all `date_xx` functions moved to separate packages **dsinfo** and **dint**
+
+
+# hammr 1.0.2
 
 * added wday2: ISO compliant wrapper for `lubridate::wday()` (i.e. Monday is day 1)
 * combat updates for purrr 0.2.3 and dplyr 0.7.0
