@@ -13,6 +13,17 @@
 #' @export
 #'
 #' @examples
+#'
+#' vec_enum(c("a", "a", "b", "a"))
+#' vec_enum(list(iris, cars, iris, cars, cars))
+#'
+#' x <- data.frame(
+#'   color1 = c("blue", "red", "blue", "green", "red"),
+#'   color2 = c("dog", "cat", "dog", "cat", "dog")
+#' )
+#'
+#' vec_enum(x$color1, x$color2)
+#'
 vec_enum <- function(
   ...
 ){

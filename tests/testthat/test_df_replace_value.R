@@ -1,10 +1,10 @@
 context("df_na0")
 
 
-test_that("df_na_replace works as expected", {
-  #* @testing df_na_replace
-  #* @testing df_na_replace.data.frame
-  #* @testing df_na_replace.data.table
+test_that("df_replace_na works as expected", {
+  #* @testing df_replace_na
+  #* @testing df_replace_na.data.frame
+  #* @testing df_replace_na.data.table
   #* @testing df_na0
 
 

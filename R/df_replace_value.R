@@ -68,34 +68,51 @@ df_replace_value_num <- function(
 #'
 #' Replaces all `NA`s and `NAN`s in a data.frame or data.table with `replace`.
 #'
-#' @param dat a data.frame or data.table
+#' @param dat a `data.frame` or `data.table`
 #' @param as_char logical. if `TRUE`  each column where a value will be
 #'   replaced is automatically converted to `character` (useful when dealing
 #'   with factors).
-#' @inheritParams na_replace
+#' @param inf logical. if `TRUE` also replaces `Inf` values
+#' @param replace_na_string logical. if `TRUE` also replaces `"NA"` strings
 #'
 #' @return A data.frame with all `NA`s replaced by `replace`
 #' @md
 #' @family data.frame tools
 #' @export
 #'
-#' @export
-df_replace_na <- function(dat, replace, inf = FALSE, as_char = FALSE, replace_na_string = FALSE){
+#' @examples
+#' x <- data.frame(
+#'   ok  = c(1, 2, 3),
+#'   NAs = c(NA, Inf, NaN),
+#'   NAs2 = c("NA", "NA", "dog"),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' df_replace_na(x, "*")
+#' df_replace_na(x, "*", inf = TRUE)
+#' df_replace_na(x, "*", replace_na_string = TRUE)
+#'
+df_replace_na <- function(
+  dat,
+  replace,
+  inf = FALSE,
+  as_char = FALSE,
+  replace_na_string = FALSE
+){
+  assert_that(is.scalar(replace))
+  assert_that(rlang::is_scalar_logical(inf))
+  assert_that(rlang::is_scalar_logical(as_char))
+  assert_that(rlang::is_scalar_logical(replace_na_string))
+
   UseMethod("df_replace_na")
 }
 
 
 
 
-df_na_replace <- function(dat, replace, inf = FALSE, as_char = FALSE, replace_na_string = FALSE){
-  .Deprecated("Please use df_replace_na")
-  UseMethod("df_replace_na")
-}
-
-
-
 
 #' @export
+#' @rdname df_replace_na
 df_replace_na.data.frame <- function(
   dat,
   replace,
@@ -112,10 +129,11 @@ df_replace_na.data.frame <- function(
     dat <- na_cols_to_character(dat)
   }
 
+
   if (!inf) {
     dat[is.na(dat)] <- replace
   } else {
-    dat[is.na(dat) | is.infinite(dat)] <- replace
+    dat[is.na(dat) | vapply(dat, is.infinite, c(FALSE, FALSE, FALSE))] <- replace
   }
 
   if(replace_na_string){

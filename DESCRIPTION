@@ -1,5 +1,5 @@
-Package: hammr
 Type: Package
+Package: hammr
 Title: Simple and Convenient Utilities
 Version: 1.0.2.9000
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
@@ -7,33 +7,33 @@ Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: A collection of tools that encapsulate simple but common tasks
   in expressively named functions. 
 License: MIT + file LICENSE
-Imports:
+Imports: 
     assertthat,
-    magrittr,
-    utils,
-    devtools,
+    colt,
     data.table,
-    dplyr (>= 0.7.0),
-    purrr (>= 0.2.3),
-    tibble,
-    lubridate,
-    stringi,
-    tools,
-    isit,
-    rlang,
-    forcats,
+    devtools,
     digest,
-    colt
-Suggests:
-    dtplyr,
-    testthat,
+    dplyr (>= 0.7.0),
+    forcats,
+    isit,
+    lubridate,
+    magrittr,
+    purrr (>= 0.2.3),
+    rlang,
+    stringi,
+    tibble,
+    tools,
+    utils
+Suggests: 
     bit64,
+    dtplyr,
     ggplot2,
-    tatoo,
-    shiny,
+    htmltools,
     knitr,
-    htmltools
-LazyData: TRUE
-RoxygenNote: 6.0.1
-Roxygen: list(markdown = TRUE)
+    shiny,
+    tatoo,
+    testthat
 Encoding: UTF-8
+LazyData: TRUE
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1

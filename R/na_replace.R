@@ -29,5 +29,5 @@ na_replace.default <- function(x, replace, inf = FALSE, ...){
 
 #' @export
 na_replace.data.frame <- function(x, replace, inf, ...){
-  df_na_replace(x, replace, inf, ...)
+  df_replace_na(x, replace, inf, ...)
 }

@@ -135,9 +135,9 @@ is_blank <- function(x) trimws(x) == ""
 #'
 #' Write + in front of poistive numbers
 #'
-#' @param x
+#' @param x a `numeric` vector
 #'
-#' @return
+#' @return a `character` vector
 #' @export
 #'
 #' @examples
