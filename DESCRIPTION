@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Simple and Convenient Utilities
-Version: 1.0.2.9001
+Version: 1.0.2.9002
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: A collection of tools that encapsulate simple but common tasks
@@ -11,7 +11,6 @@ Imports:
     assertthat,
     colt,
     data.table,
-    devtools,
     digest,
     dplyr (>= 0.7.0),
     forcats,
@@ -26,13 +25,12 @@ Imports:
     utils
 Suggests: 
     bit64,
-    dtplyr,
     ggplot2,
     htmltools,
     knitr,
     shiny,
-    tatoo,
-    testthat
+    testthat,
+    testthis
 Encoding: UTF-8
 LazyData: TRUE
 Roxygen: list(markdown = TRUE)
