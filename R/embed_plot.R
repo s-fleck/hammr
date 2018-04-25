@@ -23,23 +23,23 @@
 #'   cars,
 #'   aes(x = speed, y = dist)
 #' ) +
-#'   geom_bar(stat = 'identity')
+#'   geom_bar(stat = "identity")
 #'
 #' embed_plot(p, width = 200, height = 200)
 #' }
 #'
 embed_plot <- function(x, img, ...){
-  requireNamespace('knitr')
-  requireNamespace('htmltools')
-  UseMethod('embed_plot')
+  assert_namespace("knitr")
+  assert_namespace("htmltools")
+  UseMethod("embed_plot")
 }
 
 
 
 #' @export
 embed_plot.function <- function(x, img = TRUE, ...){
-  requireNamespace('shiny')
-  tf <- paste0(tempfile(), '.png')
+  assert_namespace("shiny")
+  tf <- paste0(tempfile(), ".png")
   shiny::plotPNG(filename = tf, func = x, ...)
   res <- knitr::image_uri(tf)
 
@@ -54,8 +54,8 @@ embed_plot.function <- function(x, img = TRUE, ...){
 
 #' @export
 embed_plot.ggplot <- function(x, img = TRUE, ...){
-  requireNamespace('ggplot2')
-  tf <- paste0(tempfile(), '.png')
+  assert_namespace("ggplot2")
+  tf <- paste0(tempfile(), ".png")
 
   func = function() plot(x)
 
