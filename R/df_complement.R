@@ -76,13 +76,13 @@ df_complement <- function(
   fill = NA
 ){
   # Pre-conditions
-    assert_that(isit::all_are_distinct(names(dat)))
-    assert_that(isit::all_are_distinct(names(complement)))
+    assert_that(all_are_distinct(names(dat)))
+    assert_that(all_are_distinct(names(complement)))
 
     assert_that(is.list(complement))
     assert_that(all(names(complement) %in% names(dat)))
 
-    assert_that(suppressWarnings(isit::all_are_identical(
+    assert_that(suppressWarnings(all_are_identical(
       lapply(complement, length))
     ))
 
@@ -150,11 +150,11 @@ df_complement2 <- function(
   fill = NA
 ){
   # Pre-conditions
-    assert_that(isit::all_are_distinct(names(df1)))
-    assert_that(isit::all_are_distinct(names(df2)))
+    assert_that(all_are_distinct(names(df1)))
+    assert_that(all_are_distinct(names(df2)))
     assert_that(
       is.character(complement_cols) &&
-      isit::all_are_distinct(complement_cols)   &&
+      all_are_distinct(complement_cols) &&
       length(complement_cols) > 0
     )
 

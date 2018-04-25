@@ -34,7 +34,7 @@ weighted_mape <- function(
   # Preconditions
   assert_that(is.numeric(true))
   assert_that(is.numeric(pred))
-  assert_that(is.null(w) || isit::is_equal_length(true, w))
+  assert_that(is.null(w) || is_equal_length(true, w))
 
   if (na.rm) {
     nas <- purrr::reduce(
@@ -130,6 +130,6 @@ ape <- function(true, pred){
 #' @rdname weighted_mape
 #' @export
 pe <- function(true, pred){
-  assert_that(isit::is_equal_length(true, pred))
+  assert_that(is_equal_length(true, pred))
   (pred / true - 1) * 100
 }
