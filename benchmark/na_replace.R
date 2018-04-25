@@ -16,4 +16,4 @@ f2 <- function(x, replace){
 tdat <- sample(c(1,2, NA_real_), 1e5, replace = TRUE)
 
 
-microbenchmark(f1(tdat, 0), f2(tdat, 0), times = 1)
+microbenchmark(f1(tdat, 0), f2(tdat, 0), times = 10)
