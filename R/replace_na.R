@@ -9,16 +9,28 @@
 #' @family vector tools
 #' @export
 #'
-na_replace <- function(x, replace, inf = FALSE, ...){
+replace_na <- function(
+  x,
+  replace,
+  inf = FALSE,
+  ...
+){
   assert_that(is.scalar(replace))
   assert_that(is.flag(inf))
-  UseMethod('na_replace')
+  UseMethod("na_replace")
 }
 
 
+
+
 #' @export
-na_replace.default <- function(x, replace, inf = FALSE, ...){
-  if(!inf){
+replace_na.default <- function(
+  x,
+  replace,
+  inf = FALSE,
+  ...
+){
+  if (!inf){
     x[is.na(x)] <- replace
   } else {
     x[is.na(x) | is.infinite(x)] <- replace
@@ -27,7 +39,14 @@ na_replace.default <- function(x, replace, inf = FALSE, ...){
 }
 
 
+
+
 #' @export
-na_replace.data.frame <- function(x, replace, inf, ...){
+replace_na.data.frame <- function(
+  x,
+  replace,
+  inf,
+  ...
+){
   df_replace_na(x, replace, inf, ...)
 }
