@@ -72,6 +72,7 @@ df_replace_value_num <- function(
 #' @param as_char logical. if `TRUE`  each column where a value will be
 #'   replaced is automatically converted to `character` (useful when dealing
 #'   with factors).
+#' @param replace value to replace `NAs` with.
 #' @param inf logical. if `TRUE` also replaces `Inf` values
 #' @param replace_na_string logical. if `TRUE` also replaces `"NA"` strings
 #'
