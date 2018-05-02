@@ -17,7 +17,7 @@ replace_na <- function(
 ){
   assert_that(is.scalar(replace))
   assert_that(is.flag(inf))
-  UseMethod("na_replace")
+  UseMethod("replace_na")
 }
 
 
