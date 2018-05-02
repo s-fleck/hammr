@@ -126,11 +126,6 @@ cat_lines <- function(x){
 
 
 
-is_blank <- function(x) trimws(x) == ""
-
-
-
-
 #' Convert number to text and add sign
 #'
 #' Write + in front of poistive numbers
@@ -148,3 +143,10 @@ add_sign <- function(x){
   y[x > 0] <- paste0("+", x[x > 0])
   y
 }
+
+
+
+
+# Internal ----------------------------------------------------------------
+
+is_blank <- function(x) trimws(x) == ""
