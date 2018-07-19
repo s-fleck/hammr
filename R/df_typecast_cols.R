@@ -157,7 +157,14 @@ cfun <- function(x){
 
 
 as.numeric2   <- function(x) as.numeric(as.character(x))
-as.integer2   <- function(x) as.integer(as.character(x))
+as.integer2   <- function(x) {
+  if (is.factor(x)){
+    as.integer(as.character(x))
+  } else {
+    as.integer(x)
+  }
+}
+
 as.integer642 <- function(x) {
   if(requireNamespace('bit64')){
     bit64::as.integer64(as.character(x))
