@@ -103,7 +103,7 @@ human_numbers <- function(
     }
   }
 
-  vapply(x, humanity, FUN.VALUE = character('1'), pots, symbol)
+  vapply(x, humanity, FUN.VALUE = character(1), pots, symbol)
 }
 
 
