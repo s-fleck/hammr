@@ -8,10 +8,10 @@
 #' @examples
 #'
 #' \dontrun{
-#' char_to_col_spec(c("integer", "logical", "numeric"))
+#' char_to_colspec(c("integer", "logical", "numeric"))
 #' }
 #'
-char_to_col_spec <- function(x){
+char_to_colspec <- function(x){
   assert_namespace("readr")
 
   y <- vector("list", length(x))
@@ -36,3 +36,17 @@ char_to_col_spec <- function(x){
 
 
 
+get_colspec <- function(x){
+  UseMethod("get_colspec")
+}
+
+
+
+get_colspec.data.frame <- function(x){
+
+  data.table::data.table(
+    col_names = names(x),
+    col_types = vapply(x, function(x) class(x)[[1]], "")
+  )
+
+}
