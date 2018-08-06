@@ -57,6 +57,8 @@ df_add_margin_row <- function(
   .default = NA,
   .na.rm = FALSE
 ){
+  assert_namespace("dplyr")
+
   dplyr::bind_rows(
     .dat,
     get_margin_row(

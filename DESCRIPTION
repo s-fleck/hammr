@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Simple and Convenient Utilities
-Version: 1.0.2.9002
+Version: 1.0.2.9003
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: An assortment of simple and useful utility functions.
@@ -11,7 +11,6 @@ Imports:
     colt,
     data.table,
     digest,
-    dplyr (>= 0.7.0),
     forcats,
     isit,
     lubridate,
@@ -23,6 +22,7 @@ Imports:
     tools,
     utils
 Suggests: 
+    dplyr (>= 0.7.0),
     bit64,
     ggplot2,
     htmltools,

@@ -76,17 +76,14 @@ df_complement <- function(
   fill = NA
 ){
   # Pre-conditions
-    assert_that(all_are_distinct(names(dat)))
-    assert_that(all_are_distinct(names(complement)))
-
-    assert_that(is.list(complement))
-    assert_that(all(names(complement) %in% names(dat)))
-
-    assert_that(suppressWarnings(all_are_identical(
-      lapply(complement, length))
-    ))
-
-    assert_that(length(complement) > 0)
+    assert_that(
+      all_are_distinct(names(dat)),
+      all_are_distinct(names(complement)),
+      is.list(complement),
+      all(names(complement) %in% names(dat)),
+      suppressWarnings(all_are_identical(lapply(complement, length))),
+      length(complement) > 0
+    )
 
 
   # Setup
@@ -158,14 +155,15 @@ df_complement2 <- function(
       length(complement_cols) > 0
     )
 
-  # add missing rows
-    c1 <- df2 %>%
-      dplyr::select_(.dots = complement_cols) %>%
-      as.list()
+  # init
+    is_dt <- is.data.table(df1) || is.data.table(df2)
+    df1 <- data.table::copy(as.data.table(df1))
+    df2 <- data.table::copy(as.data.table(df2))
 
-    c2 <- df1 %>%
-      dplyr::select_(.dots = complement_cols) %>%
-      as.list()
+
+  # add missing rows
+    c1 <- as.list(df2)[complement_cols]
+    c2 <- as.list(df1)[complement_cols]
 
     res <- list(
       df1 = df_complement(df1, complement = c1),
@@ -201,22 +199,17 @@ df_complement2 <- function(
 
 
   # Post-conditions
-    rescc1 <- res$df1 %>%
-      dplyr::select_(.dots = complement_cols)
-    rescc2 <- res$df1 %>%
-      dplyr::select_(.dots = complement_cols)
+    rescc1 <- res$df1[, complement_cols, with = FALSE]
+    rescc2 <- res$df2[, complement_cols, with = FALSE]
 
-    assert_that(rescc1 %identical% unique(rescc1))
-    assert_that(rescc2 %identical% unique(rescc2))
+    assert_that(
+      identical(rescc1, unique(rescc1)),
+      identical(rescc2, unique(rescc2)),
+      isTRUE(all.equal(unique(rescc1), unique(rescc2), ignore.row.order = TRUE)),
+      identical(nrow(res$df1), nrow(res$df2)),
+      identical(names(res$df1), names(res$df2))
+    )
 
-
-    assert_that(identical(
-      nrow(res$df1), nrow(res$df2)
-    ))
-
-    assert_that(identical(
-      names(res$df1), names(res$df2)
-    ))
 
   unname(res)
 }

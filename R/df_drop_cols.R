@@ -19,6 +19,7 @@ df_drop_cols <- function(dat, drop, allow_partial = TRUE){
   assert_that(is.data.frame(dat))
   assert_that(is.character(drop))
   assert_that(is.flag(allow_partial))
+  assert_namespace("dplyr")
 
   if(allow_partial){
     drop <- drop[drop %in% names(dat)]

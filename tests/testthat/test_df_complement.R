@@ -84,7 +84,7 @@ test_that("df_complement2 works as expected", {
 
   expect_error(
     df_complement2(df1, df2, c('g1', 'g2')),
-    'is not TRUE'
+    'not identical'
   )
 
   expect_silent(
