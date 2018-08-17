@@ -147,16 +147,16 @@ df_complement2 <- function(
   fill = NA
 ){
   # Pre-conditions
-    assert_that(all_are_distinct(names(df1)))
-    assert_that(all_are_distinct(names(df2)))
     assert_that(
-      is.character(complement_cols) &&
-      all_are_distinct(complement_cols) &&
+      all_are_distinct(names(df1)),
+      all_are_distinct(names(df2)),
+      is.character(complement_cols),
+      all_are_distinct(complement_cols),
       length(complement_cols) > 0
     )
 
   # init
-    is_dt <- is.data.table(df1) || is.data.table(df2)
+    is_dt <- data.table::is.data.table(df1) || data.table::is.data.table(df2)
     df1 <- data.table::copy(as.data.table(df1))
     df2 <- data.table::copy(as.data.table(df2))
 
