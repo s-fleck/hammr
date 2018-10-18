@@ -101,7 +101,7 @@ df_complement <- function(
 
   # Logic
     for(i_comp in seq_along(complement[[1]])){
-      values <- purrr::map(complement, extract_values, i_comp)
+      values <- lapply(complement, extract_values, i_comp)
 
       for(i_row in seq_len(nrow(dd))){
         is_match <- identical(

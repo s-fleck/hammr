@@ -27,14 +27,16 @@
 vec_enum <- function(
   ...
 ){
+  assert_namespace("digest")
+  assert_namespace("forcats")
   x <- list(...)
 
   assert_that(all(
-  purrr::map_lgl(
-    x, ~ rlang::is_vector(x) && identical(length(.x), length(x[[1]]))
+    vapply(
+      x, function(.x) { identical(length(.x), length(x[[1]])) }, logical(1)
   )))
 
-  purrr::map(x, ~ purrr::map_chr(.x, digest::digest)) %>%
+  lapply(x, function(.x) vapply(.x, digest::digest, character(1))) %>%
     simplify2array() %>%
     apply(1, paste, collapse = "--") %>%
     forcats::fct_inorder() %>%

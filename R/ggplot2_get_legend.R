@@ -14,7 +14,7 @@ get_legend <- function(x) {
     ggplot2::ggplot_gtable() %>%
     magrittr::extract2('grobs')
 
-  sel <- which(purrr::map_lgl(grobs, function(x) x$name == "guide-box"))
+  sel <- which(vapply(grobs, function(x) x$name == "guide-box", logical(1)))
 
   grobs[[sel]]
 }

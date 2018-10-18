@@ -57,6 +57,7 @@ vec_match_seq_lgl <- function(sequence, target){
 # utils -------------------------------------------------------------------
 
 vec_match_seq_internal <- function(sequence, target){
+  assert_namespace("purrr")
   group_matches <- function(x, matches, sequence, target){
     sub <- seq.int(x, (length(sequence) + x - 1L))
     matches[sub]
@@ -64,12 +65,12 @@ vec_match_seq_internal <- function(sequence, target){
 
   add_elements <- function(...){
     tmp <- list(...)[[1]]
-    all(purrr::map_lgl(seq_along(tmp), function(x) tmp[[x]][[x]]))
+    all(vapply(seq_along(tmp), function(x) tmp[[x]][[x]], logical(1)))
   }
 
-  matches    <- purrr::map(target, equal_or_na, sequence)
+  matches    <- lapply(target, equal_or_na, sequence)
   iterations <- seq_len(length(target) - length(sequence) + 1)
-  matches    <- purrr::map(
+  matches    <- lapply(
     iterations, group_matches, matches, sequence, target
   )
   res <- purrr::modify_depth(matches, 1, add_elements)

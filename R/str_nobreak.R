@@ -18,7 +18,7 @@
 #' )
 #'
 str_nobreak <- function(x, replace_linebreak = " "){
-  assert_that(rlang::is_scalar_character(replace_linebreak))
+  assert_that(is_scalar_character(replace_linebreak))
   y <- gsub("\r?\n|\r", replace_linebreak, x)
   gsub('[ ]{2,}', ' ', y)
 }

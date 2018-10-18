@@ -32,8 +32,11 @@ sqlgen_create_table <- function(
   col_options = NULL,
   dialect = NULL
 ){
+  assert_namespace("stringi")
+  .Deprecated(msg = "Bitte tabde verwenden")
+
   # preconditions
-    assert_that(rlang::is_scalar_character(table_name))
+    assert_that(is_scalar_character(table_name))
     assert_that(is.character(col_names))
     assert_that(is.character(col_types))
     assert_that(length(col_names) %identical% length(col_types))

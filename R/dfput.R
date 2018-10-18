@@ -12,9 +12,11 @@
 #' @return dat (invisibly)
 #' @export
 dfput <- function(dat, factors = 'simple'){
-  assert_that(is.data.frame(dat))
-  assert_that(rlang::is_scalar_character(factors))
-  assert_that(factors %in% c('character', 'simple', 'full'))
+  assert_that(
+    is.data.frame(dat),
+    is_scalar_character(factors),
+    factors %in% c('character', 'simple', 'full')
+  )
 
 
   lines <- character()

@@ -114,17 +114,21 @@ get_margin_row <- function(
   assert_that(inherits(sum_name, "list"))
   assert_that(inherits(sum_class, "list"))
   assert_that(all(
-    purrr::map_lgl(
+    vapply(
       sum_name,
-      function(x) is.function(x) || rlang::is_scalar_atomic(x))
+      function(x) {is.function(x) || is_scalar_atomic(x)},
+      logical(1)
+    )
   ))
 
   assert_that(all(names(sum_name) %in% names(dat)))
 
   assert_that(all(
-    purrr::map_lgl(
+    vapply(
       sum_class,
-      function(x) is.function(x) || rlang::is_scalar_atomic(x))
+      function(x) {is.function(x) || is_scalar_atomic(x)},
+      logical(1)
+    )
   ))
 
 

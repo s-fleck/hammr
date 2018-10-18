@@ -11,6 +11,8 @@
 #' @export
 #'
 wday2 <- function(x, label = FALSE, abbr = TRUE){
+  assert_namespace("lubridate")
+  assert_namespace("forcats")
   res <- lubridate::wday(x = x, label = label, abbr = abbr)
 
   if(label){

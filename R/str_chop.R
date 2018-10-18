@@ -20,6 +20,7 @@
 #' # [1] "234" "56"  "789" "a"   ""
 #'
 str_chop <- function(x, breaks){
+  assert_namespace("stringi")
   res <- vector()
 
   res[1] <- stringi::stri_sub(x, breaks[1], breaks[2])

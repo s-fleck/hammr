@@ -35,6 +35,7 @@ weighted_mape <- function(
   assert_that(is.numeric(true))
   assert_that(is.numeric(pred))
   assert_that(is.null(w) || is_equal_length(true, w))
+  assert_namespace("purrr")
 
   if (na.rm) {
     nas <- purrr::reduce(

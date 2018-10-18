@@ -124,8 +124,8 @@ df_compute.data.frame <- function(
   # identify numeric columns
     select_columns <- function(x) class(x) %in% coltypes
 
-    numcols     <- which(purrr::map_lgl(dat1, select_columns))
-    numcols_chk <- which(purrr::map_lgl(dat2, select_columns))
+    numcols     <- which(vapply(dat1, select_columns, logical(1)))
+    numcols_chk <- which(vapply(dat2, select_columns, logical(1)))
     assert_that(identical(numcols, numcols_chk))
 
   # Apply the function columnwise
@@ -134,7 +134,7 @@ df_compute.data.frame <- function(
       value <- fun(dat1[[i]], dat2[[i]], ...)
       assert_that(
         identical(length(value), nrow(dat1)) &&
-        purrr::is_vector(value)
+        is.atomic(value)
       )
       res[[i]] <- value
     }

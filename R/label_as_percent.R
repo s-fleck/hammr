@@ -23,7 +23,7 @@ label_as_percent <- function(
   digits = 0
 ){
   assert_that(is.numeric(x))
-  assert_that(rlang::is_scalar_character(format))
+  assert_that(is_scalar_character(format))
   assert_that(is.number(digits))
 
   sprintf(

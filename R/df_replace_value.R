@@ -208,6 +208,8 @@ df_na_blank <- function(dat, inf = FALSE){
 # utils -------------------------------------------------------------------
 
 na_cols_to_character <- function(dat){
+  assert_namespace("purrr")
+
   dat[] <- purrr::map_if(dat, anyNA, function(x){
     x[is.nan(x)] <- NA
     as.character(x)

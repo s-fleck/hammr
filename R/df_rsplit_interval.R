@@ -12,7 +12,7 @@
 #'
 df_rsplit_interval <- function(x, interval = 10){
   assert_that(is.data.frame(x))
-  assert_that(rlang::is_scalar_integerish(interval))
+  assert_that(is_scalar_integerish(interval))
 
   splits <- c(seq(1L, nrow(x), by = interval), nrow(x) + 1L)
 

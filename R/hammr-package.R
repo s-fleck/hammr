@@ -1,7 +1,7 @@
 #' Package misc ultity functions
 #'
 #'
-#' @import assertthat isit
+#' @import assertthat
 #' @importFrom magrittr %>%
 #' @importFrom data.table data.table as.data.table ":="
 #'
