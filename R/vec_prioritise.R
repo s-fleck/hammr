@@ -27,7 +27,7 @@ vec_prioritise <- function (x, high, low) {
 #' @rdname vec_prioritise
 #' @export
 #'
-vec_prioritise <- vec_prioritise
+vec_prioritize <- vec_prioritise
 
 
 #' @rdname vec_prioritise
