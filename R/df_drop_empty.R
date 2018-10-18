@@ -15,7 +15,7 @@
 #'
 df_drop_empty <- function(dat){
   dat %>%
-    df_drop_cols() %>%
+    df_drop_empty_cols() %>%
     df_drop_empty_rows()
 }
 
