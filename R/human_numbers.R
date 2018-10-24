@@ -43,7 +43,7 @@ human_numbers <- function(
 ){
   assert_that(is.numeric(x))
   assert_that(is.scalar(symbol))
-  assert_that(sort(pots) %identical% pots)
+  assert_that(identical(sort(pots), pots))
   assert_that(is.scalar(big_mark) && is.character(big_mark))
 
   rounder <- function(y) {

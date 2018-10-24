@@ -26,14 +26,14 @@ dfput <- function(dat, factors = 'simple'){
       value <- utils::capture.output(dput(dat[[i]]))
 
     } else {
-      if (factors %identical% 'character'){
+      if (identical(factors, 'character')){
         value <- utils::capture.output(dput(as.character(dat[[i]]))) %>%
           paste(collapse = '')
-      } else if (factors %identical% 'simple') {
+      } else if (identical(factors, 'simple')) {
         tmp <- utils::capture.output(dput(as.character(dat[[i]]))) %>%
           paste(collapse = '')
         value <- sprintf('factor(%s)', tmp)
-      } else if (factors %identical% 'full'){
+      } else if (identical(factors, 'full')){
         value <- utils::capture.output(dput(dat[[i]])) %>%
           paste(collapse = '')
       } else {

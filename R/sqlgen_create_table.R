@@ -39,7 +39,7 @@ sqlgen_create_table <- function(
     assert_that(is_scalar_character(table_name))
     assert_that(is.character(col_names))
     assert_that(is.character(col_types))
-    assert_that(length(col_names) %identical% length(col_types))
+    assert_that(identical(length(col_names), length(col_types)))
 
     assert_that(all(
       is.na(col_names) == FALSE |
@@ -48,7 +48,7 @@ sqlgen_create_table <- function(
 
     assert_that(
       is.null(col_options) ||
-      length(col_options %identical% length(col_names))
+      length(identical(col_options, length(col_names)))
     )
 
     col_types  <- toupper(col_types)
