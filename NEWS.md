@@ -6,6 +6,8 @@
 * remove dependency on **dplyr**
 
 
+
+
 # hammr 1.0.2
 
 * added wday2: ISO compliant wrapper for `lubridate::wday()` (i.e. Monday is day 1)
@@ -19,6 +21,8 @@
 * `relative_diff()` for calculating relative difference between numbers
 * `set_dsinfo()` now supports `.add` paramter 
 * better `print.dsinfo()` that supports terminal colors
+
+
 
 
 # hammr 1.0.1

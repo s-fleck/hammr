@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Simple and Convenient Utilities
-Version: 1.0.2.9004
+Version: 1.0.2.9006
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: An assortment of simple and useful utility functions.
