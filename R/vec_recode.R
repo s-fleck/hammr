@@ -12,6 +12,7 @@
 #' @param to a vector. must be the same length as `from` (can be a `factor`)
 #'
 #'
+#' @export
 #' @return a vector of the same type as `to`
 #'
 vec_recode <- function(

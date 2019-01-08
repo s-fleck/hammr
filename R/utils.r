@@ -146,6 +146,22 @@ add_sign <- function(x){
 
 
 
+#' Title
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+words_to_vector <- function(x){
+  res <- strsplit(x, split = " ", fixed = TRUE)[[1]]
+  res <- gsub("\n", "", res)
+  res <- res[!is_blank(res)]
+  cat(paste0("c(", paste0('"', sort(unique(res)), '"', collapse = ", "), ")"))
+  res
+}
+
 
 # Internal ----------------------------------------------------------------
 

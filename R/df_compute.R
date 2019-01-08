@@ -158,15 +158,15 @@ assert_valid_id_vars <- function(dat1, dat2, id_vars){
     )
   }
 
-  x1 <- dat1 %>%
-    dplyr::select_(.dots = id_vars) %>%
-    dplyr::arrange_(.dots = id_vars)
+  dat1 <- data.table::as.data.table(dat1)
+  dat2 <- data.table::as.data.table(dat2)
 
-  x2 <- dat2 %>%
-    dplyr::select_(.dots = id_vars) %>%
-    dplyr::arrange_(.dots = id_vars)
+  x1 <- dat1[, ..id_vars]
+  data.table::setkeyv(x1, id_vars)
+  x2 <- dat2[, ..id_vars]
+  data.table::setkeyv(x2, id_vars)
 
-  assert_that(identical(x1, x2))
+  assert_that(identical(as.data.frame(x1), as.data.frame(x2)))
 }
 
 

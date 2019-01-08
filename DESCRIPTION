@@ -8,7 +8,6 @@ Description: An assortment of simple and useful utility functions.
 License: MIT + file LICENSE
 Imports: 
     assertthat,
-    colt,
     data.table,
     magrittr,
     tools,
@@ -31,4 +30,4 @@ Suggests:
 Encoding: UTF-8
 LazyData: TRUE
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
