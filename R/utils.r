@@ -99,8 +99,8 @@ weighted_median <- function(x, w = NULL){
     return(stats::median(x))
 
   } else {
-    assert_that(all(looks_like_integer(w)))
-    assert_that(identical(length(x), length(w)))
+    assert(is_integerish(w))
+    assert(identical(length(x), length(w)))
     w <- as.integer(w)
 
     return(stats::median(rep(x, w)))
@@ -146,20 +146,22 @@ add_sign <- function(x){
 
 
 
-#' Title
+#' Conver Space Sepparated Words To Vector
 #'
-#' @param x
+#' @param x a `character` scalar
 #'
-#' @return
+#' @return a `character` vector (invsibily). Also prints copy-and-pasteable
+#'   version of the vector [base::dput()]
 #' @export
 #'
 #' @examples
+#' words_to_vector("lorem ipsum")
 words_to_vector <- function(x){
   res <- strsplit(x, split = " ", fixed = TRUE)[[1]]
   res <- gsub("\n", "", res)
   res <- res[!is_blank(res)]
   cat(paste0("c(", paste0('"', sort(unique(res)), '"', collapse = ", "), ")"))
-  res
+  invisible(res)
 }
 
 

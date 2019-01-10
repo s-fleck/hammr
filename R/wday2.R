@@ -1,8 +1,8 @@
 #' Get Weekday Component of a date-time (ISO 8601 Compliant)
 #'
 #' A wrapper for [lubridate::wday()] that returns the weekdays in `ISO 8601`
-#' order (Monday is first), while [lubridate] uses the freedom order (Sunday
-#' is first).
+#' order (Monday is first), while `lubridate::wday()`
+#' uses freedom order (Sunday is first).
 #'
 #' @inheritParams lubridate::wday
 #'

@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Simple and Convenient Utilities
-Version: 1.0.2.9006
+Version: 1.0.2.9007
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: An assortment of simple and useful utility functions.
@@ -13,21 +13,21 @@ Imports:
     tools,
     utils
 Suggests: 
-    rlang,
-    stringi,
-    purrr (>= 0.2.3),
-    digest,
-    forcats,
-    tibble,
-    lubridate,
-    dplyr (>= 0.7.0),
     bit64,
+    digest,
+    dplyr (>= 0.7.0),
+    forcats,
     ggplot2,
     htmltools,
     knitr,
+    lubridate,
+    purrr (>= 0.2.3),
+    rlang,
     shiny,
+    stringi,
     testthat,
-    testthis
+    testthis,
+    tibble
 Encoding: UTF-8
 LazyData: TRUE
 Roxygen: list(markdown = TRUE)

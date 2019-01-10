@@ -17,7 +17,7 @@ stamp_path <- function(
 ){
   switch(
     stamp,
-    ":date:" = format(Sys.date(), "%Y%m%d"),
+    ":date:" = format(Sys.Date(), "%Y%m%d"),
     ":time:" = format(Sys.time(), "H%M%S"),
     ":timestamp:" = format(Sys.time(), "%Y%m%dT%H%M%S")
   )

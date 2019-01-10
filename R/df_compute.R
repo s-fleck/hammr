@@ -146,6 +146,10 @@ df_compute.data.frame <- function(
 
 
 assert_valid_id_vars <- function(dat1, dat2, id_vars){
+
+  # for R CMD CHECK
+  ..id_vars <- NULL; rm(..id_vars)
+
   if(is.null(id_vars)) return(TRUE)
 
   assert_that(is.character(id_vars))
