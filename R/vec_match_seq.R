@@ -68,6 +68,8 @@ vec_match_seq_internal <- function(sequence, target){
     all(vapply(seq_along(tmp), function(x) tmp[[x]][[x]], logical(1)))
   }
 
+  equal_or_na <- function(x, y)  x == y | is.na(x) | is.na(y)
+
   matches    <- lapply(target, equal_or_na, sequence)
   iterations <- seq_len(length(target) - length(sequence) + 1)
   matches    <- lapply(

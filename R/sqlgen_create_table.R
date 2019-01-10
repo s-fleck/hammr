@@ -132,5 +132,6 @@ check_sql_types_db2 <- function(col_types){
     )
   }
 
-  all_with_warning(res)
+
+  res
 }

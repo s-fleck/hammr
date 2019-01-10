@@ -3,7 +3,7 @@
 #' @param x a `character` vector
 #' @param stamp an atomic scalar. Before it is added to the output path between
 #'   the filename and the file extension it is passed through [base::format()].
-#'   The special strings `":date:"`, `":time:`, `":timestamp:"` can be used for
+#'   The special strings `":date:"`, `":time:"`, `":timestamp:"` can be used for
 #'   the current date/time/datetime in ISO format without separators.
 #' @param ... passed on to  `base::format()`
 #'

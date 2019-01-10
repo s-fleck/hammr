@@ -17,6 +17,7 @@ Suggests:
     stringi,
     purrr (>= 0.2.3),
     digest,
+    forcats,
     tibble,
     lubridate,
     dplyr (>= 0.7.0),
