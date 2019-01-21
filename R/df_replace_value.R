@@ -101,9 +101,9 @@ df_replace_na <- function(
   replace_na_string = FALSE
 ){
   assert_that(is.scalar(replace))
-  assert_that(rlang::is_scalar_logical(inf))
-  assert_that(rlang::is_scalar_logical(as_char))
-  assert_that(rlang::is_scalar_logical(replace_na_string))
+  assert_that(is_scalar_logical(inf))
+  assert_that(is_scalar_logical(as_char))
+  assert_that(is_scalar_logical(replace_na_string))
 
   UseMethod("df_replace_na")
 }

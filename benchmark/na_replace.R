@@ -6,7 +6,7 @@ f1 <- function(x, replace){
 }
 
 f2 <- function(x, replace){
-  dplyr::case_when(
+  lest::case_when(
     is.na(x) ~ replace,
     TRUE  ~ x
   )

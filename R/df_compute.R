@@ -71,7 +71,6 @@ df_compute <- function(
   assert_that(is.function(fun))
   assert_that(is.character(coltypes))
   assert_valid_id_vars(dat1, dat2, id_vars)
-  assert_namespace("dplyr")
 
   UseMethod('df_compute')
 }
