@@ -12,7 +12,15 @@
 #'
 stamp_path <- function(
   x,
-  stamp = format(Sys.time(), "%Y%m%dT%H%M%S"),
+  stamp = Sys.time(),
+  stamp_fmt = {
+    if (inherits(stamp, "Date")) "%Y%m%d"
+    else if (inherits(stamp, "POSIXt")) "%Y%m%dT%H%M%S"
+    else if (dint::is_date_yq(stamp)) "%Yq%q"
+    else if (dint::is_date_ym(stamp)) "%Ym%m"
+    else if (dint::is_date_yw(stamp)) "%Ym%v"
+    else NULL
+  },
   ...
 ){
   switch(
@@ -23,9 +31,15 @@ stamp_path <- function(
   )
 
 
+  if (!is.null(stamp_fmt)){
+    stamp <- format(stamp, format = stamp_fmt)
+  } else {
+    stamp <- format(stamp, ...)
+  }
+
   stopifnot(is_scalar_atomic(stamp))
   stopifnot(is.character(x))
-  stamp <- format(stamp, ...)
+
   bp  <- tools::file_path_sans_ext(x)
   ext <- substr(x, nchar(bp) + 1, nchar(x))
 
