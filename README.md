@@ -1,6 +1,11 @@
 hammr
 =====
 
-hammr is a collection of various utility functions that my other packages use.
-You might find some useful stuff in here, but the package is not to yet 
-stable and the documentation is lacking. use at your own risk.
+An assortment of utility functions originally developed for the Austrian freight 
+transport statistics, but with general applicability. Hammr is an experimental
+package and API stability is not guranteed; however, parts of hammr that have 
+proven useful in the past were  were refactored into their own packages, such as 
+  [dint](https://github.com/s-fleck/dint),
+  [dsinfo](https://github.com/s-fleck/dint),
+  and [tabde](https://github.com/s-fleck/dint).
+  

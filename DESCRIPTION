@@ -1,10 +1,11 @@
 Type: Package
 Package: hammr
-Title: Simple and Convenient Utilities
+Title: Assorted Utility Functions
 Version: 1.0.2.9008
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
-Description: An assortment of simple and useful utility functions.
+Description: An assortment of utility functions originally developed for the 
+  Austrian freight transport statistics, but with general applicability. 
 License: MIT + file LICENSE
 Imports: 
     assertthat,
