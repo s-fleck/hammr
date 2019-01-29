@@ -4,6 +4,7 @@
 #' decimal places.
 #'
 #' @param x a data.frame
+#' @param ignore `character` vector. columns of `x` that should not be rounded
 #' @inheritParams base::round
 #'
 #' @return a data.frame
@@ -12,7 +13,7 @@
 #' @family data.frame tools
 #' @seealso [round()], [signif()]
 #' @export
-df_round <- function(x, digits = 0, ...){
+df_round <- function(x, digits = 0, ignore = NULL, ...){
   UseMethod('df_round')
 }
 
@@ -21,12 +22,16 @@ df_round <- function(x, digits = 0, ...){
 df_round.data.frame <- function(
   x,
   digits = 0,
+  ignore = NULL,
   ...
 ){
   assert_that(is.data.frame(x))
   assert_that(is.number(digits))
+  assert(is.null(ignore) || all(ignore %in% names(x)))
 
-  numcols <- which(unlist(lapply(x, is.numeric)))
+  numcols <- vapply(x, is.numeric, logical(1))
+  numcols <- numcols & !names(x) %in% ignore
+  numcols <- which(numcols)
 
   for(i in numcols){
     x[[i]] <- round(x[[i]], digits = digits)
@@ -44,14 +49,23 @@ df_round.data.frame <- function(
 #' @md
 #' @rdname df_round
 #' @export
-df_signif <- function(x, digits = 0){
+df_signif <- function(x, digits = 0, ignore = NULL){
   assert_that(is.data.frame(x))
   assert_that(is.number(digits))
+  assert(is.null(ignore) || all(ignore %in% names(x)))
 
-  numcols <- names(x)[unlist(lapply(x, is.numeric))]
+  numcols <- vapply(x, is.numeric, logical(1))
+  numcols <- numcols & !names(x) %in% ignore
+  numcols <- which(numcols)
 
-  for(i in numcols){
-    x[[i]] <- signif(x[[i]], digits = digits)
+  if (length(ignore)){
+    assert(is.character(ignore))
+    assert(all(ignore %in% names(x)))
+    numcols <- setdiff(numcols, ignore)
+  }
+
+  for(nm in numcols){
+    x[[nm]] <- signif(x[[nm]], digits = digits)
   }
 
   return(x)
