@@ -3,7 +3,7 @@
 #' @param x a `character` vector
 #' @param stamp an atomic scalar. Before it is added to the output path between
 #'   the filename and the file extension it is passed through [base::format()].
-#'   The special strings `":date:"`, `":time:"`, `":timestamp:"` can be used for
+#'   The special strings `":date"`, `":time"`, `":timestamp"` can be used for
 #'   the current date/time/datetime in ISO format without separators.
 #' @param stamp_fmt `character` scalar. Assumes that the `format()` method for
 #'   whatever class `stamp` is has a `format` argument (otherwise it is silently
@@ -17,9 +17,9 @@
 #'
 #' path <- "path/to/important.xlsx"
 #' stamp_path(path)
-#' stamp_path(path, ":date:")
-#' stamp_path(path, ":time:")
-#' stamp_path(path, ":timestamp:")
+#' stamp_path(path, ":date")
+#' stamp_path(path, ":time")
+#' stamp_path(path, ":timestamp")
 #' stamp_path(path, "hello")
 #'
 stamp_path <- function(
@@ -35,13 +35,16 @@ stamp_path <- function(
   },
   ...
 ){
-  stamp <- switch(
-    stamp,
-    ":date:" = format(Sys.Date(), "%Y%m%d"),
-    ":time:" = format(Sys.time(), "%H%M%S"),
-    ":timestamp:" = format(Sys.time(), "%Y%m%dT%H%M%S"),
-    stamp
+  preset <- switch(
+    EXPR = stamp,
+    ":date" = format(Sys.Date(), "%Y%m%d"),
+    ":time" = format(Sys.time(), "%H%M%S"),
+    ":timestamp" = format(Sys.time(), "%Y%m%dT%H%M%S")
   )
+
+  if (!is.null(preset)){
+    stamp <- preset
+  }
 
 
   if (!is.null(stamp_fmt)){
