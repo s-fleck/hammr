@@ -14,7 +14,7 @@
 #'
 #' @return a `character` vector of the same length as `x`
 #' @export
-#'
+#' @examples
 #' path <- "path/to/important.xlsx"
 #' stamp_path(path)
 #' stamp_path(path, ":date")

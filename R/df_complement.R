@@ -205,7 +205,12 @@ df_complement2 <- function(
     assert_that(
       identical(rescc1, unique(rescc1)),
       identical(rescc2, unique(rescc2)),
-      isTRUE(all.equal(unique(rescc1), unique(rescc2), ignore.row.order = TRUE)),
+      isTRUE(all.equal(
+        unique(rescc1),
+        unique(rescc2),
+        ignore.row.order = TRUE,
+        check.attributes = FALSE
+      )),
       identical(nrow(res$df1), nrow(res$df2)),
       identical(names(res$df1), names(res$df2))
     )
