@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Assorted Utility Functions
-Version: 1.0.2.9013
+Version: 1.0.2.9015
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: An assortment of utility functions originally developed for the 

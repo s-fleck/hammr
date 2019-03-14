@@ -4,7 +4,8 @@
   and **dint**
 * documentation and cleanup for proper package release
 * remove dependency on **dplyr**
-
+* added `df_add_row()`
+* added `relative_change()`
 
 
 
