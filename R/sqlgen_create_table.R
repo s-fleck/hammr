@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-#' #'
+#'
 #' sqlgen_create_table(
 #'   "example.table",
 #'   c("numbers", "animals"),
@@ -55,18 +55,18 @@ sqlgen_create_table <- function(
 
 
   # process input
-    empty_cols <- is.na(col_names) && is.na(col_types)
+    empty_cols <- is.na(col_names) & is.na(col_types)
     col_names  <- col_names[!empty_cols]
     col_types  <- col_types[!empty_cols]
 
-    if(any(is.na(col_types))){
+    if (anyNA(col_types)){
       warning('Skipping col defintions where col_type is NA')
 
       col_names <- col_names[!is.na(col_types)]
       col_types <- col_types[!is.na(col_types)]
     }
 
-    if(is.null(col_options)){
+    if (is.null(col_options)){
       col_options <- rep('', length(col_names))
     }
       col_options[is.na(col_options)] <- ''
