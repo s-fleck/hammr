@@ -6,6 +6,9 @@
 * remove dependency on **dplyr**
 * added `df_add_row()`
 * added `relative_change()`
+* `df_add_margin_row()` now uses `vctrs::vec_rbind()` instead of 
+  `dplyr::bind_rows()`
+* dropped `dplyr` from suggests and added the much lighter `vctrs` instead.
 
 
 

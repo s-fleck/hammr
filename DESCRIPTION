@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Assorted Utility Functions
-Version: 1.0.2.9016
+Version: 1.0.2.9017
 Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
 Description: An assortment of utility functions originally developed for the 
@@ -17,7 +17,6 @@ Imports:
 Suggests: 
     bit64,
     digest,
-    dplyr (>= 0.7.0),
     forcats,
     ggplot2,
     htmltools,
@@ -25,6 +24,8 @@ Suggests:
     lubridate,
     purrr (>= 0.2.3),
     rlang,
+    vctrs,
+    roxygen2,
     shiny,
     stringi,
     testthat,

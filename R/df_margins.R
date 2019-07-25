@@ -9,9 +9,8 @@
 #' The default is `base::sum()` for `numeric` and `integer`, empty strings for
 #' `character` and `factor`, and `NA` for `Date` and `POSIXt` (Datetime).
 #'
-#' The summary row is added to the source `data.frame` via [dplyr::bind_rows()],
-#' and therefor the dplyr coercion rules apply.
-#' See `vignette("two-table", package = "dplyr")`.
+#' The summary row is added to the source `data.frame` via [vctrs::vec_rbind()],
+#' which has pretty smart coercion rules for different datatypes
 #'
 #'
 #' @param .dat a `data.frame`
@@ -57,9 +56,9 @@ df_add_margin_row <- function(
   .default = NA,
   .na.rm = FALSE
 ){
-  assert_namespace("dplyr")
+  assert_namespace("vctrs")
 
-  dplyr::bind_rows(
+  res <- vctrs::vec_rbind(
     .dat,
     get_margin_row(
       .dat,
@@ -68,6 +67,13 @@ df_add_margin_row <- function(
       na.rm = .na.rm
     )
   )
+
+  if(data.table::is.data.table(.dat)){
+    res <- data.table::as.data.table(res)
+  }
+
+  res
+
 }
 
 

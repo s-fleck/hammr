@@ -31,14 +31,13 @@ test_that("df_margins works as expected", {
     `funk column name %%%` = 99
   )
 
-
   tres <- get_margin_row(tdat, sum_name = list(`funk column name %%%` = 99), na.rm = TRUE)
   expect_identical(eres, tres)
 
 
-  expect_warning(r1 <- df_add_margin_row(tdat))
-  expect_warning(r2 <- df_add_margin_row(tibble::as.tibble(tdat)))
-  expect_warning(r3 <- df_add_margin_row(
+  expect_silent(r1 <- df_add_margin_row(tdat))
+  expect_silent(r2 <- df_add_margin_row(tibble::as.tibble(tdat)))
+  expect_silent(r3 <- df_add_margin_row(
     data.table::as.data.table(tdat),
     chr = "F"
   ))
@@ -47,5 +46,4 @@ test_that("df_margins works as expected", {
   expect_identical(class(r1), "data.frame")
   expect_identical(class(r2), c("tbl_df", "tbl", "data.frame"))
   expect_identical(class(r3), c("data.table", "data.frame"))
-
 })
