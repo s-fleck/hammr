@@ -36,7 +36,7 @@ test_that("df_margins works as expected", {
 
 
   expect_silent(r1 <- df_add_margin_row(tdat))
-  expect_silent(r2 <- df_add_margin_row(tibble::as.tibble(tdat)))
+  expect_silent(r2 <- df_add_margin_row(tibble::as_tibble(tdat)))
   expect_silent(r3 <- df_add_margin_row(
     data.table::as.data.table(tdat),
     chr = "F"
