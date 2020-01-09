@@ -58,22 +58,23 @@ df_add_margin_row <- function(
 ){
   assert_namespace("vctrs")
 
-  res <- vctrs::vec_rbind(
+  row <- get_margin_row(
     .dat,
-    get_margin_row(
-      .dat,
-      sum_name = list(...),
-      sum_class = .sum_class,
-      na.rm = .na.rm
-    )
+    sum_name = list(...),
+    sum_class = .sum_class,
+    na.rm = .na.rm
   )
+
+  .row <- as.data.frame(row)
+  names(.row) <- names(row)
+
+  res <- vctrs::vec_rbind(.dat, .row)
 
   if(data.table::is.data.table(.dat)){
     res <- data.table::as.data.table(res)
   }
 
   res
-
 }
 
 

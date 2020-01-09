@@ -1,4 +1,7 @@
-# hammr 1.0.2.9000
+# hammr (dev version)
+
+
+# hammr 1.0.3
 
 * `dsinfo()` and all `date_xx` functions moved to separate packages **dsinfo** 
   and **dint**
