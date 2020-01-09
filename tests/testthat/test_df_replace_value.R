@@ -17,12 +17,12 @@ test_that("df_replace_na works as expected", {
 
   expect_warning(
     r1 <- df_na0(tdat),
-    'is outside the levels range'
+    "invalid factor level"
   )
 
   expect_warning(
     r2 <- df_na0(as.data.frame(tdat)),
-    'invalid factor level'
+    "invalid factor level"
   )
 
   # Results for .data.frame and .data.table method must match

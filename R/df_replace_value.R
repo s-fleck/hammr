@@ -178,7 +178,16 @@ df_replace_na.data.table <- function(
   }
 
   for (j in seq_along(res)) {
-    data.table::set(res, selector(dat[[j]]), j, replace)
+    tryCatch(
+      data.table::set(res, selector(dat[[j]]), j, replace),
+      error = function(e){
+        if (grepl("outside the level.* range", e$message)){
+          warning(warningCondition("invalid factor level", class = "InvalidFactorLevelWarning"))
+        } else{
+          stop(e)
+        }
+      }
+    )
   }
 
   return(res)

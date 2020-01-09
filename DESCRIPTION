@@ -1,19 +1,24 @@
 Type: Package
 Package: hammr
 Title: Assorted Utility Functions
-Version: 1.0.4
-Authors@R: person("Stefan", "Fleck", email = "stefan.fleck@statistik.gv.at", role = c("aut", "cre"))
+Version: 1.0.5
+Authors@R: 
+    person(given = "Stefan",
+           family = "Fleck",
+           role = c("aut", "cre"),
+           email = "stefan.fleck@statistik.gv.at")
 Maintainer: Stefan Fleck <stefan.fleck@statistik.gv.at>
-Description: An assortment of utility functions originally developed for the 
-  Austrian freight transport statistics, but with general applicability. 
+Description: An assortment of utility functions originally
+    developed for the Austrian freight transport statistics, but with
+    general applicability.
 License: MIT + file LICENSE
 Imports: 
     assertthat,
     data.table,
+    dint,
     magrittr,
     tools,
-    utils,
-    dint
+    utils
 Suggests: 
     bit64,
     digest,
@@ -24,14 +29,14 @@ Suggests:
     lubridate,
     purrr (>= 0.2.3),
     rlang,
-    vctrs,
     roxygen2,
     shiny,
     stringi,
     testthat,
     testthis,
-    tibble
+    tibble,
+    vctrs
 Encoding: UTF-8
 LazyData: TRUE
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2.9000
