@@ -33,3 +33,23 @@ test_that("human_numbers works as expected", {
       c("0", "0.1", "0.9", "100m", NA)
     )
 })
+
+
+
+
+test_that("human_time works as expected", {
+
+  x <- difftime(as.Date("2019-12-01"), as.Date("2018-12-01"))
+
+  expect_identical(human_time(x), "1y")
+  expect_identical(human_time(x/2), "182.5d")
+  expect_identical(human_time(x/365), "1d")
+  expect_identical(human_time(x/400), "21.9h")
+  expect_identical(human_time(x/(60*24*360)), "1m")
+  expect_identical(human_time(x/(60*60*24*360)), "1s")
+
+  expect_identical(human_time(-x), "-1y")
+
+
+})
+

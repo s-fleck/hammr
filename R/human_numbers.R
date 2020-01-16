@@ -91,13 +91,22 @@ human_numbers <- function(
     stop('something went wrong')
   }
 
+
+
+  zero_unit <- paste0(sep, names(pots)[which(pots == 0)])
+  if (!length(zero_unit))
+    zero_unit <- ""
+
+  if (!is_blank(symbol))
+    symbol <- symbol
+
   humanity  <- function(y, pots, symbol){
     if(is.na(y)){
       return(NA_character_)
     } else if (y == 0){
-      return(paste0(symbol, '0'))
+      return(paste0(symbol, "0", zero_unit))
     } else if (data.table::between(y, 0, 1)){
-      return(as.character(signif(y, 2)))
+      return(paste0(signif(y, 2), zero_unit))
     } else {
       humanize(y, pots, symbol)
     }
@@ -180,5 +189,48 @@ human_mem <- function(x){
       'ZiB' = 1014^7,
       'YiB' = 1014^8
     )
+  )
+}
+
+
+
+
+#' Title
+#'
+#' @param x a `integer` vector (containing seconds) or a [difftime] object
+#'
+#' @return
+#' @export
+#'
+#' @examples
+human_time <- function(x){
+  UseMethod("human_time")
+}
+
+
+
+
+#' @export
+human_time.difftime <- function(x){
+  units(x) <- "secs"
+  human_time(as.numeric(x))
+}
+
+
+
+
+#' @export
+human_time.numeric <- function(x){
+  human_time(as.integer(round(x)))
+}
+
+
+
+
+#' @export
+human_time.integer <- function(x){
+  hammr::human_numbers(
+    as.integer(x),
+    pots = c(s = 0L, m = 60L, h = 3600L, d = 86400L, y = 31104000L)
   )
 }

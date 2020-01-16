@@ -1,5 +1,6 @@
 # hammr (dev version)
 
+* add `human_time()` for formatting seconds and difftimes
 
 # hammr 1.0.3
 
