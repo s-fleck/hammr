@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Assorted Utility Functions
-Version: 1.0.6
+Version: 1.0.7
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -27,6 +27,7 @@ Suggests:
     htmltools,
     knitr,
     lubridate,
+    grid,
     purrr (>= 0.2.3),
     rlang,
     roxygen2,
