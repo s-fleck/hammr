@@ -34,7 +34,7 @@ save_multipage_pdf = function(
   on.exit(dev.off())
 
   for (i in seq_along(x)){
-    grid::grid.draw(p[[i]])
+    grid::grid.draw(x[[i]])
     if (i < length(x)){
       grid::grid.newpage()
     }
