@@ -59,7 +59,7 @@ df_add_margin_row <- function(
   assert_namespace("vctrs")
 
   row <- get_margin_row(
-    .dat,
+    as.data.frame(.dat),
     sum_name = list(...),
     sum_class = .sum_class,
     na.rm = .na.rm
@@ -68,12 +68,16 @@ df_add_margin_row <- function(
   .row <- as.data.frame(row)
   names(.row) <- names(row)
 
-  res <- vctrs::vec_rbind(.dat, .row)
+  res <- vctrs::vec_rbind(as.data.frame(.dat), .row)
 
-  if(data.table::is.data.table(.dat)){
+  if (inherits(.dat, "data.table")){
     res <- data.table::as.data.table(res)
+
+  } else if (inherits(.dat, "tbl")){
+    res <- tibble::as_tibble(res)
   }
 
+  class(res) <- class(.dat)
   res
 }
 
