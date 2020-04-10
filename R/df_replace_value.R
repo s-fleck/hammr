@@ -2,14 +2,13 @@
 
 #' Replace values in Data Frame columns that match a predicate
 #'
-#' @param dat a data.frame or data.table
+#' @param dat a `data.frame` or `data.table`
 #' @param predicate A predicate function to be applied to the columns of `dat`.
 #'   Only those columns where `predicate()` evalutes to `TRUE` will be modified.
 #' @param value value to replace
 #' @param replace replacement value
 #'
 #' @return `dat` with `value` replaced by `replace`
-#' @inheritParams df_replace_na
 #'
 #' @export
 df_replace_value_if <- function(
@@ -68,16 +67,14 @@ df_replace_value_num <- function(
 #'
 #' Replaces all `NA`s and `NAN`s in a data.frame or data.table with `replace`.
 #'
-#' @param dat a `data.frame` or `data.table`
 #' @param as_char logical. if `TRUE`  each column where a value will be
 #'   replaced is automatically converted to `character` (useful when dealing
 #'   with factors).
-#' @param replace value to replace `NAs` with.
 #' @param inf logical. if `TRUE` also replaces `Inf` values
 #' @param replace_na_string logical. if `TRUE` also replaces `"NA"` strings
 #'
-#' @return A data.frame with all `NA`s replaced by `replace`
-#' @md
+#' @return A `data.frame` with all `NA`s replaced by `replace`
+#' @inheritParams df_replace_value_if
 #' @family data.frame tools
 #' @export
 #'

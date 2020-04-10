@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Assorted Utility Functions
-Version: 1.0.9
+Version: 1.0.10
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -18,7 +18,8 @@ Imports:
     dint,
     magrittr,
     tools,
-    utils
+    utils,
+    grDevices
 Suggests: 
     bit64,
     digest,

@@ -6,14 +6,15 @@
 #' either `x` or `y`, whichever is bigger (with the default `fun`).
 #'
 #'
-#' @param x,y `numeric` vectors
+#' @param x,y `numeric` vectors. For `relative_change()` the order of `x` and
+#'   `y` matters: `x` is the old value, and `y` is the new value.
 #' @param fun a `function`. Sensible options options are (for example):
 #'   * [`pmax`][pmax],
 #'   * [`pmin`][pmin], and
 #'   * `function(.x, .y) (.x + .y) / 2`
 #'
 #' @return a `numeric` vector
-#' @seealso [https://en.wikipedia.org/wiki/Relative_change_and_difference]
+#' @seealso \url{https://en.wikipedia.org/wiki/Relative_change_and_difference}
 #' @export
 #'
 #' @examples
@@ -35,7 +36,7 @@ relative_diff <- function(x, y, fun = function(.x, .y) pmax(.x, .y) ){
 #' @examples
 #' relative_change(c(99, 100), c(100, 99))
 #'
-relative_change <- function(old, new){
-  new / old - 1
+relative_change <- function(x, y){
+  x / y - 1
 }
 

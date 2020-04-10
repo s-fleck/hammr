@@ -5,7 +5,7 @@
 #' @param filename `scalar` character, a file system path. Filename should end
 #'   in `'.pdf'`.
 #' @param width,height `numeric` scalars, Dimension (in `inch`)
-#' @param
+#' @param overwrite `logical` scalar. overwrite target file.
 #'
 #' @note
 #'
@@ -30,8 +30,8 @@ save_multipage_pdf = function(
       stop("File '", filename, "' exists and overwrite == FALSE")
   }
 
-  pdf(filename, onefile = TRUE, width = width, height = height)
-  on.exit(dev.off())
+  grDevices::pdf(filename, onefile = TRUE, width = width, height = height)
+  on.exit(grDevices::dev.off())
 
   for (i in seq_along(x)){
     grid::grid.draw(x[[i]])

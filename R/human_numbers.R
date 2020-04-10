@@ -195,14 +195,11 @@ human_mem <- function(x){
 
 
 
-#' Title
-#'
+#' @rdname human_numbers
 #' @param x a `integer` vector (containing seconds) or a [difftime] object
-#'
-#' @return
 #' @export
-#'
 #' @examples
+#' human_time(350)
 human_time <- function(x){
   UseMethod("human_time")
 }
