@@ -54,10 +54,18 @@ df_drop_empty_cols.data.frame <- function(dat){
 
 # drop rows ---------------------------------------------------------------
 
+#' @param drop_blanks treat blank character cells like `NAs`
+#'
 #' @export
 #' @rdname df_drop_empty
-df_drop_empty_rows <- function(dat){
-  dat[rowSums(is.na(dat)) != ncol(dat), ]
+df_drop_empty_rows <- function(dat, drop_blanks = FALSE){
+  if (drop_blanks){
+    fun <- function(.) is.na(.) | apply(., 1:2, is_blank)
+  } else {
+    fun <- is.na
+  }
+
+  dat[rowSums(fun(dat)) != ncol(dat), ]
 }
 
 

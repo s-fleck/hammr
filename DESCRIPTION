@@ -1,7 +1,7 @@
 Type: Package
 Package: hammr
 Title: Assorted Utility Functions
-Version: 1.0.8
+Version: 1.0.9
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -40,4 +40,4 @@ Suggests:
 Encoding: UTF-8
 LazyData: TRUE
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2.9000
+RoxygenNote: 7.1.0

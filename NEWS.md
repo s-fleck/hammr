@@ -1,6 +1,9 @@
 # hammr (dev version)
 
 * add `human_time()` for formatting seconds and difftimes
+* df_drop_empty_rows gains `drop_blanks` argument for treating blank character
+  cells as if they were `NA`
+  
 
 # hammr 1.0.3
 
