@@ -37,6 +37,6 @@ relative_diff <- function(x, y, fun = function(.x, .y) pmax(.x, .y) ){
 #' relative_change(c(99, 100), c(100, 99))
 #'
 relative_change <- function(x, y){
-  x / y - 1
+  y / x - 1
 }
 
