@@ -59,13 +59,22 @@ df_drop_empty_cols.data.frame <- function(dat){
 #' @export
 #' @rdname df_drop_empty
 df_drop_empty_rows <- function(dat, drop_blanks = FALSE){
+
   if (drop_blanks){
-    fun <- function(.) is.na(.) | apply(., 1:2, is_blank)
+    m <- as.matrix(dat)
+    if (!is.character(m)){
+      d <- dims(m)
+      m <- matrix(as.character(m))
+      dims(m) <- d
+    }
+
+    m[m == ""] <- NA_character_
   } else {
-    fun <- is.na
+    m <- dat
   }
 
-  dat[rowSums(fun(dat)) != ncol(dat), ]
+
+  dat[rowSums(is.na(m)) != ncol(dat), ]
 }
 
 
