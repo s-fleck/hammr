@@ -4,14 +4,14 @@ context("df_complement")
 test_that("df_complement works as expected", {
 
   df1 <- data.frame(
-    g1 = letters[c(1, 2, 2, 2, 2, 3, 4, 5, 6, 1)],
-    g2 = LETTERS[c(1, 2, 3, 4, 5, 5, 5, 2, 1, 1)],
+    g1 = factor(letters[c(1, 2, 2, 2, 2, 3, 4, 5, 6, 1)]),
+    g2 = factor(LETTERS[c(1, 2, 3, 4, 5, 5, 5, 2, 1, 1)]),
     da = 1:10
   )
 
   df2 <- data.frame(
-    g1 = letters[c(1, 2, 3, 6, 7)],
-    g2 = LETTERS[c(1, 2, 2, 2, 7)],
+    g1 = factor(letters[c(1, 2, 3, 6, 7)]),
+    g2 = factor(LETTERS[c(1, 2, 2, 2, 7)]),
     da = 6:10,
     du = 100:104
   )
