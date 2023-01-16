@@ -3,7 +3,9 @@
 * add `human_time()` for formatting seconds and difftimes
 * df_drop_empty_rows gains `drop_blanks` argument for treating blank character
   cells as if they were `NA`
-  
+* added `words_to_vector()`
+* added `triput` (an alternative to `dput()` for data.frames that uses 
+  `tibble::tribble()` syntax)
 
 # hammr 1.0.3
 
