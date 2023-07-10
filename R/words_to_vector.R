@@ -7,6 +7,8 @@ words_to_vector <- function(
 ){
   res <- gsub("\n", " ", x, fixed = TRUE)
   res <- strsplit(res, " ")
+  res <- trimws(unlist(res))
+  res <- res[Negate(is_blank)(res)]
   unlist(res)
 }
 
@@ -17,3 +19,11 @@ read_clipboard <- function(){
   res <- suppressWarnings(readLines(con))
   res
 }
+
+
+#' @export
+#' @rdname words_to_vector
+global_variable_helper <- function(x = words_to_vector()){
+  cat(paste0('"', sort(x), '"', collapse = ",\n"))
+}
+
